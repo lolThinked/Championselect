@@ -217,6 +217,8 @@ def customRequest(link):
     print(link)
     print(dataInfo)
     return dataInfo
+print("https://riot:"+ webSocketerLockList[3] +"@127.0.0.1:"+webSocketerLockList[2])
+print("https://"+webSocketerAuthString +"@127.0.0.1:"+webSocketerLockList[2])
 '''
 test2 = customRequest("/lol-chat/v1/config")
 test3 = customRequest("/lol-chat/v1/conversations")

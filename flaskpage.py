@@ -11,7 +11,7 @@ def hentJson(navn):
 
 @app.route("/")
 def home():
-    return "Hello World!"
+    return render_template("homePage.html")
 
 @app.route("/champselect")
 def champselect():

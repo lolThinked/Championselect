@@ -1,0 +1,46 @@
+body{
+  font-family: 'Roboto';
+  text-align: center;
+  background-color: #1a283e;
+}
+h1{
+  color:white;
+}
+h2{
+  color: #ebebeb;
+}
+h3{
+  color: grey;
+}
+.header{
+
+}
+
+.content{
+
+}
+
+.forStreamContainer{
+
+}
+
+
+.content-top{
+
+}
+.caster-content{
+
+}
+.producer-content{
+
+}
+
+
+.linkGroupContainerDiv{
+  padding: 5px;
+  border: 1px dotted #d5d5d5;
+  /* width: 80%; */
+  margin: auto;
+  margin-bottom: 10px;
+  background-color: #101826;
+}

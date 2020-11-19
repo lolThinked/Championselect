@@ -4,6 +4,7 @@ import requests
 #processes the riot lockfile
 import os.path
 from os import path
+
 def getInstallationPath():
     if(path.exists("settings.txt")):
         infile = open("settings.txt","r")
@@ -11,7 +12,6 @@ def getInstallationPath():
         for line in infile:
 
             settings.append(line.rstrip("\n"))
-
         return settings
     else:
         print("ERROR:")
@@ -24,6 +24,7 @@ def getRiotLock():
     #infile = open("C:\Riot Games\League of Legends\lockfile")
     pathFile = getInstallationPath()[0]
     if(path.exists(pathFile)):
+
         infile = open(pathFile)
         for line in infile:
             liste = line.split(":")
@@ -42,6 +43,7 @@ def getAuthorizationString(liste):
     strRiotKey = strRiotKey.encode("utf-8")
     nyString = base64.b64encode(strRiotKey)
     nyStringDecoded = nyString.decode("utf-8")
+    print(nyStringDecoded)
     return nyStringDecoded
 
 #returns a dictionary with the championNames and ID's

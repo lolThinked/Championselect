@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset = "utf-8"/>
+	<link rel="stylesheet" href={{ url_for('static', filename='css/homePage.css')}}>
+	<link rel="shortcut icon" href={{ url_for('static', filename='favicon.ico')}}>
+	<title>Home Page</title>
+	<link href="https://fonts.googleapis.com/css?family=Roboto:500&display=swap" rel="stylesheet">
+<style></style>
+</head>
+<body>
+  <div class="header">
+
+  </div>
+  <div class="content">
+    <div class="content-top">
+      <h1>Home page</h1>
+      <h3>This page contains an overview to the championselect-program</h3>
+      <a href="{{ url_for('home') }}">Home</a>
+      <h2>Links:</h2>
+    </div>
+    <div class="content-container">
+      <div class="forStreamContainer">
+        <div class="linkGroupContainerDiv">
+          <h2>Championselect - Standard</h2>
+          <a href="{{ url_for('champselect') }}">Championselect</a>
+          <button onclick="copyMe('champselect')" value="{{ url_for('champselect') }}" id="champselect">Click to Copy link!</button>
+        </div>
+        <div class="linkGroupContainerDiv">
+          <h2>Lobby</h2>
+          <a href="{{ url_for('lobby') }}">Lobby</a>
+          <button onclick="copyMe('lobby')" value="{{ url_for('lobby') }}" id="lobby">Click to Copy link!</button>
+        </div>
+      </div>
+      <div class="caster-content">
+
+      </div>
+      <div class="producer-content">
+
+      </div>
+    </div>
+  </div>
+  <script src={{ url_for('static', filename='js/homepage.js')}} ></script>
+  <script>
+
+  </script>
+</body>
+</html>

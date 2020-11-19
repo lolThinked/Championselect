@@ -1,0 +1,364 @@
+---
+allow_insecure_content: true
+allow_run_in_background: true
+app:
+  app_name: Riot Client
+  local_settings_file: RiotClientSettings.yaml
+  log_dir: Riot Client Logs
+  private_settings_file: RiotClientPrivateSettings.yaml
+  project: Keystone
+  respawn:
+    command: RiotClientServices.exe
+    display_name: Riot Client Services
+  splash: riot
+  version: 1.0.0
+build:
+  patchline: KeystoneFoundationESportsLivePublicWin
+  patchline-visible-name: ESports
+default_product:
+  arguments:
+  - --app-port={remoting-app-port}
+  - --remoting-auth-token={remoting-auth-token}
+  - --app-pid={foundation-pid}
+  executable: RiotClientUx.exe
+  id: KeystoneClient
+  relative_path: UX
+default_region: ESPORTSTMNT05
+enable_bug_reporter: true
+enable_crashpad: true
+enable_direct_launch: true
+enable_eula: true
+enable_patching: true
+enable_player_feedback_tool: true
+enable_rail_integration_v1: false
+enable_rail_integration_v2: false
+enable_rcrpcs_integration: false
+enable_remoting_trace: false
+enable_riot_login: true
+enable_self_update: true
+enable_system_tray: true
+enable_tssapi_integration: false
+environment:
+  tags:
+  - esports
+expected_partner_launcher_arg: ''
+insecure_tls_versions: true
+launch_ux: false
+league_required_country:
+  default:
+  - ESPORTSTMNT01
+  - ESPORTSTMNT02
+  - ESPORTSTMNT03
+  - ESPORTSTMNT04
+  - ESPORTSTMNT05
+  - ESPORTSTMNT06
+new_lifecycle_enabled: false
+region_data:
+  ESPORTSTMNT01:
+    available_locales:
+    - ar_AE
+    - cs_CZ
+    - de_DE
+    - el_GR
+    - en_US
+    - es_MX
+    - es_ES
+    - fr_FR
+    - hu_HU
+    - id_ID
+    - it_IT
+    - ja_JP
+    - ko_KR
+    - ms_MY
+    - pl_PL
+    - pt_BR
+    - ro_RO
+    - ru_RU
+    - th_TH
+    - tr_TR
+    - vi_VN
+    - vn_VN
+    - zh_CN
+    - zh_MY
+    - zh_TW
+    default_locale: en_US
+    rso:
+      client: riot-client
+      url: https://auth.esports.rpg.riotgames.com
+    rso_platform_id: ESPORTSTMNT01
+    servers:
+      chat:
+        auto_query_msg_history: true
+        host: tmnt01.chat.si.riotgames.com
+        port: 5223
+      client_config:
+        client_config_url: https://clientconfig.esports.rpg.riotgames.com
+        scope: globalesports.aws-rclusterprod-usw2-1.esports1.rnet.client-config
+      entitlements:
+        entitlements_url: https://entitlements.esports.rpg.riotgames.com/api/token/v1
+      player_preferences:
+        player_preferences_url: https://uw2-playerpreferences.esports.rpg.riotgames.com
+      rms:
+        rms_heartbeat_interval_seconds: 60
+        rms_url: wss://uw2-rms-edge.esports.rpg.riotgames.com:443
+      telemetry:
+        analytics_collector_url: https://data.riotgames.com
+        dradis_collector_url: https://ekg.riotgames.com/messages
+        scope: globalriot.pdx2.rnet-live.riotclient.foundation
+  ESPORTSTMNT02:
+    available_locales:
+    - ar_AE
+    - cs_CZ
+    - de_DE
+    - el_GR
+    - en_US
+    - es_MX
+    - es_ES
+    - fr_FR
+    - hu_HU
+    - id_ID
+    - it_IT
+    - ja_JP
+    - ko_KR
+    - ms_MY
+    - pl_PL
+    - pt_BR
+    - ro_RO
+    - ru_RU
+    - th_TH
+    - tr_TR
+    - vi_VN
+    - vn_VN
+    - zh_CN
+    - zh_MY
+    - zh_TW
+    default_locale: en_US
+    rso:
+      client: riot-client
+      url: https://auth.esports.rpg.riotgames.com
+    rso_platform_id: ESPORTSTMNT02
+    servers:
+      chat:
+        auto_query_msg_history: true
+        host: tmnt02.chat.si.riotgames.com
+        port: 5223
+      client_config:
+        client_config_url: https://clientconfig.esports.rpg.riotgames.com
+        scope: globalesports.aws-rclusterprod-usw2-1.esports1.rnet.client-config
+      entitlements:
+        entitlements_url: https://entitlements.esports.rpg.riotgames.com/api/token/v1
+      player_preferences:
+        player_preferences_url: https://uw2-playerpreferences.esports.rpg.riotgames.com
+      rms:
+        rms_heartbeat_interval_seconds: 60
+        rms_url: wss://uw2-rms-edge.esports.rpg.riotgames.com:443
+      telemetry:
+        analytics_collector_url: https://data.riotgames.com
+        dradis_collector_url: https://ekg.riotgames.com/messages
+        scope: globalriot.pdx2.rnet-live.riotclient.foundation
+  ESPORTSTMNT03:
+    available_locales:
+    - ar_AE
+    - cs_CZ
+    - de_DE
+    - el_GR
+    - en_US
+    - es_MX
+    - es_ES
+    - fr_FR
+    - hu_HU
+    - id_ID
+    - it_IT
+    - ja_JP
+    - ko_KR
+    - ms_MY
+    - pl_PL
+    - pt_BR
+    - ro_RO
+    - ru_RU
+    - th_TH
+    - tr_TR
+    - vi_VN
+    - vn_VN
+    - zh_CN
+    - zh_MY
+    - zh_TW
+    default_locale: en_US
+    rso:
+      client: riot-client
+      url: https://auth.esports.rpg.riotgames.com
+    rso_platform_id: ESPORTSTMNT03
+    servers:
+      chat:
+        auto_query_msg_history: true
+        host: tmnt03.chat.si.riotgames.com
+        port: 5223
+      client_config:
+        client_config_url: https://clientconfig.esports.rpg.riotgames.com
+        scope: globalesports.aws-rclusterprod-usw2-1.esports1.rnet.client-config
+      entitlements:
+        entitlements_url: https://entitlements.esports.rpg.riotgames.com/api/token/v1
+      player_preferences:
+        player_preferences_url: https://uw2-playerpreferences.esports.rpg.riotgames.com
+      rms:
+        rms_heartbeat_interval_seconds: 60
+        rms_url: wss://uw2-rms-edge.esports.rpg.riotgames.com:443
+      telemetry:
+        analytics_collector_url: https://data.riotgames.com
+        dradis_collector_url: https://ekg.riotgames.com/messages
+        scope: globalriot.pdx2.rnet-live.riotclient.foundation
+  ESPORTSTMNT04:
+    available_locales:
+    - ar_AE
+    - cs_CZ
+    - de_DE
+    - el_GR
+    - en_US
+    - es_MX
+    - es_ES
+    - fr_FR
+    - hu_HU
+    - id_ID
+    - it_IT
+    - ja_JP
+    - ko_KR
+    - ms_MY
+    - pl_PL
+    - pt_BR
+    - ro_RO
+    - ru_RU
+    - th_TH
+    - tr_TR
+    - vi_VN
+    - vn_VN
+    - zh_CN
+    - zh_MY
+    - zh_TW
+    default_locale: en_US
+    rso:
+      client: riot-client
+      url: https://auth.esports.rpg.riotgames.com
+    rso_platform_id: ESPORTSTMNT04
+    servers:
+      chat:
+        auto_query_msg_history: true
+        host: tmnt04.chat.si.riotgames.com
+        port: 5223
+      client_config:
+        client_config_url: https://clientconfig.esports.rpg.riotgames.com
+        scope: globalesports.aws-rclusterprod-euc1-1.esports1.rnet.client-config
+      entitlements:
+        entitlements_url: https://entitlements.esports.rpg.riotgames.com/api/token/v1
+      player_preferences:
+        player_preferences_url: https://ec1-playerpreferences.esports.rpg.riotgames.com
+      rms:
+        rms_heartbeat_interval_seconds: 60
+        rms_url: wss://ec1-rms-edge.esports.rpg.riotgames.com:443
+      telemetry:
+        analytics_collector_url: https://data.riotgames.com
+        dradis_collector_url: https://ekg.riotgames.com/messages
+        scope: globalriot.pdx2.rnet-live.riotclient.foundation
+  ESPORTSTMNT05:
+    available_locales:
+    - ar_AE
+    - cs_CZ
+    - de_DE
+    - el_GR
+    - en_US
+    - es_MX
+    - es_ES
+    - fr_FR
+    - hu_HU
+    - id_ID
+    - it_IT
+    - ja_JP
+    - ko_KR
+    - ms_MY
+    - pl_PL
+    - pt_BR
+    - ro_RO
+    - ru_RU
+    - th_TH
+    - tr_TR
+    - vi_VN
+    - vn_VN
+    - zh_CN
+    - zh_MY
+    - zh_TW
+    default_locale: en_US
+    rso:
+      client: riot-client
+      url: https://auth.esports.rpg.riotgames.com
+    rso_platform_id: ESPORTSTMNT05
+    servers:
+      chat:
+        auto_query_msg_history: true
+        host: tmnt05.chat.si.riotgames.com
+        port: 5223
+      client_config:
+        client_config_url: https://clientconfig.esports.rpg.riotgames.com
+        scope: globalesports.aws-rclusterprod-euc1-1.esports1.rnet.client-config
+      entitlements:
+        entitlements_url: https://entitlements.esports.rpg.riotgames.com/api/token/v1
+      player_preferences:
+        player_preferences_url: https://ec1-playerpreferences.esports.rpg.riotgames.com
+      rms:
+        rms_heartbeat_interval_seconds: 60
+        rms_url: wss://ec1-rms-edge.esports.rpg.riotgames.com:443
+      telemetry:
+        analytics_collector_url: https://data.riotgames.com
+        dradis_collector_url: https://ekg.riotgames.com/messages
+        scope: globalriot.pdx2.rnet-live.riotclient.foundation
+  ESPORTSTMNT06:
+    available_locales:
+    - ar_AE
+    - cs_CZ
+    - de_DE
+    - el_GR
+    - en_US
+    - es_MX
+    - es_ES
+    - fr_FR
+    - hu_HU
+    - id_ID
+    - it_IT
+    - ja_JP
+    - ko_KR
+    - ms_MY
+    - pl_PL
+    - pt_BR
+    - ro_RO
+    - ru_RU
+    - th_TH
+    - tr_TR
+    - vi_VN
+    - vn_VN
+    - zh_CN
+    - zh_MY
+    - zh_TW
+    default_locale: en_US
+    rso:
+      client: riot-client
+      url: https://auth.esports.rpg.riotgames.com
+    rso_platform_id: ESPORTSTMNT06
+    servers:
+      chat:
+        auto_query_msg_history: true
+        host: tmnt06.chat.si.riotgames.com
+        port: 5223
+      client_config:
+        client_config_url: https://clientconfig.esports.rpg.riotgames.com
+        scope: globalesports.aws-rclusterprod-euc1-1.esports1.rnet.client-config
+      entitlements:
+        entitlements_url: https://entitlements.esports.rpg.riotgames.com/api/token/v1
+      player_preferences:
+        player_preferences_url: https://ec1-playerpreferences.esports.rpg.riotgames.com
+      rms:
+        rms_heartbeat_interval_seconds: 60
+        rms_url: wss://ec1-rms-edge.esports.rpg.riotgames.com:443
+      telemetry:
+        analytics_collector_url: https://data.riotgames.com
+        dradis_collector_url: https://ekg.riotgames.com/messages
+        scope: globalriot.pdx2.rnet-live.riotclient.foundation
+url_protocol: riotclient-esports
+write_data_beside_install_dir: false
