@@ -1,0 +1,1 @@
+pyinstaller -i"C:\Users\Fabian\Desktop\Streaming\PROJECTS\LCSChampionSelect\icon.ico" -F C:\Users\Fabian\Desktop\Streaming\PROJECTS\LCSChampionSelect\flaskpage.py

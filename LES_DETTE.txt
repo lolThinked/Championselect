@@ -1,0 +1,137 @@
+Det ligger 2 settingsfiler i DIST, dette er om du trykker/lagrer den ene feil og trenger å tilbakestille programmet.
+
+Pathen i Settings første linje skal være pathen til League of legends Installasjonen din(om du har flere league installs, er det til hovedgamet ditt.)
+Den skal altså se slik ut "C:\Riot Games\League of Legends\lockfile" Med League of legends installation + lockfile på slutten.
+
+I bildene ligger bakgrunnsbildene for PICKS(nonePick.png + nonePick2.png) Blue="nonePick.png" og Redside="nonePick2.png".
+
+
+Farge forandring:
+Timers ligger i timers folderen, og det er bare å forandre på fargen på bildene for å forandre fargen.
+
+Om du vil forandre backgrunnsfargen til "BANPHASE" må det gjøres igjennom css.
+Altså index.css filen, der .phase og .phaseRed styrer fargen til rød og blå, de kan også settes til samme farge om det ønsket med en farge.
+
+
+
+
+
+HVORDAN STARTE PROGRAMMET:
+Om det er en patch imellom(uten ny champion) burde du kjøre update programmet, og deretter trykke på enter for å gå ut av det igjen.
+om det er en patch med champion, må du få de nye bildene av meg + det rett over.
+
+Start flaskpage pogrammet, og la det kjøre i bakgrunnen, dette må gjøres før du starter browsersourcen i OBS, ettersom obs ikke kan nedlaste filen før flaskpage serveren kjører.
+Start websocketer programmet NB: Du må logge inn på clienten før du starter websocketer. Websocketer må også kjøre før du kommer inn i championselect, og vil ikke funke om du starter etter championselect har begynt.
+TIPS: Restart websocketer imellom games for å unngå problemer.
+
+
+Browser source for å adde i streaming software eller i en nettleser for å sjekke ting:
+http://localhost:5000/champselect
+Lim im denne linken i nettleser, eller som browser source i streaming software.
+
+
+Nettserver linker:
+http://localhost:5000/champselect
+http://localhost:5000/champselect/statistics
+http://localhost:5000/statistics/standings
+
+http://localhost:5000/statistics/player/<gamerId>
+
+Bakgrunnsinfo:
+http://localhost:5000/statistics/standings/json
+http://localhost:5000/statistics/json
+http://localhost:5000/champselect/json
+http://localhost:5000/champselect/timer
+
+https://www.gamer.no/api/v1/tournaments/7979
+
+Generell INFO:
+Programmet vil forsåvidt alltid kjøre i 1920x1080p, så om streamen har mindre oppløsning må du scalere ned programmet ettersom det ikke flyter som andre nettsider men er fast programmert.
+Picks og bans kan ta litt lenger tid å laste enn det gjør i vanlig client.
+
+HILSEN: THINKED
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

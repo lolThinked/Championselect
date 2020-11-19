@@ -1,0 +1,3 @@
+C:\Riot Games\League of Legends\lockfile
+http://ddragon.leagueoflegends.com/cdn/10.23.1/data/en_US/champion.json
+http://ddragon.leagueoflegends.com/cdn/10.23.1/data/en_US/summoner.json
