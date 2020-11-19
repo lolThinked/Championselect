@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset = "utf-8"/>
+	<link rel="stylesheet" href={{ url_for('static', filename='standings.css')}}>
+	<link rel="shortcut icon" href={{ url_for('static', filename='favicon.ico')}}>
+	<title>Thinked</title>
+	<script src={{ url_for('static', filename='index.js')}} ></script>
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" rel="stylesheet">
+
+<style>
+tr{
+	padding: 5px;
+}
+.overskrifter{
+
+}
+.lagRad{
+
+}
+#standings {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#standings td, #standings th {
+  padding: 8px;
+  font-size: x-large;
+}
+
+#standings tr{
+	/* background-color: #1717174d; */
+  color: white;
+}
+
+#standings tr:hover {background-color: #ddd;}
+
+#standings th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #3b3b3bc7;
+  color: white;
+}
+.placement{
+
+}
+.name{
+
+}
+.played{
+
+}
+.wins{
+
+}
+.draws{
+
+}
+.losses{
+
+}
+.forAgainst{
+
+}
+.penalty{
+
+}
+.points{
+
+}
+</style>
+</head>
+<body>
+	<div class="main-app" id="main-app">
+		<table id="standings">
+			<thead>
+
+			</thead>
+
+		</table>
+
+	</div>
+
+	<div class="Overlays" id="onKey">
+		<!--<img src={{ url_for('static', filename='TelenorLigaen_pos.png')}} class="Overlays" id="LeagueTag" style="visibility:hidden;"></img>-->
+	</div>
+	<div class="Background-image-container">
+		<img src={{ url_for('static', filename='CSCapture3.png')}} class="Background-image"id="topCS"style="display:none;"></img>
+	</div>
+							<!--	<div class="borderImage" style="background-image: url(//opgg-static.akamaized.net/images/borders2/diamond.png);"></div>
+							<img src="http://opgg-static.akamaized.net/images/profile_icons/profileIcon3041.jpg" class="ProfileImage"> -->
+<script>
+let myTeamPlayers = document.querySelectorAll("#blue");
+let theirTeamPlayers = document.querySelectorAll("#red");
+let mainApp = document.getElementById("main-app");
+
+
+
+
+hentStats();
+//setDammageForTeam();
+//setStats();
+
+console.log("1");
+function hentStats(){
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', "http://localhost:5000/statistics/standings/json", true);
+	xhr.send();
+	xhr.onreadystatechange = processRequest;
+		function processRequest(e) {
+		//	console.log(xhr.readyState)
+	    if (xhr.readyState == 4 && xhr.status == 200) {
+			var response = JSON.parse(xhr.responseText);
+			console.log(response);
+      let table = document.getElementById("standings");
+      let header = table.createTHead();
+      let row = header.insertRow(0);
+			row.className = "overskrifter";
+
+			row.innerHTML += "<th>#</th>";
+			row.innerHTML += "<th>Lag</th>";
+			row.innerHTML += "<th>Spilt</th>";
+			row.innerHTML += "<th>Vunnet</th>";
+			row.innerHTML += "<th>Uavgjort</th>";
+			row.innerHTML += "<th>Tapt</th>";
+			row.innerHTML += "<th>+/-</th>";
+			row.innerHTML += "<th>Straff</th>";
+			row.innerHTML += "<th>Poeng</th>";
+			/*
+      let plass = row.insertCell(0);
+      plass.innerHTML = "<h1>#</h1>";
+      let lag = row.insertCell(1);
+      lag.innerHTML = "<h1>Lag</h1>";
+			let spilt = row.insertCell(2);
+			spilt.innerHTML("<h1>Spilt</h1>");
+      row.insertCell(2).innerHTML("<h1>Spilt</h1>");
+      row.insertCell(3).innerHTML("<h1>Vunnet</h1>");
+      row.insertCell(4).innerHTML("<h1>Uavgjort</h1>");
+      row.insertCell(5).innerHTML("<h1>Tapt</h1>");
+      row.insertCell(6).innerHTML("<h1>+/-</h1>");
+      row.insertCell(7).innerHTML("<h1>Straff</h1>");
+      row.insertCell(8).innerHTML("<h1>Poeng</h1>");
+			*/
+			let tbody = table.createTBody();
+			for(let i=0; i<response.length; i++){
+				console.log(i);
+
+        row = tbody.insertRow(0);
+				row.className ="lagRad";
+				row.innerHTML += "<td class='placement'>"+response[9-i].placement+"</td>";
+				row.innerHTML += "<td class='name'>"+response[9-i].participant.name+"</td>";
+				row.innerHTML += "<td class='played'>"+response[9-i].played+"</td>";
+				row.innerHTML += "<td class='wins'>"+response[9-i].wins+"</td>";
+				row.innerHTML += "<td class='draws'>"+response[9-i].draws+"</td>";
+				row.innerHTML += "<td class='losses'>"+response[9-i].losses+"</td>";
+				row.innerHTML += "<td class='forAgainst'>"+response[9-i].scoreFor+"/"+response[9-i].scoreAgainst+"</td>";
+				row.innerHTML += "<td class='penalty'>"+response[9-i].penalty+"</td>";
+				row.innerHTML += "<td class='points'>"+response[9-i].points+"</td>";
+				/*
+				row.insertCell(0).innerHTML(response[i].placement);
+        row.insertCell(1).innerHTML(response[i].participant.name);
+        row.insertCell(2).innerHTML(response[i].played);
+        row.insertCell(3).innerHTML(response[i].wins);
+        row.insertCell(4).innerHTML(response[i].draws);
+        row.insertCell(5).innerHTML(response[i].losses);
+        row.insertCell(6).innerHTML(response[i].scoreFor+"/"+response[i].scoreAgainst);
+        row.insertCell(7).innerHTML(response[i].penalty);
+        row.insertCell(8).innerHTML(response[i].points);
+				*/
+      }
+      //mainApp.appendChild(table);
+
+
+
+
+		}
+	}
+}
+
+
+</script>
+</body>
+</html>

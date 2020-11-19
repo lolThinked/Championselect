@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset = "utf-8"/>
+	<link rel="stylesheet" href={{ url_for('static', filename='csStats.css')}}>
+	<link rel="shortcut icon" href={{ url_for('static', filename='favicon.ico')}}>
+	<title>Thinked</title>
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" rel="stylesheet">
+
+<style>
+</style>
+</head>
+<body>
+	<div class="main-app">
+		<div class="statisticsClass">
+			<div class="myTeam">
+				<div class="player" id="blue">
+					<h3>Dammage/Min 600</h3>
+					<h3>KA/D: </h3>
+				</div>
+				<div class="player" id="blue">
+					<h3>Dammage/Min 600</h3>
+					<h3>KA/D: </h3>
+				</div>
+				<div class="player" id="blue">
+					<h3>Dammage/Min 600</h3>
+					<h3>KA/D: </h3>
+				</div>
+				<div class="player" id="blue" style="margin-top: 43px;">
+					<h3>Dammage/Min 600</h3>
+					<h3>KA/D: </h3>
+				</div>
+				<div class="player" id="blue">
+					<h3>Dammage/Min 600</h3>
+					<h3>KA/D: </h3>
+				</div>
+			</div>
+			<div class="theirTeam">
+				<div class="player" id="red">
+					<h3>Dammage/Min 500</h3>
+					<h3>KA/D: </h3>
+				</div>
+				<div class="player" id="red">
+					<h3>Dammage/Min 500</h3>
+					<h3>KA/D: </h3>
+				</div>
+				<div class="player" id="red">
+					<h3>Dammage/Min 500</h3>
+					<h3>KA/D: </h3>
+				</div>
+				<div class="player" id="red" style="margin-top: 43px;">
+					<h3>Dammage/Min 500</h3>
+					<h3>KA/D: </h3>
+				</div>
+				<div class="player" id="red">
+					<h3>Dammage/Min 500</h3>
+					<h3>KA/D: </h3>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="Overlays" id="onKey">
+		<!--<img src={{ url_for('static', filename='TelenorLigaen_pos.png')}} class="Overlays" id="LeagueTag" style="visibility:hidden;"></img>-->
+	</div>
+	<div class="Background-image-container">
+		<img src={{ url_for('static', filename='CSCapture3.png')}} class="Background-image"id="topCS"style="display:none;"></img>
+	</div>
+							<!--	<div class="borderImage" style="background-image: url(//opgg-static.akamaized.net/images/borders2/diamond.png);"></div>
+							<img src="http://opgg-static.akamaized.net/images/profile_icons/profileIcon3041.jpg" class="ProfileImage"> -->
+
+
+
+
+
+
+
+</div>
+<script>
+let myTeamPlayers = document.querySelectorAll("#blue");
+let theirTeamPlayers = document.querySelectorAll("#red");
+
+
+
+let statistics;
+
+let blueSidePlayers=[];
+let redSidePlayers=[];
+let dammageBlueSide = 0;
+let dammageRedSide = 0;
+hentStats();
+//setDammageForTeam();
+//setStats();
+console.log(statistics);
+console.log("1");
+
+
+console.log(blueSidePlayers);
+function hentStats(){
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', "http://localhost:5000/statistics/json", true);
+	xhr.send();
+	xhr.onreadystatechange = processRequest;
+		function processRequest(e) {
+		//	console.log(xhr.readyState)
+	    if (xhr.readyState == 4 && xhr.status == 200) {
+			var response = JSON.parse(xhr.responseText);
+			console.log(response);
+			statistics = response;
+			setNames(response);
+			console.log("2");
+		}
+	}
+}
+
+
+function setNames(arrayListe){
+	console.log("GettingNamesJson");
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', "http://localhost:5000/champselect/json", true);
+	xhr.send();
+	xhr.onreadystatechange = processRequest;
+		function processRequest(e) {
+		//console.log(xhr.readyState)
+	    if (xhr.readyState == 4 && xhr.status == 200) {
+	        // time to partay!!!
+					var response = JSON.parse(xhr.responseText);
+					console.log(response);
+					for(var i = 0; i<5;i++){
+						//BLUESIDE
+						try{
+							if(response.team.myTeam[i] == undefined){
+								//summonerNamesAll[4-i].innerHTML = "";
+							}else{
+								//summonerNamesAll[4-i].innerHTML = response.team.myTeam[i].Name;
+								for(let j =0; j<arrayListe.length; j++){
+									if(arrayListe[j].summonerName == response.team.myTeam[i].Name){
+										//console.log(arrayListe[j]);
+										blueSidePlayers[i] = arrayListe[j];
+									}
+								}
+							}
+						}catch(err){
+							console.log(err.message);
+						}
+
+
+						//REDSIDE
+						try{
+							if(response.team.theirTeam[i] == undefined){
+								//summonerNamesAll[i+5].innerHTML = ""
+							}else{
+								//summonerNamesAll[i+5].innerHTML = response.team.theirTeam[i].Name;
+								for(let j =0; j<arrayListe.length; j++){
+									if(arrayListe[j].summonerName == response.team.theirTeam[i].Name){
+										redSidePlayers[i] = arrayListe[j];
+									}
+								}
+							}
+						}catch(err){
+							console.log(err.message);
+						}
+
+					}
+	    }
+	}
+
+
+}
+//setTimeout(() => {  setNames(); }, 2000);
+setTimeout(() => {  console.log(blueSidePlayers); }, 2000);
+setTimeout(() => {  setDammageForTeam(); }, 2000);
+setTimeout(() => {  setStats(); }, 2200);
+
+
+//setNames();
+//hentStats();
+//setDammageForTeam();
+//setStats();
+function setStats(){
+	console.log(blueSidePlayers);
+	for(let i=0; i<5;i++){
+		//console.log(myTeamPlayers[i].innerHTML);
+		//console.log(blueSidePlayers[i].totalDamageToChampionsPerMinute);
+		//console.log(dammageBlueSide);
+		try{
+			myTeamPlayers[i].innerHTML = "<h3>Team Dammage: "+ ((blueSidePlayers[i].totalDamageToChampionsPerMinute/dammageBlueSide)*100).toFixed(1) +"%</h3><br><h3>KA/D: " +blueSidePlayers[i].kadratio +"</h3>";
+			theirTeamPlayers[i].innerHTML = "<h3>Team Dammage: "+ ((redSidePlayers[i].totalDamageToChampionsPerMinute/dammageRedSide)*100).toFixed(1) +"%</h3><br><h3>KA/D: " +redSidePlayers[i].kadratio +"</h3>";
+			if(i==1){//Jungle
+				myTeamPlayers[i].innerHTML += "<br><h3> Vision score: " + (blueSidePlayers[i].visionScore/blueSidePlayers[i].mapsPlayed).toFixed(1) + "</h3>";
+				theirTeamPlayers[i].innerHTML += "<br><h3> Vision score: " + (redSidePlayers[i].visionScore/redSidePlayers[i].mapsPlayed).toFixed(1) + "</h3>";
+			}else if(i==4){//Support
+				myTeamPlayers[i].innerHTML += "<br><h3> Vision score: " + (blueSidePlayers[i].visionScore/blueSidePlayers[i].mapsPlayed).toFixed(1) + "</h3>";
+				theirTeamPlayers[i].innerHTML += "<br><h3> Vision score: " + (redSidePlayers[i].visionScore/redSidePlayers[i].mapsPlayed).toFixed(1) + "</h3>";
+			}else{
+				myTeamPlayers[i].innerHTML += "<br><h3> CS/Min: " + blueSidePlayers[i].allMinionsKilledPerMinute + "</h3>";
+				theirTeamPlayers[i].innerHTML += "<br><h3> CS/Min: " + redSidePlayers[i].allMinionsKilledPerMinute + "</h3>";
+			}
+			myTeamPlayers[i].innerHTML += "<img id='playerImg' src='" + blueSidePlayers[i].user.image+ "'></img>";
+			theirTeamPlayers[i].innerHTML += "<img id='playerImgRed' src='" + redSidePlayers[i].user.image+ "'></img>";
+		}catch(err){
+			console.log(err);
+		}
+
+	}
+
+}
+function setDammageForTeam(){
+	console.log(redSidePlayers);
+	for(let i =0; i<5; i++){
+		console.log(blueSidePlayers[i].totalDamageToChampionsPerMinute);
+		try{
+				dammageBlueSide += parseFloat(blueSidePlayers[i].totalDamageToChampionsPerMinute);
+		}catch(err){
+			console.log(err);
+			console.log(blueSidePlayers);
+		}
+		try{
+			dammageRedSide += parseFloat(redSidePlayers[i].totalDamageToChampionsPerMinute);
+		}catch(err){
+			console.log(err);
+			console.log(redSidePlayers);
+		}
+
+
+	}
+		console.log(dammageBlueSide);
+}
+
+</script>
+</body>
+</html>

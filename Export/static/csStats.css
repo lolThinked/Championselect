@@ -1,0 +1,94 @@
+
+body{
+    /*font-family: 'Yu Gothic Light';*/
+    /*font-family: 'Sarpanch', sans-serif;*/
+    font-family: 'Yu Gothic Light';
+    font-family: 'Roboto', sans-serif;
+    margin: 0px;
+    overflow: hidden;
+}
+h1{
+  text-align: center;
+  color:white;
+}
+
+
+h3{
+  margin: 0px;
+}
+.main-app{
+  position: absolute;
+  width: 1920px;
+  height:1080px;
+  /*border:1px solid red;*/
+  top:0px;
+  left:0px;
+  display: flex;
+  z-index: 4;
+
+}
+.statisticsClass{
+  top: 187px;
+  width: 1060px;
+  position: absolute;
+  display: flex;
+  
+  left: 430px;
+  font-family: 'Roboto', sans-serif;
+  color: white;
+}
+.theirTeam{
+  position: absolute;
+  right: 0px;
+}
+.player{
+  margin: 0px;
+  height: 108px;
+  background-color: #0000005e;
+  margin-bottom: 10px;
+}
+#playerImg{
+  max-height: 108px;
+    left: 198px;
+    top: -107px;
+    position: relative;
+}
+#playerImgRed{
+  max-height: 108px;
+    left: -108px;
+    top: -107px;
+    position: relative;
+}
+.Background-image-container{
+  height: 1080px;
+  width:1920px;
+}
+.Background-image{
+
+  visibility: visible;
+  position: absolute;
+
+  z-index: 2;
+}
+#topCS{
+  top:0px;
+  left:0px;
+  z-index:-1;
+
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 1;
+  }
+
+  45% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 100%;
+  }
+}
+
+

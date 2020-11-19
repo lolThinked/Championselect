@@ -1,0 +1,290 @@
+
+body{
+    /*font-family: 'Yu Gothic Light';*/
+    font-family: 'Sarpanch', sans-serif;
+}
+h1{
+  text-align: center;
+  color:white;
+}
+
+
+
+.main-app{
+  position: absolute;
+  width: 1920px;
+  height:1080px;
+  /*border:1px solid red;*/
+  top:0px;
+  left:0px;
+  display: flex;
+
+}
+.Background-image-container{
+  height: 1080px;
+  width:1920px;
+}
+.Background-image{
+
+  visibility: visible;
+  position: absolute;
+
+  z-index: 2;
+}
+#topCS{
+  top:0px;
+  left:0px;
+  z-index: 3;
+
+}
+#botCS{
+  top:930px;
+  left:0px;
+  z-index: 3;
+}
+#blueCS{
+  left:0px;
+  top:361px;
+}
+#redCS{
+  right: 0px;
+  top: 361px;
+}
+.Overlays{
+  position: absolute;
+  z-index: 10;
+}
+#LeagueTag{
+  left: 644px;
+  margin:auto;
+  max-width: 610px;
+}
+
+.Hovering{
+  z-index: 4;
+  position: relative;
+  top: -107px;
+  right: 0px;
+  color:white;
+  background-color: #ffffff1a;
+  text-align: center;
+  box-shadow: -1px 9px 18px 0px rgba(0, 0, 0, 0.45);
+  height: 100%;
+  animation-name: fadeInOut;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+}
+.HoveringRight{
+  z-index: 4;
+  position: relative;
+  top: -107px;
+  right: 0px;
+  color:white;
+  background-color: #ffffff1a;
+  text-align: center;
+  box-shadow: -1px 9px 18px 0px rgba(0, 0, 0, 0.45);
+  height: 100%;
+  animation-name: fadeInOut;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+}
+
+.noneHover{
+  visibility: hidden;
+  z-index: 0;
+  position: absolute;
+}
+@keyframes fadeInOut {
+  0% {
+    opacity: 1;
+  }
+
+  45% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 100%;
+  }
+}
+
+
+
+
+.timer{
+  font-size: xx-large;
+  z-index: 4;
+  position: absolute;
+  top: 164.4px;
+  left: 877px;
+  width: 170px;
+  height:170px;
+  background-color: #10b380;
+}
+
+
+.team{
+  position: absolute;
+  margin-top: 20px;
+  display:  flex;
+  width: 45%;
+  height:315px;
+}
+#myTeam{
+  margin-left: 13px;
+
+  /*border:1px solid blue;*/
+}
+
+#theirTeam{
+  margin-right: 13px;
+  right: -4px;
+
+  /*border:3px solid blue;*/
+}
+.SummonerName{
+  top: 227px;
+  width: 99%;
+  position: relative;
+  z-index: 4;
+  color: white;
+  text-align: center;
+  background-color: #0a0f29db;
+  height: 48px;
+  border: 1px solid #07f8cb;
+}
+.player{
+  postition: absolute;
+  z-index: 4;
+  width:173px;
+  height: 315px;
+  /*border: 3px solid black;*/
+  margin-bottom: 13px;
+
+}
+.champion{
+  object-fit: contain;
+}
+#championImage{
+  position: absolute;
+  /*clip-path: inset(30px 10px 30px 10px);
+  */
+  z-index: 4;
+  max-width: 173px;
+
+
+
+  max-height: none;
+}
+.summonerSpells{
+
+  position: relative;
+  left:0px;
+  height:32px;
+  width: 64px;
+  display: inline-flex;
+}
+.summonerSpellsR{
+  position: relative;
+  left:0px;
+  height:32px;
+  width: 64px;
+  display: inline-flex;
+}
+.summonerSpell{
+  z-index: 4;
+  height: 32px;
+  width: 32px;
+  left: 10px;
+}
+.summonerSpellR{
+  z-index: 4;
+  height: 32px;
+  width: 32px;
+  right: 10px;
+}
+#summonerSpell1{
+  position: relative;
+  top: 0;
+  left:0;
+}
+#summonerSpell2{
+  position: relative;
+  top: 0px;
+  left:0px;
+}
+
+
+
+.banClass{
+  padding-top:0;
+  position: absolute;
+  z-index: 4;
+  top: 939px;
+  height: 326px;
+  /*border: 1px solid pink;*/
+  width: 100%;
+}
+.banClass.h1{
+  margin-top: 5px;
+position: absolute;
+top: 229px;
+text-align: center;
+left: 38px;
+margin: auto;
+}
+.teamBans{
+  /*border: 1px solid black;*/
+  height: 100%;
+  width: 609px;
+  display: flex;
+}
+#blueTeamBans{
+  position: absolute;
+  left: 0px;
+}
+#redTeamBans{
+  position: absolute;
+  right: 0px;
+}
+.ban{
+  width:120px;
+  border:1px solid #000000a1;
+}
+#banImage{
+  max-width: 120px;
+  clip-path: polygon(0px 140px,120px 140px,120px 0px,0px 0px);
+}
+
+
+
+
+
+
+#phase{
+  height:170px;
+  position: absolute;
+  z-index: 4;
+  left:889.59px;
+  top:7.6px;
+  width: 145px;
+
+}
+.phase{
+
+  -webkit-transform: rotate(90deg); /* Safari and Chrome */
+  -moz-transform: rotate(90deg);   /* Firefox */
+  -ms-transform: rotate(90deg);   /* IE 9 */
+  -o-transform: rotate(90deg);   /* Opera */
+  transform: rotate(90deg);
+  background-color: deepskyblue;
+}
+.phaseRed{
+
+  -webkit-transform: rotate(270deg); /* Safari and Chrome */
+  -moz-transform: rotate(270deg);   /* Firefox */
+  -ms-transform: rotate(270deg);   /* IE 9 */
+  -o-transform: rotate(270deg);   /* Opera */
+  transform: rotate(270deg);
+  background-color: coral;
+}
