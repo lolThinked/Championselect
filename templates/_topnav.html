@@ -1,0 +1,15 @@
+<div class="topnav" id="topnav">
+    <a class="active" href="/" onclick="goHome()">Hjem</a>
+    <a href="{{ url_for('kampeditor') }}">Kamp-Editor</a>
+    <a href="{{ url_for('lagoversikt') }}">Lagoversikt</a>
+    {% if current_user == undefined %}
+        <a href="{{url_for('login')}}">Login</a>
+    {% else %}
+        {% if current_user.is_anonymous %}
+        <a href="{{url_for('login')}}" style="display: none;">Login - NB! Funker ikke</a>
+        {% else %}
+        <a href="{{ url_for('user', username=current_user.username) }}">Profile</a>
+        <a href="{{url_for('logout')}}">Logout</a>
+        {% endif %}
+    {% endif %}
+  </div>

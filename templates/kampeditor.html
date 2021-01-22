@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="kampOversikt">
+        <a href="{{ url_for('kampoversikt') }}">Stream link: Kampoversikt</a>
+        <button onclick="copyMe('kampoversikt')" value="{{ url_for('lobby') }}" id="kampoversikt">Click to Copy link!</button>
+        <div class="kamper">
+            <div class="kamp">
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock content %}
