@@ -25,6 +25,10 @@ kampoversikt = [
     }
 ]
 lagoversiktjson = hentInnLagoversikt()
+def getOversikt():
+    return lagoversiktjson
+def oppdaterOversikt(tempOversikt):
+    lagoversiktjson = tempOversikt
 '''
 lagoversikt = {
     "Nordavind":{
@@ -49,8 +53,11 @@ def hentJson(navn):
         return json.load(f)
      
 def hentLag(id):
-    with open("jsonFiles/lag/"+id+".json", "r") as f:
-        return json.load(f)
+    if(os.path.exists("jsonFiles/lag/"+id+".json")):
+        with open("jsonFiles/lag/"+id+".json", "r") as f:
+            return json.load(f)
+    else:
+        return False
 
 @app.route("/")
 def home():
@@ -63,6 +70,7 @@ def kampeditor():
 @app.route("/lagoversikt")
 def lagoversikt():
     alleLag = hentAlleLag()
+    print(alleLag)
     return render_template("interface/lagoversikt.html", user=current_user, lagoversikt = alleLag)
 
 @app.route("/kampoversikt")
@@ -74,7 +82,7 @@ def createLag(navn):
     tempID = str(uuid.uuid4())
     opdaterLagoversikt(navn, tempID)
     lagNyttLag(navn, tempID)
-    return id
+    return str(tempID)
     # redirect("/lagoversikt")
     # redirect("/lag/")
     #redirect(url_for('editlag', id=tempID))
@@ -90,15 +98,31 @@ def lag(id):
 def editLag(id):
     print("HIT")
     laget = hentLag(id)
-    print(laget)
-    return render_template("interface/lageditor.html", user=current_user, lag=laget)
+    if laget == False:
+        return "LAGET FINNES IKKE"
+    else:
+        print(laget)
+        return render_template("interface/lageditor.html", user=current_user, lag=laget)
+@app.route("/lag/<id>/save", methods=["POST"])
+def lagreLag(id):
+    print("\n\n\n REQUEST")
+    print(request)
+    indata = request.data
+    indata = eval(request.data)
+    print(indata)
+    with open("jsonFiles/lag/"+id+".json", "w") as f:
+        json.dump(indata, f)
+    return "Saved"
 
 @app.route("/lag/<id>/delete")
 def deleteLag(id):
+    copiedDict = getOversikt().copy()
     if(os.path.exists("jsonFiles/lag/"+id+".json")):
         os.remove("jsonFiles/lag/"+id+".json")
-    del lagoversiktjson[id]
-    lagreLagoversikt()
+    del copiedDict[id]
+    #Lagrer oversikten som json
+    lagreLagoversikt(copiedDict)
+    oppdaterOversikt(copiedDict)
     return "Deleted"
 
     
@@ -202,9 +226,9 @@ def opdaterLagoversikt(navn, tempID):
         json.dump(lagoversiktjson, f)
     print("OPPDATERT LAGOVERSIKT")
 
-def lagreLagoversikt():
+def lagreLagoversikt(oversikt):
     with open("jsonFiles/lag/oversikt.json", "w") as f:
-        json.dump(lagoversiktjson, f)
+        json.dump(oversikt, f)
 
 def lagNyttLag(navn, tempID):
     tempDict = {
@@ -213,7 +237,38 @@ def lagNyttLag(navn, tempID):
         "bilde":navn+"_logo.png",
         "tag":"",
         "spill":"",
-        "spillere":[]
+        "spillere":[
+            {
+                "rolle":"top",
+                "navn":"",
+                "spill":"lol"
+            },
+            {
+                "rolle":"jgl",
+                "navn":"",
+                "spill":"lol"
+            },
+            {
+                "rolle":"mid",
+                "navn":"",
+                "spill":"lol"
+            },
+            {
+                "rolle":"adc",
+                "navn":"",
+                "spill":"lol"
+            },
+            {
+                "rolle":"sup",
+                "navn":"",
+                "spill":"lol"
+            },
+            {
+                "rolle":"chc",
+                "navn":"",
+                "spill":"lol"
+            }
+        ]
     }
     with open("jsonFiles/lag/"+tempID+".json","w") as f:
         json.dump(tempDict, f)
@@ -228,7 +283,8 @@ def hentAlleLag():
     totalDict = []
     for lag in lagoversiktjson:
         hentetLag = hentLag(lag)
-        totalDict.append(hentetLag)  
+        if(hentetLag != False):
+            totalDict.append(hentetLag)  
     return totalDict
 
 

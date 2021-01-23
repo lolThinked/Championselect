@@ -1,7 +1,73 @@
 {% extends "base.html" %}
 {% block content %}
-    <H1 contenteditable="true">{{lag.navn}}</H1>
-    <h2>Test</h2>
+<link rel="stylesheet" href={{ url_for('static', filename='css/lageditor.css')}}>
+    <div class="lagreDiv" onclick="lagreLag()"><h2>Lagre</h2></div>
+    <div class="lag">
+        <div>Navn:<H1 contenteditable="true" class="intypingField"  id="navnID">{{lag.navn}}</H1></div>
+        <div>Spill:<H1 contenteditable="true" class="intypingField" id="spillID">{{lag.spill}}</H1></div>
+        <div>Tag:<H1 contenteditable="true" class="intypingField" id="tagID">{{lag.tag}}</H1></div>
+        <div>Bilde (link):<H1 contenteditable="true" class="intypingField" id="bildeID">{{lag.bilde}}</H1></div>
+        <div>ID:<H1 contenteditable="false" id="idID">{{lag.id}}</H1></div>
+        <div id="spillereContainer">
+            {% for spiller in lag.spillere %}
+            <div class="spiller">
+                <div>Gamer tag:<H1 contenteditable="true" class="intypingField">{{spiller.gamertag}}</H1></div>
+                <div>Rolle:<H1 contenteditable="true" class="intypingField">{{spiller.rolle}}</H1></div>
+                <div>Spill:<H1 contenteditable="true" class="intypingField">{{spiller.spill}}</H1></div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="leggTilNySpiller">
+        <button onclick="leggTilNySpiller()">Legg til ny spiller</button>
+    </div>
+    <script>
+        let spillcontainerEL = document.getElementById("spillereContainer");
+        function leggTilNySpiller(){
+            let spillerDiv = document.createElement("div");
+            spillerDiv.innerHTML = '<div>Gamer tag:<H1 contenteditable="true" class="intypingField"></H1></div><div>Rolle:<H1 contenteditable="true" class="intypingField"></H1></div><div>Spill:<H1 contenteditable="true" class="intypingField"></H1></div>';
+            spillerDiv.className = "spiller";
+            spillcontainerEL.appendChild(spillerDiv);
+            console.log(spillerDiv);
+        }
+
+
+        function lagreLag(){
+            let tempObject = {};
+            tempObject["navn"] = document.getElementById("navnID").innerHTML;
+            tempObject["spill"] = document.getElementById("spillID").innerHTML;
+            tempObject["tag"] = document.getElementById("tagID").innerHTML;
+            tempObject["bilde"] = document.getElementById("bildeID").innerHTML;
+            tempObject["id"] = document.getElementById("idID").innerHTML;
+
+            
+            let spillerArray = [];
+            let spillereELs = document.getElementsByClassName("spiller");
+
+            for(let i =0; i<spillereELs.length; i++){
+                let tempPlayerObject =  {};
+                let sELs = spillereELs[i].children;
+                tempPlayerObject["rolle"] = sELs[1].children[0].innerHTML;
+                tempPlayerObject["navn"] = sELs[0].children[0].innerHTML;
+                tempPlayerObject["spill"] = sELs[2].children[0].innerHTML;
+                spillerArray.push(tempPlayerObject);
+            }
+            tempObject["spillere"] = spillerArray;
+            console.log(tempObject);
+
+            let xml = new XMLHttpRequest();
+            xml.open("POST", "/lag/"+tempObject.id+"/save", true);
+            xml.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+            xml.onreadystatechange = function(){
+                if(xml.readyState == 4 && xml.status == 200){
+                    console.log(xml.responseText);
+                }
+            }
+            let stringified = JSON.stringify(tempObject);
+            
+            xml.send(stringified);
+        }
+    </script>
 
 
 {% endblock content %}

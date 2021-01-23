@@ -9,11 +9,21 @@
     border-bottom: 1px solid white;
     padding: 20px;
     margin: 20px;
-    width: 400px;
+    /* width: 400px; */
+    cursor: pointer;
+}
+.lag:hover{
+    border: 1px solid #2fc0ff;
+    background-color: #00294e;
+    margin: 19px;
 }
 .lag div{
     margin: 20px;
 }
 .lag-bilde img{
     width: 75px;
+}
+.lagoversikt{
+    display: flex;
+    flex-wrap: wrap;
 }

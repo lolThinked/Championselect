@@ -1,0 +1,38 @@
+.lagreDiv{
+    margin: auto;
+    margin-top: 10px;
+    width: 50%;
+    background-color: #00597a;
+    border: 1px solid #00ff26;
+    cursor: pointer;
+}
+.lagreDiv:hover{
+    background-color: #002a2a;
+    border: 1px solid darkgreen;
+}
+.lag{
+    text-align: center;
+    margin-top: 20px;
+    margin: auto;
+    color: #2cbf38;
+    /* display: flex;
+    flex-wrap: wrap; */
+}
+.lag div{
+    margin: 20px;
+    display: flex;
+}
+.intypingField{
+    border-bottom: 1px solid #a6e7ff;
+    width: 400px;
+    margin:20px;
+    margin: auto;
+}
+#spillereContainer{
+    width: 100%;
+    display: block;
+
+}
+.spiller{
+    display: flex;
+}
