@@ -1,5 +1,7 @@
-from flask import Flask, render_template, jsonify, url_for, send_from_directory
+from flask import Flask, render_template, jsonify, url_for, send_from_directory, redirect, request
 from flask_login import current_user, login_user, logout_user, login_required, LoginManager
+from pythonFiles.f_functions import hentInnLagoversikt
+import uuid
 import json
 import os
 import requests
@@ -22,10 +24,12 @@ kampoversikt = [
 
     }
 ]
+lagoversiktjson = hentInnLagoversikt()
+'''
 lagoversikt = {
     "Nordavind":{
         "tag":"NVD",
-        "bilde":"nvd.png",
+        "bilde":"Nordavind_logo.png",
         "LoL":{
             "top":"",
             "jgl":"Sharp",
@@ -37,24 +41,69 @@ lagoversikt = {
         }
     }
 }
-
+'''
 
 
 def hentJson(navn):
     with open("jsonFiles/" + navn + ".json", "r") as f:
-        minInfo = json.load(f)
-    return minInfo
+        return json.load(f)
+     
+def hentLag(id):
+    with open("jsonFiles/lag/"+id+".json", "r") as f:
+        return json.load(f)
 
 @app.route("/")
 def home():
-    return render_template("homePage.html", user=current_user, current_user=current_user)
+    return render_template("interface/homePage.html", user=current_user, current_user=current_user)
 
-@app.route("/kampoversikt")
+@app.route("/kampeditor")
 def kampeditor():
-    return render_template("kampeditor.html", user=current_user, kamper=kampoversikt)
+    return render_template("interface/kampeditor.html", user=current_user, kamper=kampoversikt)
+    
 @app.route("/lagoversikt")
 def lagoversikt():
-    return render_template("lagoversikt.html", user=current_user, lagoversikt = lagoversikt)
+    alleLag = hentAlleLag()
+    return render_template("interface/lagoversikt.html", user=current_user, lagoversikt = alleLag)
+
+@app.route("/kampoversikt")
+def kampoversikt():
+    return render_template("stream/kampoversikt.html", user=current_user, kamper=kampoversikt)
+
+@app.route("/lag/create/<navn>")
+def createLag(navn):
+    tempID = str(uuid.uuid4())
+    opdaterLagoversikt(navn, tempID)
+    lagNyttLag(navn, tempID)
+    return id
+    # redirect("/lagoversikt")
+    # redirect("/lag/")
+    #redirect(url_for('editlag', id=tempID))
+
+@app.route("/lag/<id>", methods=["POST"])
+def lag(id):
+    #laget = hentLag(id)
+    indata = eval(request.data)
+    opdaterLag(indata, id)
+    return 200
+
+@app.route("/lag/<id>/edit")
+def editLag(id):
+    print("HIT")
+    laget = hentLag(id)
+    print(laget)
+    return render_template("interface/lageditor.html", user=current_user, lag=laget)
+
+@app.route("/lag/<id>/delete")
+def deleteLag(id):
+    if(os.path.exists("jsonFiles/lag/"+id+".json")):
+        os.remove("jsonFiles/lag/"+id+".json")
+    del lagoversiktjson[id]
+    lagreLagoversikt()
+    return "Deleted"
+
+    
+
+
 
 
 
@@ -144,6 +193,46 @@ def user(username):
         {'author': user, 'body': 'Test post #2'}
     ]
     return render_template('user.html', user=user, posts=posts)
+
+def opdaterLagoversikt(navn, tempID):
+    print(lagoversiktjson)
+    #lagoversikt["liste"].append([tempID,navn])
+    lagoversiktjson[tempID] = navn
+    with open("jsonFiles/lag/oversikt.json","w") as f:
+        json.dump(lagoversiktjson, f)
+    print("OPPDATERT LAGOVERSIKT")
+
+def lagreLagoversikt():
+    with open("jsonFiles/lag/oversikt.json", "w") as f:
+        json.dump(lagoversiktjson, f)
+
+def lagNyttLag(navn, tempID):
+    tempDict = {
+        "navn": navn,
+        "id":tempID,
+        "bilde":navn+"_logo.png",
+        "tag":"",
+        "spill":"",
+        "spillere":[]
+    }
+    with open("jsonFiles/lag/"+tempID+".json","w") as f:
+        json.dump(tempDict, f)
+    print("LAGET LAG")
+def opdaterLag(indata, id):
+    with open("jsonFiles/lag/"+id+".json","w") as f:
+        json.dump(indata, f)
+    opdaterLagoversikt(indata["navn"], id)
+    print("OPPDATERT LAG")
+
+def hentAlleLag():
+    totalDict = []
+    for lag in lagoversiktjson:
+        hentetLag = hentLag(lag)
+        totalDict.append(hentetLag)  
+    return totalDict
+
+
+
 
 
 @app.route('/favicon.ico')

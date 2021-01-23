@@ -1,13 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
+<link rel="stylesheet" href={{ url_for('static', filename='css/kampeditor.css')}}>
     <div class="kampOversikt">
         <a href="{{ url_for('kampoversikt') }}">Stream link: Kampoversikt</a>
         <button onclick="copyMe('kampoversikt')" value="{{ url_for('lobby') }}" id="kampoversikt">Click to Copy link!</button>
-        <div class="kamper">
-            <div class="kamp">
-
-            </div>
-        </div>
+        <h1>Kamper</h1>
+        {% include "stream/kampoversikt.html" %}
     </div>
 
 

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" href={{ url_for('static', filename='css/lagoversikt.css')}}>
+<div class="create-new-team">
+    <h1>Nytt lag:</h1>
+    <button onclick="createNewTeam()">Lag nytt lag</button>
+    <input type="text" name="" id="nytt-lag-navn-input">
+
+</div>
+{% for lag in lagoversikt %}
+    <a href="lag/{{ lag.id }}/edit">
+        <div class="lag">
+            <!-- <div><h2>Rediger -></h2></a></div> -->
+            <div><a href="lag/{{ lag.id }}/edit"><h1>{{lag.navn}}</h1></a></div>
+            <div class="lag-bilde"><img src="static/laglogoer/{{ lag.bilde }}" alt=""></div>
+            <div>
+                <button value="{{ lag.id }}" onclick="slettValgtLag('{{ lag.id }}')">Slett</button>
+            </div>
+            
+    
+        </div>    
+    </a>
+    
+   
+{% endfor %}
+<script>
+    function slettValgtLag(id){
+        if(window.confirm("Vil du slette laget?")){
+            var xml = new XMLHttpRequest();
+            xml.onreadystatechange = function(){
+                if(xmlHttp.readyState == 4 && xmlHttp.status == 200){
+                    console.log(xml.responseText);
+                    window.location.reload(false);
+                }
+            }
+            xml.open("GET", "/lag/"+ id + "/delete", true);
+            xml.send();
+        }
+    }
+    function createNewTeam(){
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function(){
+            if(xmlHttp.readyState == 4 && xmlHttp.status == 200){
+                callback(xmlHttp.responseText)
+                console.log(xmlHttp.responseText);
+                window.location.href("/lag/" + xmlHttp.responseText + "/edit");
+            }
+        }
+        let lagNavn = document.getElementById("nytt-lag-navn-input").value;
+        xmlHttp.open("GET", "/lag/create/"+ lagNavn, true);
+        xmlHttp.send();
+    }
+</script>
+{% endblock content %}

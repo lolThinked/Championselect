@@ -1,0 +1,89 @@
+body{
+    
+    
+    
+}
+
+.OverlayImage{
+    width: 1920px;
+    height: 1080px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    display: none;
+}
+.kamper{
+    margin: auto;
+    padding-top: 98px;
+    color: white;
+    text-align: center;
+    font-family: 'Roboto thin', sans-serif;
+}
+
+.kamp{
+    display: inline-block;
+    width: 1000px;
+    width: 1192px;
+    /* border: 1px solid green; */
+}
+.kamp-top-container{
+    display: flex;
+}
+
+.lag{
+    border: 1px solid white;
+    display: flex;
+    padding: 20px;
+    width: 500px;
+    width: 437px;
+    height: 108px;
+}
+
+.lag-image-container{
+    /* max-width: 200px;
+    max-height: 200px;
+    margin: 20px;
+    width: 200px;
+    height: 200px; */
+    padding: 10px;
+    width: 25%;
+}
+.lag-image-container img{
+    height:100%;
+}
+.lag-navn-container{
+    width: 75%;
+    position: relative;
+    top: 12px;
+}
+.lag1{
+    float: left;
+    border-radius: 0 50px 0px 0px;
+}
+.spacer{
+    margin: auto;
+}
+.lag2{
+    border-radius: 0 0px 0px 50px;
+}
+
+.kamp-bot-container{
+    display: flex;
+    border-bottom: 1px solid white;
+    width: 90%;
+    margin: auto;
+}
+.kamp-bot-container div{
+    width: 35%;
+}
+.kamp-bot-liga{
+    width: 30%;
+}
+.kamp-liga{
+    /* text-align:center; */
+}
+.kamp-spill{
+    /* text-align: right;
+    position: relative;
+    right: 0px; */
+}
