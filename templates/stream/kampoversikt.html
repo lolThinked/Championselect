@@ -1,5 +1,6 @@
 <link rel="stylesheet" href={{ url_for('static', filename='css/kampoversikt.css')}}>
 <!-- <img src="static/Overlayed.png" alt="overlayed" class="OverlayImage"> -->
+
 <div class="kamper">
     <div class="kamp">
         <div class="kamp-top-container">
@@ -44,9 +45,65 @@
             </div>
         </div>
         <div class="EDITClass" >
-            <button>SLETT</button>
-            <button>REDIGER</button>
-            <button>BYTT SIDE</button>
+            <h2 id="kampID">ID</h2>
+            <button onclick="slettKamp('kampID')">SLETT</button>
+            <button onclick="rediger('kampID')">REDIGER</button>
+            <button onclick="byttSide('kampID')">BYTT SIDE</button>
         </div>         
     </div>
+
+    <!--AUTOKAMP INFYLLING-->
+    {% for kamp in kamper %}
+    <div class="kamp">
+        <div class="kamp-top-container">
+            <!--LAG 1-->
+            <div class="lag lag1">
+                <!--BILDE-->
+                <div class="lag-image-container">
+                    <img src="static/laglogoer/{{kamp.lag1.bilde}}.png" alt="logo">
+                </div>
+                <!--NAVN-->
+                <div class="lag-navn-container">
+                    <h1 id="id_lag1_navn">{{kamp.lag1.navn}}</h1>
+                </div> 
+            </div>
+
+            <div class="spacer">
+                <h1>VS</h1>
+                <h1 id="id_kl">{{kamp.tid}}</h1>
+            </div>
+
+            <!--LAG 2-->
+            <div class="lag lag2">
+                <!--NAVN-->
+                <div class="lag-navn-container">
+                    <h1 id="id_lag1_navn">{{kamp.lag2.navn}}</h1>
+                </div>
+                <!--BILDE-->
+                <div class="lag-image-container">
+                    <img src="static/laglogoer/{{kamp.lag2.bilde}}" alt="logo">
+                </div>
+            </div>
+        </div>
+        <div class="kamp-bot-container">
+            <div class="kamp-bot-divisjon">
+                <h2>{{kamp.divisjon}}</h2>
+            </div>
+            <div class="kamp-bot-liga">
+                <h2 class="kamp-liga">{{kamp.liga}}</h2>
+            </div>
+            <div class="kamp-bot-spill">
+                <h2 class="kamp-spill">{{kamp.spill}}</h2>
+            </div>
+        </div>
+        <div class="EDITClass" >
+            <h2 id="kampID">ID</h2>
+            
+            <button onclick="slettKamp('kampID')">SLETT</button>
+            <button onclick="rediger('kampID')">REDIGER</button>
+            <button onclick="byttSide('kampID')">BYTT SIDE</button>
+            <h2>{{kamp.dato}}</h2>
+        </div>         
+    </div>
+    {% endfor %}
 </div>

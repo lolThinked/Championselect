@@ -18,15 +18,17 @@ def load_user(id):
 from pythonFiles.models import User
 
 print("Laster inn filer")
-kampoversikt = [
+'''
+kampoversiktjson = [
     {
         "spill":"League of Legends",
         "tid": "01.02.2021",
 
     }
 ]
+'''
 lagoversiktjson = hentInnLagoversikt()
-kampoversikt = hentInnKampoversikt()
+kampoversiktjson = hentInnKampoversikt()
 def getOversikt():
     return lagoversiktjson
 def oppdaterOversikt(tempOversikt):
@@ -69,12 +71,15 @@ def home():
 def kampeditor():
     alleLag = hentAlleLag()
     #print(alleLag)
-    return render_template("interface/kampeditor.html", user=current_user, kamper=kampoversikt, lagoversikt=alleLag)
+    customKampOversikt = lagCustomLagoversikt()
+    return render_template("interface/kampeditor.html", user=current_user, kamper=customKampOversikt, lagoversikt=alleLag)
 
 @app.route("/kampeditor/create", methods=["POST"])
 def createUpdateKamp():
     inData = eval(request.data)
     lagEllerRedigerKamp(inData)
+    print(inData)
+    print("LAGER KAMP- FLASK")
     return "200"
     
 @app.route("/lagoversikt")
@@ -86,7 +91,9 @@ def lagoversikt():
 @app.route("/kampoversikt")
 def kampoversikt():
     alleLag = hentAlleLag()
-    return render_template("stream/kampoversikt.html", user=current_user, kamper=kampoversikt, lagoversikt=alleLag)
+    #Pass Lag in kampoversikt
+    customKampoversikt = lagCustomLagoversikt()
+    return render_template("stream/kampoversikt.html", user=current_user, kamper=customKampoversikt, lagoversikt=alleLag)
 
 @app.route("/lag/create/<navn>")
 def createLag(navn):
@@ -244,8 +251,10 @@ def lagreLagoversikt(oversikt):
 def lagEllerRedigerKamp(jsonObject):
     if(jsonObject["kampID"] ==""):
         kampID = str(uuid.uuid4())
+        print("UUID")
     else:
         kampID = jsonObject["kampID"]
+        print("JSON")
     tempDict = {
         "tid": jsonObject["tid"],
         "dato": jsonObject["dato"],
@@ -256,9 +265,11 @@ def lagEllerRedigerKamp(jsonObject):
         "liga": jsonObject["liga"],
         "spill": jsonObject["spill"]
     }
-    kampoversikt[kampID] = tempDict
-    with open("jsonFiles/kamper/oversikt.json") as f:
-        json.dump(kampoversikt, f)
+    print(kampID)
+    kampoversiktjson[str(kampID)] = tempDict
+    with open("jsonFiles/kamper/oversikt.json", "w") as f:
+        json.dump(kampoversiktjson, f)
+    print("LAGER KAMP- FUNC")
     '''
     with open("jsonFiles/kamper/"+tempDict["kampID"]+".json", "w") as f:
         json.dump(tempDict, f)
@@ -321,7 +332,40 @@ def hentAlleLag():
             totalDict.append(hentetLag)  
     return totalDict
 
-
+def lagCustomLagoversikt():
+    alleLag = hentAlleLag()
+    customKampoversikt = kampoversiktjson.copy()
+    print(customKampoversikt)
+    print(len(customKampoversikt))
+    if(len(customKampoversikt) >1 ):
+        for kamp in customKampoversikt:
+            for lag in alleLag:
+                print("TEST")
+                print(type(lag), type(kamp))
+                if lag["id"] == kamp["lag1ID"]:
+                    kamp["lag1"] = lag
+                if lag["id"] == kamp["lag2ID"]:
+                    kamp["lag2"] = lag
+                    print(lag)
+    else:
+        print(customKampoversikt.keys())
+        nokler = customKampoversikt.keys()
+        nokkel = ""
+        for verdi in nokler:
+            nokkel = verdi
+        kamp = customKampoversikt[nokkel]
+        for lag in alleLag:
+                print("TEST")
+                print(type(lag), type(kamp))
+                if lag["id"] == kamp["lag1ID"]:
+                    print(kamp)
+                    print(lag)
+                    kamp["lag1"] = lag
+                if lag["id"] == kamp["lag2ID"]:
+                    kamp["lag2"] = lag
+                    print(lag)
+    return customKampoversikt
+    #print(customKampoversikt)
 
 
 

@@ -25,7 +25,7 @@
             <input type="text" id="liga" value="Telia Esport Series">
             <input type="text" id="spill" value="League of Legends">
         </div>
-        <button onclick="lagKamp()">LAG KAMP</button>
+        <button onclick="lagJSKamp()">LAG KAMP</button>
     </div>
     <script>
         let alleLag = {{ lagoversikt|safe }};
@@ -67,7 +67,7 @@
             tmpObj["divisjon"] = document.getElementById("divisjon").value;
             tmpObj["liga"] = document.getElementById("liga").value;
             tmpObj["spill"] = document.getElementById("spill").value;
-            
+            console.log(tmpObj);
             let xml = new XMLHttpRequest();
             xml.open("POST", "/kampeditor/create", true);
             xml.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
