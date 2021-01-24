@@ -26,8 +26,13 @@
 				<div class="linkGroupContainerDiv">
 					<h2>Standings</h2>
 					<a href="{{ url_for('statisticsStandings') }}">Standings</a>
-					<button onclick="copyMe('standings')" value="{{ url_for('lobby') }}" id="standings">Click to Copy link!</button>
-				</div>
+					<button onclick="copyMe('standings')" value="{{ url_for('statisticsStandings') }}" id="standings">Click to Copy link!</button>
+        </div>
+        <div class="linkGroupContainerDiv">
+          <h2>Kampoversikt</h2>
+          <a href="{{ url_for('kampoversikt') }}">Stream link: Kampoversikt</a>
+          <button onclick="copyMe('kampoversikt')" value="{{ url_for('kampoversikt') }}" id="kampoversikt">Click to Copy link!</button>
+        </div>
       </div>
 
       <div class="caster-content">

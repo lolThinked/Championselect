@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*-
 from flask import Flask, render_template, jsonify, url_for, send_from_directory, redirect, request
 from flask_login import current_user, login_user, logout_user, login_required, LoginManager
-from pythonFiles.f_functions import hentInnLagoversikt
+from pythonFiles.f_functions import hentInnLagoversikt, hentInnKampoversikt
 import uuid
 import json
 import os
@@ -25,6 +26,7 @@ kampoversikt = [
     }
 ]
 lagoversiktjson = hentInnLagoversikt()
+kampoversikt = hentInnKampoversikt()
 def getOversikt():
     return lagoversiktjson
 def oppdaterOversikt(tempOversikt):
@@ -65,7 +67,15 @@ def home():
 
 @app.route("/kampeditor")
 def kampeditor():
-    return render_template("interface/kampeditor.html", user=current_user, kamper=kampoversikt)
+    alleLag = hentAlleLag()
+    #print(alleLag)
+    return render_template("interface/kampeditor.html", user=current_user, kamper=kampoversikt, lagoversikt=alleLag)
+
+@app.route("/kampeditor/create", methods=["POST"])
+def createUpdateKamp():
+    inData = eval(request.data)
+    lagEllerRedigerKamp(inData)
+    return "200"
     
 @app.route("/lagoversikt")
 def lagoversikt():
@@ -75,7 +85,8 @@ def lagoversikt():
 
 @app.route("/kampoversikt")
 def kampoversikt():
-    return render_template("stream/kampoversikt.html", user=current_user, kamper=kampoversikt)
+    alleLag = hentAlleLag()
+    return render_template("stream/kampoversikt.html", user=current_user, kamper=kampoversikt, lagoversikt=alleLag)
 
 @app.route("/lag/create/<navn>")
 def createLag(navn):
@@ -230,6 +241,29 @@ def lagreLagoversikt(oversikt):
     with open("jsonFiles/lag/oversikt.json", "w") as f:
         json.dump(oversikt, f)
 
+def lagEllerRedigerKamp(jsonObject):
+    if(jsonObject["kampID"] ==""):
+        kampID = str(uuid.uuid4())
+    else:
+        kampID = jsonObject["kampID"]
+    tempDict = {
+        "tid": jsonObject["tid"],
+        "dato": jsonObject["dato"],
+        "kampID": kampID,
+        "lag1ID": jsonObject["lag1ID"],
+        "lag2ID": jsonObject["lag2ID"],
+        "divisjon": jsonObject["divisjon"],
+        "liga": jsonObject["liga"],
+        "spill": jsonObject["spill"]
+    }
+    kampoversikt[kampID] = tempDict
+    with open("jsonFiles/kamper/oversikt.json") as f:
+        json.dump(kampoversikt, f)
+    '''
+    with open("jsonFiles/kamper/"+tempDict["kampID"]+".json", "w") as f:
+        json.dump(tempDict, f)
+    '''
+
 def lagNyttLag(navn, tempID):
     tempDict = {
         "navn": navn,
@@ -299,7 +333,7 @@ def hentPerBrukerData(bruker = 44513):
     response1 = requests.get(
         "https://www.gamer.no/api/v1/users/"+str(bruker)+"/lolstats",
         headers={"Authorization": "04d8d48c80dfc8f5a1eae4b459ba9253c4ff46caa2ef2cfc2fbea87f4d185ab5"}).json()["response"]
-    #print(response1)
+    #print(response1)    
     return response1
 #hentPerBrukerData()
 ##############                   For Compiling Only               ###########################
