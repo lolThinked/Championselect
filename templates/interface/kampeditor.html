@@ -4,29 +4,30 @@
     <div class="kampOversikt">
         <a href="{{ url_for('kampoversikt') }}">Stream link: Kampoversikt</a>
         <button onclick="copyMe('kampoversikt')" value="{{ url_for('kampoversikt') }}" id="kampoversikt">Click to Copy link!</button>
-        <h1>Kamper</h1>
+        <!-- <h1>Kamper</h1> -->
+        <div class="kampSkaper">
+            <div>
+                <input type="time" id="klID" value="19:00">
+                <input type="date" id="datoID">
+            </div>
+            <div>
+                <select id="lag1">
+                    
+                </select>
+                <select id="lag2">
+    
+                </select>
+            </div>
+            <div>
+                <input type="text" id="divisjon" value="1. Divisjon">
+                <input type="text" id="liga" value="Telia Esport Series">
+                <input type="text" id="spill" value="League of Legends">
+            </div>
+            <button onclick="lagJSKamp()">LAG KAMP</button>
+        </div>
         {% include "stream/kampoversikt.html" %}
     </div>
-    <div class="kampSkaper">
-        <div>
-            <input type="time" id="klID" value="19:00">
-            <input type="date" id="datoID">
-        </div>
-        <div>
-            <select id="lag1">
-                
-            </select>
-            <select id="lag2">
-
-            </select>
-        </div>
-        <div>
-            <input type="text" id="divisjon" value="1. Divisjon">
-            <input type="text" id="liga" value="Telia Esport Series">
-            <input type="text" id="spill" value="League of Legends">
-        </div>
-        <button onclick="lagJSKamp()">LAG KAMP</button>
-    </div>
+    
     <script>
         let alleLag = {{ lagoversikt|safe }};
         console.log(alleLag);
@@ -82,6 +83,8 @@
             window.location.reload(false);
             
         }
+
+        
     </script>
 
 

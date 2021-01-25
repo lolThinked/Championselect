@@ -13,9 +13,9 @@ def hentInnKampoversikt():
             with open("jsonFiles/kamper/oversikt.json","r") as f:
                 return json.load(f)
         else:
-            return{}
+            return []
     else:
         with open("jsonFiles/kamper/oversikt.json", "w") as f:
-            tempDict = {}
+            tempDict = []
             json.dump(tempDict, f)
-            return {}
+            return []

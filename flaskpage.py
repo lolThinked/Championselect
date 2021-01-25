@@ -2,6 +2,7 @@
 from flask import Flask, render_template, jsonify, url_for, send_from_directory, redirect, request
 from flask_login import current_user, login_user, logout_user, login_required, LoginManager
 from pythonFiles.f_functions import hentInnLagoversikt, hentInnKampoversikt
+from operator import itemgetter
 import uuid
 import json
 import os
@@ -78,9 +79,19 @@ def kampeditor():
 def createUpdateKamp():
     inData = eval(request.data)
     lagEllerRedigerKamp(inData)
-    print(inData)
+    #print(inData)
     print("LAGER KAMP- FLASK")
     return "200"
+
+@app.route("/kampeditor/delete", methods=["POST"])
+def deleteKamp():
+    indata = eval(request.data)
+    kampId = indata["id"]
+    for x in range(len(kampoversiktjson)):
+        if(kampoversiktjson[x]["kampID"] == kampId):
+            print(kampoversiktjson[x])
+            kampoversiktjson.pop(x)
+            return "Deleted"
     
 @app.route("/lagoversikt")
 def lagoversikt():
@@ -266,7 +277,16 @@ def lagEllerRedigerKamp(jsonObject):
         "spill": jsonObject["spill"]
     }
     print(kampID)
-    kampoversiktjson[str(kampID)] = tempDict
+    #kampoversiktjson[str(kampID)] = tempDict
+    kampoversiktjson.append(tempDict)
+    #copiedDict = kampoversiktjson.copy()
+    #kampoversiktjson.sort(kampoversiktjson, key = itemgetter(""))
+    #print(kampoversiktjson)
+    kampoversiktjson.sort(key = lambda x: (x["dato"], x["tid"]))
+    #tempSorted = sorted(kampoversiktjson, key = lambda x: (x["dato"], x["tid"]))
+    print(kampoversiktjson)
+    
+    #print(tempSorted)
     with open("jsonFiles/kamper/oversikt.json", "w") as f:
         json.dump(kampoversiktjson, f)
     print("LAGER KAMP- FUNC")
@@ -335,35 +355,15 @@ def hentAlleLag():
 def lagCustomLagoversikt():
     alleLag = hentAlleLag()
     customKampoversikt = kampoversiktjson.copy()
-    print(customKampoversikt)
-    print(len(customKampoversikt))
-    if(len(customKampoversikt) >1 ):
-        for kamp in customKampoversikt:
+    for kamp in customKampoversikt:
             for lag in alleLag:
-                print("TEST")
-                print(type(lag), type(kamp))
                 if lag["id"] == kamp["lag1ID"]:
                     kamp["lag1"] = lag
                 if lag["id"] == kamp["lag2ID"]:
                     kamp["lag2"] = lag
-                    print(lag)
-    else:
-        print(customKampoversikt.keys())
-        nokler = customKampoversikt.keys()
-        nokkel = ""
-        for verdi in nokler:
-            nokkel = verdi
-        kamp = customKampoversikt[nokkel]
-        for lag in alleLag:
-                print("TEST")
-                print(type(lag), type(kamp))
-                if lag["id"] == kamp["lag1ID"]:
-                    print(kamp)
-                    print(lag)
-                    kamp["lag1"] = lag
-                if lag["id"] == kamp["lag2ID"]:
-                    kamp["lag2"] = lag
-                    print(lag)
+    #print("\n\n\n\n")
+    #print(customKampoversikt)
+    #print("\n\n\n\n\n")
     return customKampoversikt
     #print(customKampoversikt)
 
