@@ -1,0 +1,12 @@
+body{
+    background-color: black;
+    margin: 0px;
+    overflow: hidden;
+}
+.backgroundImage{
+    width: 2000px;
+    height: 2000px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}

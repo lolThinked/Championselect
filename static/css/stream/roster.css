@@ -1,0 +1,37 @@
+body{
+    font-family:'Roboto',sans-serif;
+    font-weight:300;
+    color:#FFFFFF;
+    /* background-color: black; */
+}
+.rosters{
+    display: flex;
+    margin: auto;
+    width: 602px;
+}
+.roster{
+    width: 300px;
+    border: 1px solid;
+}
+
+.roster-header{
+    display: flex;
+}
+.roster-header img{
+    height: 100px;
+    width: 100px;
+}
+
+#lag2Roster{
+    float:right;
+    direction: rtl;
+}
+#lag2DIV{
+    right: 0px;
+}
+#lag2DIV h2{
+
+}
+.spiller{
+    background-color: #0000008f;
+}

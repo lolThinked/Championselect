@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" href={{ url_for('static', filename='css/interface/casterDashboard.css')}}>
+    <div class="currentKamp">
+        <h1>Nåværende kamp</h1>
+        <h3>LAG</h3>
+        <div class="currentKamp-content">
+            <div class="lagInfo">
+                <div class="lag" id="blueTeamContainer">
+                    <input type="number" id="lag1Score" value="{{kamp.lag1.score}}"></input>
+                    <h2 contenteditable="True" id="lag1Navn">{{kamp.lag1.navn}}</h2>
+                    <h2 contenteditable="True" id="lag1TagId">{{kamp.lag1.tag}}</h2>
+                    <!-- <input type="text" id="lag1TagId" value="{{kamp.lag1.tag}}"> -->
+                    Velg lag: 
+                    <select name="" id="lag1SelectId" value="{{kamp.lag1ID}}" >
+                        {% for lags in alleLag %}
+                        <option value="{{lags.id}}" {% if lags.id == kamp.lag1ID %} selected {% endif %}>{{lags.navn}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="lag" id="redTeamContainer">
+                    <input type="number" id="lag2Score" value="{{kamp.lag2.score}}"></input>
+                    <h2 contenteditable="True" id="lag1Navn">{{kamp.lag2.navn}}</h2>
+                    <h2 contenteditable="True" id="lag2TagId">{{kamp.lag2.tag}}</h2>
+                    <!-- <input type="text" id="lag2TagId" value="{{kamp.lag2.tag}}"> -->
+                    Velg lag: 
+                    <select name="" id="lag1SelectId" >
+                        {% for lags in alleLag %}
+                        <option value="{{lags.id}}" {% if lags.id == kamp.lag2ID %} selected {% endif %}>{{lags.navn}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <h3>GENERELL INFO</h3>
+            <div class="kampInfo">
+                <div class="ligaInfo">
+                    <h2 contenteditable="True" id="kampDivisjonId">{{kamp.divisjon}}</h2>
+                    <h2 contenteditable="True" id="kampLigaId">{{kamp.liga}}</h2>
+                    <h2 contenteditable="True" id="kampSpillId">{{kamp.spill}}</h2>
+                </div>
+                <div class="tidsInfo">
+                    <input type="time" id="klSlettId" value="{{kamp.tid}}">
+                    <input type="date" id="datoId" value="{{kamp.dato}}">
+                </div>
+            </div>
+
+            
+
+            <div class="knapper">
+                <button onclick="rediger()">Rediger/lagre</button>
+                <button onclick="byttSide()">Bytt side</button>
+                <button onclick="nykampFraListe()">Ny kamp fra liste</button>
+            </div>
+            
+        </div>
+        <h1>Ny eller Bytt Nåværende kamp</h1>
+        <div class="currentKamp-newNext">
+
+        </div>
+    </div>
+
+<script>
+    let kampData = {{kamp|safe}};
+    console.log(kampData);
+
+    function rediger(){
+        kampData.lag1.score = document.getElementById("lag1Score").value;
+        kampData.lag2.score = document.getElementById("lag2Score").value;
+
+        let xml = new XMLHttpRequest();
+        xml.open("POST", "/currentKamp/update", true);
+        xml.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+        xml.onreadystatechange = function(){
+            if(xml.readyState == 4 && xml.status == 200){
+                console.log(xml.responseText);
+            }
+        }
+        let stringified = JSON.stringify(kampData);
+        xml.send(stringified);
+        console.log(stringified);
+        //lagKamp(tmpObj);
+        window.location.reload(false);
+
+    }
+    function byttSide(){
+        let templag2ID = kampData.lag2ID.slice();
+        let templag2Info = Object.assign({}, kampData.lag2);
+        
+        kampData.lag2ID = kampData.lag1ID;
+        kampData.lag2 = kampData.lag1;
+        
+
+        
+        kampData.lag1ID = templag2ID;
+        kampData.lag1 = templag2Info;
+
+        console.log(kampData);
+        
+        let xml = new XMLHttpRequest();
+        xml.open("POST", "/currentKamp/update", true);
+        xml.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+        xml.onreadystatechange = function(){
+            if(xml.readyState == 4 && xml.status == 200){
+                console.log(xml.responseText);
+            }
+        }
+        let stringified = JSON.stringify(kampData);
+        xml.send(stringified);
+        console.log(stringified);
+        //lagKamp(tmpObj);
+        window.location.reload(false);
+
+
+    }
+
+    function nykampFraListe(){
+        let infoDict={
+            "id":""
+        };
+        //Hent en kampID fra en meny
+        let xml = new XMLHttpRequest();
+        xml.open("POST", "/currentKamp/newFromID", true);
+        xml.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+        xml.onreadystatechange = function(){
+            if(xml.readyState == 4 && xml.status == 200){
+                console.log(xml.responseText);
+                window.location.reload(false);
+            }
+        }
+        let stringified = JSON.stringify(infoDict);
+        xml.send(stringified);
+        console.log(stringified);
+        //lagKamp(tmpObj);
+        
+    }
+
+
+</script>
+{% endblock content %}

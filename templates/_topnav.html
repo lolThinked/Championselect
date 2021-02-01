@@ -2,6 +2,7 @@
     <a class="active" href="/" onclick="goHome()">Hjem</a>
     <a href="{{ url_for('kampeditor') }}">Kamp-Editor</a>
     <a href="{{ url_for('lagoversikt') }}">Lagoversikt</a>
+    <a href="{{ url_for('casterDashboard')}}">Dashboard</a>
     {% if current_user == undefined %}
         <a href="{{url_for('login')}}">Login</a>
     {% else %}

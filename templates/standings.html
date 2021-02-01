@@ -5,7 +5,7 @@
 	<link rel="stylesheet" href={{ url_for('static', filename='standings.css')}}>
 	<link rel="shortcut icon" href={{ url_for('static', filename='favicon.ico')}}>
 	<title>Thinked</title>
-	<script src={{ url_for('static', filename='index.js')}} ></script>
+	<!-- <script src={{ url_for('static', filename='index.js')}} ></script> -->
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" rel="stylesheet">
 
 <style>
@@ -146,18 +146,18 @@ function hentStats(){
 			let tbody = table.createTBody();
 			for(let i=0; i<response.length; i++){
 				console.log(i);
-
+		let tableLength = response.length -1;
         row = tbody.insertRow(0);
 				row.className ="lagRad";
-				row.innerHTML += "<td class='placement'>"+response[9-i].placement+"</td>";
-				row.innerHTML += "<td class='name'>"+response[9-i].participant.name+"</td>";
-				row.innerHTML += "<td class='played'>"+response[9-i].played+"</td>";
-				row.innerHTML += "<td class='wins'>"+response[9-i].wins+"</td>";
-				row.innerHTML += "<td class='draws'>"+response[9-i].draws+"</td>";
-				row.innerHTML += "<td class='losses'>"+response[9-i].losses+"</td>";
-				row.innerHTML += "<td class='forAgainst'>"+response[9-i].scoreFor+"/"+response[9-i].scoreAgainst+"</td>";
-				row.innerHTML += "<td class='penalty'>"+response[9-i].penalty+"</td>";
-				row.innerHTML += "<td class='points'>"+response[9-i].points+"</td>";
+				row.innerHTML += "<td class='placement'>"+response[tableLength-i].placement+"</td>";
+				row.innerHTML += "<td class='name'>"+response[tableLength-i].participant.name+"</td>";
+				row.innerHTML += "<td class='played'>"+response[tableLength-i].played+"</td>";
+				row.innerHTML += "<td class='wins'>"+response[tableLength-i].wins+"</td>";
+				row.innerHTML += "<td class='draws'>"+response[tableLength-i].draws+"</td>";
+				row.innerHTML += "<td class='losses'>"+response[tableLength-i].losses+"</td>";
+				row.innerHTML += "<td class='forAgainst'>"+response[tableLength-i].scoreFor+"/"+response[tableLength-i].scoreAgainst+"</td>";
+				row.innerHTML += "<td class='penalty'>"+response[tableLength-i].penalty+"</td>";
+				row.innerHTML += "<td class='points'>"+response[tableLength-i].points+"</td>";
 				/*
 				row.insertCell(0).innerHTML(response[i].placement);
         row.insertCell(1).innerHTML(response[i].participant.name);

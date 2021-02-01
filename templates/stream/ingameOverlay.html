@@ -1,0 +1,80 @@
+<head>
+    <!-- <meta http-equiv="refresh" content="2"> -->
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+<link rel="stylesheet" href={{ url_for('static', filename='css/ingameOverlay.css')}}>
+
+<div class="textOverlay">
+    <div class="tagAndScore">
+        <div class="team" id="blue">
+            <h2 id="scoreBlue" class="score"></h2>
+            <div class="scoreContainer" id="scoreContainerBlue">
+                <img src={{ url_for('static', filename='img/Overlays/Score-orb.svg')}} alt="score-orb" id="ScoreOrb" style="display: none;" class="score-orb-image">
+                <img src={{ url_for('static', filename='img/Overlays/Score-orb.svg')}} alt="score-orb" id="ScoreOrb" style="display: none;" class="score-orb-image">
+                <img src={{ url_for('static', filename='img/Overlays/Score-orb.svg')}} alt="score-orb" id="ScoreOrb" style="display: none;" class="score-orb-image">
+            </div>
+            <h1 id="tagBlue" class="tag">{{kamp.lag1.tag}}</h1>
+        </div>
+        <div class="team" id="red">
+            <h2 id="scoreRed" class="score"></h2>
+            <div class="scoreContainer" id="scoreContainerRed">
+                <img src={{ url_for('static', filename='img/Overlays/Score-orb.svg')}} alt="score-orb" id="ScoreOrb" style="display: none;" class="score-orb-image">
+                <img src={{ url_for('static', filename='img/Overlays/Score-orb.svg')}} alt="score-orb" id="ScoreOrb" style="display: none;" class="score-orb-image">
+                <img src={{ url_for('static', filename='img/Overlays/Score-orb.svg')}} alt="score-orb" id="ScoreOrb" style="display: none;" class="score-orb-image">
+            </div>
+            <h1 id="tagRed" class="tag">{{kamp.lag2.tag}}</h1>
+        </div>
+    </div>
+
+</div>
+
+<div class="playerCamContainer">
+    <div class="infoBox" id="info1">
+        <div class="camBox">
+            <img src={{ url_for('static', filename='img/spillere/Fabian.jpg')}} alt="playerCam" id="playerImg1">
+            <h2>Thinked</h2>
+        </div>
+    </div>
+    <div class="infoBox" id="info2">
+        <div class="camBox">
+            <img src={{ url_for('static', filename='img/spillere/Fabian.jpg')}} alt="playerCam" id="playerImg1">
+            <h2>Thinked</h2>
+        </div>
+    </div>
+</div>
+
+<img src={{ url_for('static', filename='img/Overlays/AIM-LOL-OVER-280120v6b.svg')}} alt="IngameOverlay" id="backgroundImage">
+
+
+<script>
+    let kampInfo = {{ kamp|safe }};
+    function updateKampScore(){
+        let blueTeamScoreEl = document.getElementById("scoreContainerBlue");
+        let redTeamScoreEl = document.getElementById("scoreContainerRed");
+        for(let i=0; i<3; i++){
+            // blueTeamScoreEl.children[i].style.display = "hidden";
+            // redTeamScoreEl.children[i].style.display = "hidden";
+        }
+        console.log("KJØRER");
+        console.log(Number(kampInfo.lag1.score));
+        for(let i=0; i<Number(kampInfo.lag1.score); i++){
+            blueTeamScoreEl.children[i].style.display = "block";
+            console.log(blueTeamScoreEl.children[i].style.display);
+        }
+        for(let i=0; i<Number(kampInfo.lag2.score); i++){
+            redTeamScoreEl.children[i].style.display = "block";
+        }
+
+
+    }
+    function fixKampTags(){
+        if(kampInfo.lag1.tag.length ==4){
+            document.getElementById("tagBlue").style.left = "514px";
+        }
+        if(kampInfo.lag1.tag.length ==4){
+            document.getElementById("tagBlue").style.right = "502px";
+        }
+    }
+    updateKampScore();
+    fixKampTags();
+</script>

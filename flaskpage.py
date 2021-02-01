@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, render_template, jsonify, url_for, send_from_directory, redirect, request
 from flask_login import current_user, login_user, logout_user, login_required, LoginManager
-from pythonFiles.f_functions import hentInnLagoversikt, hentInnKampoversikt
+from pythonFiles.f_functions import hentInnLagoversikt, hentInnKampoversikt, lastInnCurrentKamp
 from operator import itemgetter
 import uuid
 import json
@@ -30,6 +30,9 @@ kampoversiktjson = [
 '''
 lagoversiktjson = hentInnLagoversikt()
 kampoversiktjson = hentInnKampoversikt()
+global currentKampjson
+currentKampjson = lastInnCurrentKamp()
+#print(currentKamp)
 def getOversikt():
     return lagoversiktjson
 def oppdaterOversikt(tempOversikt):
@@ -64,6 +67,20 @@ def hentLag(id):
     else:
         return False
 
+
+
+def hentCurrentKamp():
+    return currentKampjson
+
+def lagNyCurrentKamp():
+    currentKamps = lagCustomLagoversikt()[0]
+    currentKamps["lag1"]["score"] = 0
+    currentKamps["lag2"]["score"] = 0 
+    with open("jsonFiles/kamper/currentKamp.json", "w") as f:
+        json.dump(currentKamps, f)
+    global currentKampjson
+    currentKampjson = currentKamps
+
 @app.route("/")
 def home():
     return render_template("interface/homePage.html", user=current_user, current_user=current_user)
@@ -83,6 +100,18 @@ def createUpdateKamp():
     print("LAGER KAMP- FLASK")
     return "200"
 
+@app.route("/kampeditor/swapside", methods=["POST"])
+def kampSwapside():
+    inData = eval(request.data)
+    kampID = inData["id"]
+    for x in range(len(kampoversiktjson)):
+        riktigKamp = kampoversiktjson[x]
+        if(riktigKamp["kampID"] == kampID):
+            midlertidig = riktigKamp["lag1ID"]
+            riktigKamp["lag1ID"] = riktigKamp["lag2ID"]
+            riktigKamp["lag2ID"] = midlertidig
+
+             
 @app.route("/kampeditor/delete", methods=["POST"])
 def deleteKamp():
     indata = eval(request.data)
@@ -91,13 +120,21 @@ def deleteKamp():
         if(kampoversiktjson[x]["kampID"] == kampId):
             print(kampoversiktjson[x])
             kampoversiktjson.pop(x)
+            with open("jsonFiles/kamper/oversikt.json","w") as f:
+                json.dump(kampoversiktjson, f)
             return "Deleted"
+    
     
 @app.route("/lagoversikt")
 def lagoversikt():
     alleLag = hentAlleLag()
     print(alleLag)
     return render_template("interface/lagoversikt.html", user=current_user, lagoversikt = alleLag)
+
+@app.route("/currentKamp")
+def currentKamp():
+    customKampoversikt = lagCustomLagoversikt()
+    return jsonify(customKampoversikt[0])
 
 @app.route("/kampoversikt")
 def kampoversikt():
@@ -141,6 +178,7 @@ def lagreLag(id):
     print(indata)
     with open("jsonFiles/lag/"+id+".json", "w") as f:
         json.dump(indata, f)
+    print("saved - " + id)
     return "Saved"
 
 @app.route("/lag/<id>/delete")
@@ -158,9 +196,81 @@ def deleteLag(id):
 
 
 
+@app.route("/caster/dashboard")
+def casterDashboard():
+    print(hentCurrentKamp())
+    return render_template("caster/dashboard.html", alleLag=hentAlleLag(), kamp = currentKampjson)
 
+@app.route("/caster/ingame")
+def casterIngame():
+    return "INGAME"
 
+@app.route("/stream/currentkamp")
+def streamCurrentKamp():
+    return render_template("stream/currentKamp.html", kamp = currentKampjson)
 
+@app.route("/currentKamp/getKamp")
+def getCurrentKamp():
+    return jsonify(currentKamp)
+    
+print(currentKampjson)
+@app.route("/currentKamp/update", methods=["POST"])
+def updateCurrentKamp():
+    global currentKampjson
+    indata = eval(request.data)
+    print(currentKampjson)
+    currentKampjson = indata
+    with open("jsonFiles/kamper/currentKamp.json","w") as f:
+        json.dump(indata, f)
+    return "SUCCESS"
+
+@app.route("/currentKamp/newFromID", methods=["POST"])
+def newCurrentMatchPost():
+    indata = eval(request.data)
+    alleLag = hentAlleLag()
+    if (len(indata["id"]) <3):
+        kamper = kampoversiktjson.copy()
+        kamp = kamper[0]
+    else:
+        kamp=""
+        for kamper in kampoversiktjson:
+            if kamper["kampID"] == indata["id"]:
+                kamp = kamper
+                break
+    #print(kampoversiktjson)
+    for lag in alleLag:
+                if lag["id"] == kamp["lag1ID"]:
+                    kamp["lag1"] = lag
+                if lag["id"] == kamp["lag2ID"]:
+                    kamp["lag2"] = lag
+    kamp["lag1"]["score"] = 0
+    kamp["lag2"]["score"] = 0
+    global currentKampjson
+    currentKampjson = kamp
+    print(kamp)
+    #print("TEST")
+    #lagNyCurrentKamp()
+    return "Success"
+
+@app.route("/production/twitterMatchImage/<id>")
+def twitterMatchImage(id):
+    kamptilSide = None
+    for kamp in kampoversiktjson:
+        if kamp["kampID"] == id:
+            kamptilSide = kamp
+            break
+    return render_template("production/twitterMatchImage.html", kamp = kamptilSide)
+
+@app.route("/stream/ingameOverlay")
+def ingameOverlay():
+    return render_template("stream/ingameOverlay.html", kamp = currentKampjson)
+@app.route("/stream/roster")
+def streamRoster():
+    return render_template("stream/roster.html", kamp = currentKampjson)
+
+@app.route("/championselectOverlay")
+def championselectOverlay():
+    return render_template("stream/championselectOverlay.html", kamp = currentKampjson)
 @app.route("/champselect")
 def champselect():
     return render_template("champselect.html")
@@ -196,7 +306,17 @@ def statisticsStandings():
 
 @app.route("/statistics/standings/json")
 def statisticsStandingsJson():
-    standings = hentJson("tableStanding")
+    print(currentKampjson)
+    if(currentKampjson != None):
+        if(currentKampjson["liga"] == "Telia Esport Series"):
+            #print(currentKampjson["liga"])
+            standings = hentJson("TESStanding")
+        else:
+            #print("Ikke Den nei")
+            standings = hentJson("tableStanding")
+            #print(standings)
+    else:
+        standings = hentJson("tableStanding")
     return jsonify(standings)
 
 @app.route("/statistics/json")
@@ -277,23 +397,12 @@ def lagEllerRedigerKamp(jsonObject):
         "spill": jsonObject["spill"]
     }
     print(kampID)
-    #kampoversiktjson[str(kampID)] = tempDict
     kampoversiktjson.append(tempDict)
-    #copiedDict = kampoversiktjson.copy()
-    #kampoversiktjson.sort(kampoversiktjson, key = itemgetter(""))
-    #print(kampoversiktjson)
     kampoversiktjson.sort(key = lambda x: (x["dato"], x["tid"]))
-    #tempSorted = sorted(kampoversiktjson, key = lambda x: (x["dato"], x["tid"]))
     print(kampoversiktjson)
-    
-    #print(tempSorted)
     with open("jsonFiles/kamper/oversikt.json", "w") as f:
         json.dump(kampoversiktjson, f)
     print("LAGER KAMP- FUNC")
-    '''
-    with open("jsonFiles/kamper/"+tempDict["kampID"]+".json", "w") as f:
-        json.dump(tempDict, f)
-    '''
 
 def lagNyttLag(navn, tempID):
     tempDict = {
@@ -354,7 +463,10 @@ def hentAlleLag():
 
 def lagCustomLagoversikt():
     alleLag = hentAlleLag()
+    print("\n\nKAMPOVERSIKT")
+    print(kampoversiktjson)
     customKampoversikt = kampoversiktjson.copy()
+    #customKampoversikt = dict(kampoversiktjson)
     for kamp in customKampoversikt:
             for lag in alleLag:
                 if lag["id"] == kamp["lag1ID"]:
@@ -364,10 +476,12 @@ def lagCustomLagoversikt():
     #print("\n\n\n\n")
     #print(customKampoversikt)
     #print("\n\n\n\n\n")
+    print("\nKAMPOVERSIKT\n")
+    print(kampoversiktjson)
     return customKampoversikt
-    #print(customKampoversikt)
+    
 
-
+lagNyCurrentKamp()
 
 @app.route('/favicon.ico')
 def favicon():
@@ -382,7 +496,7 @@ def hentPerBrukerData(bruker = 44513):
 #hentPerBrukerData()
 ##############                   For Compiling Only               ###########################
 if __name__ =='__main__':
-    app.run(host='0.0.0.0',port=5000)
+    app.run(host='0.0.0.0',port=5000, threaded=True)
     #app.run(debug=True)
     #threading.Thread(target=app.run).start()
 ##############                   For Compiling Only               ###########################

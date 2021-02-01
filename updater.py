@@ -21,6 +21,9 @@ savefile.write("http://ddragon.leagueoflegends.com/cdn/" + currentPatch + "/data
 savefile.close()
 LeagueID= 6955 #Vår 2020
 LeagueID= 7993 #Høst 2020
+LeagueID= 8597 #Vår 2021 HELE Lol
+LeagueID = 8647 #Bare 1.Div
+TeliaID = 8500
 #LeagueID= 7979
 
 print("Henter personlig data for brukere")
@@ -40,6 +43,13 @@ def lagTables():
         headers={"Authorization": "04d8d48c80dfc8f5a1eae4b459ba9253c4ff46caa2ef2cfc2fbea87f4d185ab5"}).json()["response"]
     #print(response1)
     return response1
+def lagTabellmedID(ligaID):
+    response1 = requests.get(
+        "https://www.gamer.no/api/v1/tournaments/"+str(ligaID)+"/tables",
+        headers={"Authorization": "04d8d48c80dfc8f5a1eae4b459ba9253c4ff46caa2ef2cfc2fbea87f4d185ab5"}).json()["response"]
+    #print(response1)
+    return response1
+
 def testDefings(apiLink):
     try:
         response1 = requests.get(
@@ -51,6 +61,7 @@ def testDefings(apiLink):
         return
     if(response1 != "Unauthorized"):
         print("GOOD - ",apiLink)
+        #print(response1)
     else:
         print("BAD  - ",apiLink)
 def test2(apiLink):
@@ -113,7 +124,8 @@ def lagDataBaseFraLag():
         "amountPlayers":0,
         "amountTeams":0,
         "noLoLStats":0,
-        "failedGamernos":[]
+        "failedGamernos":[],
+        "playersWithProImage":[]
         }
     #Hent Lagene i 1.Divisjon
     tabellForLeague = requests.get(
@@ -164,10 +176,8 @@ def lagDataBaseFraLag():
     https://www.gamer.no/api/v1/users/"+str(44513)+"/lolstats - lolstats fra brukere
     '''
 
-table = lagTables()
-dataBase = lagDataBase()
-#dataBase = lagDataBaseH()
-database = lagDataBaseFraLag()
+
+
 #hentJson("minInfo")
 #testDefings()
 def writeToJSONFile(fileName, data):
@@ -179,15 +189,25 @@ def hentJson(navn):
     with open("jsonFiles/" + navn + ".json", "r") as f:
         minInfo = json.load(f)
     return minInfo
+table = lagTables()
+teliaEsportTabell = lagTabellmedID(TeliaID)
+
 writeToJSONFile("tableStanding", table)
-writeToJSONFile("database", dataBase)
+writeToJSONFile("TESStanding", teliaEsportTabell)
+databaseIput = input("Lag database [Y/N]")
+if(databaseIput =="Y" or databaseIput=="y" or databaseIput =="yes" or databaseIput=="Yes"):
+    dataBase = lagDataBase()
+    #dataBase = lagDataBaseH()
+    database = lagDataBaseFraLag()
+    writeToJSONFile("database", dataBase)
 
 print("\n\n")
 testDefings("https://www.gamer.no/api/v1/tournaments/"+str(LeagueID)+"/tables")
 testDefings("https://www.gamer.no/api/v1/tournaments/"+str(LeagueID)+"/lolstats")
 testDefings("https://www.gamer.no/api/v1/tournaments/"+str(LeagueID)+"/lolstats?page=1")
 testDefings("https://www.gamer.no/api/v1/tournaments/"+str(6955)+"/lolstats?page=1")
-testDefings("https://www.gamer.no/api/v1/tournaments/"+str(6955)+"/")
+#testDefings("https://www.gamer.no/api/v1/tournaments/"+str(6955)+"/")
+testDefings("https://www.gamer.no/api/v1/tournaments/"+str(LeagueID)+"/")
 
 #test2("https://www.gamer.no/api/v1/tournaments/"+str(LeagueID)+"/lolstats?page=1")
 '''
@@ -202,10 +222,12 @@ testDefings("https://www.gamer.no/api/v1/club/"+str(37826)+"/")
 testDefings("https://www.gamer.no/api/v1/tournaments/")
 testDefings("https://www.gamer.no/api/v1/")
 testDefings("https://www.gamer.no/api/v2/")
+'''
 testDefings("https://www.gamer.no/api/v1/users/"+str(44513)+"/lolstats")
 testDefings("https://www.gamer.no/api/v1/teams/"+str(37826)+"/")
 testDefings("https://www.gamer.no/api/v1/teams/"+str(37826)+"/players")
 testDefings("https://www.gamer.no/api/v1/teams/"+str(37826)+"/players/lolstats")
+'''
 testDefings("https://www.gamer.no/api/v1/tournaments/"+str(LeagueID)+"/teams")
 #test2("https://www.gamer.no/api/v1/teams/"+str(37826)+"/players")
 print("\n\n")

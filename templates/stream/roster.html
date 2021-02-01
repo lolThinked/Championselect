@@ -1,0 +1,34 @@
+<link rel="stylesheet" href={{ url_for('static', filename='css/stream/roster.css')}}>
+
+<div class="rosters">
+    <div class="roster" id="lag1Roster">
+        <div class="roster-header">
+            <img src="{{ url_for('static', filename='laglogoer/'+kamp.lag1.bilde+'')}}" alt="logo">
+            <h1>{{kamp.lag1.navn}}</h1>
+            
+        </div>
+    
+        {% for spiller in kamp.lag1.spillere %}
+            <div class="spiller">
+                <!-- <h2>{{spiller.rolle}}</h2> -->
+                <h2>{{spiller.navn}}</h2>
+            </div>
+        {% endfor %}
+    </div>
+    
+    
+    <div class="roster" id="lag2Roster">
+        <div class="roster-header" id="lag2DIV">
+            <img src="{{ url_for('static', filename='laglogoer/'+kamp.lag2.bilde+'')}}" alt="logo">
+            <h1>{{kamp.lag2.navn}}</h1>
+            
+        </div>
+    
+        {% for spiller in kamp.lag2.spillere %}
+            <div class="spiller" id="lag2DIV">
+                <!-- <h2>{{spiller.rolle}}</h2> -->
+                <h2>{{spiller.navn}}</h2>
+            </div>
+        {% endfor %}
+    </div>
+</div>

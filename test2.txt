@@ -93,6 +93,7 @@
 497:Rakan
 33:Rammus
 421:RekSai
+526:Rell
 58:Renekton
 107:Rengar
 92:Riven
@@ -133,6 +134,7 @@
 45:Veigar
 161:Velkoz
 254:Vi
+234:Viego
 112:Viktor
 8:Vladimir
 106:Volibear

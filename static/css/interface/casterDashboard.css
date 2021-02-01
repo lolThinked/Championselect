@@ -1,0 +1,50 @@
+.currentKamp{
+    font-family: roboto;
+    font-weight: lighter;
+    color: rgb(230, 230, 230);
+    margin: auto;
+    width: 800px;
+}
+.currentKamp h2{
+    background-color: #0088ff26;
+    border: 1px solid #ffffff75;
+    margin: 5px;
+}
+.currentKamp-content{
+    display: block;
+}
+.lagInfo{
+    display: flex;
+}
+.lag{
+    width: 50%;
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px solid white;
+    margin: 10px;
+}
+#blueTeamContainer{
+    background-color: #0088ff59;
+}
+#redTeamContainer{
+    background-color:#ff000026;
+}
+
+.kampInfo{
+    display: block;
+
+}
+.ligInfo h2{
+    flex-grow: 1;
+}
+
+.kampInfo div{
+    display: flex;
+    margin: auto;
+    text-align: center;
+}
+
+
+.knapper{
+    width: 100%;
+}

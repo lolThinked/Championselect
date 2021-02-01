@@ -19,3 +19,8 @@ def hentInnKampoversikt():
             tempDict = []
             json.dump(tempDict, f)
             return []
+
+
+def lastInnCurrentKamp():
+    with open("jsonFiles/kamper/currentKamp.json", "r") as f:
+        return json.load(f)

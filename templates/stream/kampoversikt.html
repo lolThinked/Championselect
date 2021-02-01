@@ -57,6 +57,7 @@
                 <button onclick="slettKamp('{{kamp.kampID}}')">SLETT</button>
                 <button onclick="rediger('{{kamp.kampID}}')">REDIGER</button>
                 <button onclick="byttSide('{{kamp.kampID}}')">BYTT SIDE</button>
+                <a href="{{ url_for('twitterMatchImage', id=kamp.kampID) }}">twitterMatchImage</a>
             </div>
             <div>
                 <h2>{{kamp.dato}}</h2>
@@ -69,6 +70,7 @@
     
 </div>
 <script>
+    let kamperJS = {{kamper|safe}};
     function slettKamp(kampid){
             if(confirm("Vil du slette denne kampen?")){
                 console.log("BESTEMT SEG FOR Å SLETTE");
@@ -89,4 +91,35 @@
                 window.location.reload(false);
             }
         }
+    
+    function rediger(kampid){
+        console.log(kampid);
+    }
+    function byttSide(kampid){
+        // let tmpObj = {};//Temp Javascript Object
+        //     tmpObj["tid"] = document.getElementById("klID").value;
+        //     tmpObj["dato"] = document.getElementById("datoID").value;
+        //     tmpObj["kampID"] = "";
+        //     tmpObj["lag1ID"] = document.getElementById("lag1").value;
+        //     tmpObj["lag2ID"] = document.getElementById("lag2").value;
+
+        //     tmpObj["divisjon"] = document.getElementById("divisjon").value;
+        //     tmpObj["liga"] = document.getElementById("liga").value;
+        //     tmpObj["spill"] = document.getElementById("spill").value;
+        let xml = new XMLHttpRequest();
+        xml.open("POST", "/kampeditor/swapside", true);
+        xml.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+        xml.onreadystatechange = function(){
+            if(xml.readyState == 4 && xml.status == 200){
+                console.log("SUCCESS?")
+                console.log(xml.responseText);
+            }
+        }
+        let tmpObj = {"id":kampid};
+        let stringified = JSON.stringify(tmpObj);
+        console.log(stringified);
+        xml.send(stringified);
+        //lagKamp(tmpObj);
+        window.location.reload(false);
+    }
 </script>
