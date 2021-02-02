@@ -10,6 +10,9 @@
 .EDITClass div{
     display: block;
 }
+.EDITClass a{
+    color: aliceblue;
+}
 .kampSkaper{
     background-color: #00000045;
     width: 600px;

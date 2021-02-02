@@ -24,7 +24,8 @@
           <button onclick="copyMe('lobby')" value="{{ url_for('lobby') }}" id="lobby">Click to Copy link!</button>
         </div>
 				<div class="linkGroupContainerDiv">
-					<h2>Standings</h2>
+          <h2>Standings</h2>
+          <a href="{{ url_for('streamTabell') }}">StreamTabell</a>
 					<a href="{{ url_for('statisticsStandings') }}">Standings</a>
 					<button onclick="copyMe('standings')" value="{{ url_for('statisticsStandings') }}" id="standings">Click to Copy link!</button>
         </div>
@@ -38,6 +39,7 @@
         <a href="{{ url_for('casterDashboard') }}">Dashboard</a>
         <a href="{{ url_for('streamRoster') }}">Roster</a>
         <a href="{{ url_for('championselectOverlay') }}">ChampionselectOverlay</a>
+        <a href="{{ url_for('streamTabell') }}">StreamTabell</a>
       </div>
 
       <div class="caster-content">

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .spillerContainer{
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .spiller{
+        margin: 5px;
+        border: 1px solid rgb(138, 231, 125);
+        padding: 10px;
+        min-width: 200px;
+    }
+    .spiller:hover{
+        background-color: rgba(75, 171, 255, 0.637);
+        border: 1px solid rgb(0, 140, 255);
+    }
+</style>
+    <div class="spillerSoker">
+
+    </div>
+    <div class="valgtSpiller">
+
+    </div>
+    <div class="spillerContainer" style="display: flex;">
+        {% for spiller in spillere %}
+            <div class="spiller" onclick="loadPlayer({{spiller.id}})">
+                
+                <img src="{{spiller.gamernoBilde}}" alt="spillerBilde">
+                <a href="{{ url_for('spillerTilStream', id=spiller.id )}}"><h1>{{spiller.navn}}</h1></a>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        function loadPlayer(id){
+            console.log(id);
+        }
+    </script>
+{% endblock content %}

@@ -1,15 +1,33 @@
 <link rel="stylesheet" href={{ url_for('static', filename='css/production/twitterMatchImage.css')}}>
-<img src={{ url_for('static', filename='img/production/AIM-MATCHGFX-TES21.png')}} alt="IngameOverlay" id="backgroundImage">
+<img src={{ url_for('static', filename='img/production/AIM-MATCHGFX-RAW.png')}} alt="IngameOverlay" id="backgroundImage">
 
 <div class="twitterOverlayContainer">
     <div class="generalLogos">
-
+        <img src={{ url_for('static', filename='img/logoer/spill/LeagueOfLegendsWhite.png' )}} alt="spillLogo" id="spillLogo">
+        {% if kamp.liga == "Telialigaen" %}
+            <img src={{ url_for('static', filename='img/logoer/liga/telia/Ny_TELIALIGAEN_logo_RGB_white.png' )}} alt="ligaLogo" id="ligalogo">
+        {% else %}
+            <img src={{ url_for('static', filename='img/logoer/liga/telia/TES_logo_norway.png' )}} alt="ligaLogo" id="ligalogo" style="top:38px;">
+        {% endif %}
     </div>
     <div class="teams" >
         <div class="team" id="team1">   
-            <img src={{ url_for('static', filename='img/laglogoer/kamp.lag1.bilde')}} alt="teamLogo">
-            <h1></h1>
-
+            <img src={{ url_for('static', filename='laglogoer/' + kamp.lag1.bilde )}} alt="teamLogo" id="lag1logo">
+            <h1 id="lag1navn">{{kamp.lag1.navn}}</h1>
         </div>
+        <div class="team" id="team2">   
+            <img src={{ url_for('static', filename='laglogoer/' + kamp.lag2.bilde )}} alt="teamLogo" id="lag2logo">
+            <h1 id="lag2navn">{{kamp.lag2.navn}}</h1>
+        </div>
+    </div>
+    <div class="vsClass">
+        <h1>VS</h1>
+    </div>
+    <div class="annenInfo">
+        <h2 id="typeInfo">{{kamp.divisjon}}</h2>
+        <h2 id="dato">{{kamp.dato}} - {{kamp.tid}}</h2>
+    </div>
+    <div class="twitchClass">
+        <h1>twitch.tv<h2>/aimstudiosgg</h2></h1>
     </div>
 </div>

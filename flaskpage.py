@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, render_template, jsonify, url_for, send_from_directory, redirect, request
 from flask_login import current_user, login_user, logout_user, login_required, LoginManager
-from pythonFiles.f_functions import hentInnLagoversikt, hentInnKampoversikt, lastInnCurrentKamp
+from pythonFiles.f_functions import hentInnLagoversikt, hentInnKampoversikt, lastInnCurrentKamp, hentInnSpillerOversikt, hentJson, hentLag
 from operator import itemgetter
 import uuid
 import json
@@ -28,10 +28,12 @@ kampoversiktjson = [
     }
 ]
 '''
+gamerNoDatabase = hentJson("database")
 lagoversiktjson = hentInnLagoversikt()
 kampoversiktjson = hentInnKampoversikt()
 global currentKampjson
 currentKampjson = lastInnCurrentKamp()
+spillerListe = hentInnSpillerOversikt()
 #print(currentKamp)
 def getOversikt():
     return lagoversiktjson
@@ -56,16 +58,9 @@ lagoversikt = {
 '''
 
 
-def hentJson(navn):
-    with open("jsonFiles/" + navn + ".json", "r") as f:
-        return json.load(f)
+
      
-def hentLag(id):
-    if(os.path.exists("jsonFiles/lag/"+id+".json")):
-        with open("jsonFiles/lag/"+id+".json", "r") as f:
-            return json.load(f)
-    else:
-        return False
+
 
 
 
@@ -193,7 +188,20 @@ def deleteLag(id):
     return "Deleted"
 
     
+@app.route("/spillere/oversikt")
+def spillerOversikt():
+    return render_template("interface/spillerOversikt.html", spillere = spillerListe)
 
+@app.route("/spillere/<id>/stream")
+def spillerTilStream(id):
+    spiller = None
+    for spillerLOOP in gamerNoDatabase:
+        if spillerLOOP["user"]["id"] == int(id):
+            print(spillerLOOP["user"]["id"])
+            spiller = spillerLOOP
+            break
+    return render_template("stream/spiller.html", spiller=spiller)
+    
 
 
 @app.route("/caster/dashboard")
@@ -277,7 +285,7 @@ def champselect():
 
 @app.route("/lobby")
 def lobby():
-    return render_template("lobby.html")
+    return render_template("stream/lobby.html")
 
 @app.route("/lobby/json")
 def lobbyJson():
@@ -292,7 +300,7 @@ def champselect2():
 
 @app.route("/champselect/statistics")
 def champselectStatistics():
-    return render_template("champselectStatistics.html")
+    return render_template("stream/champselectStatistics.html")
 
 @app.route("/statistics/player/<gamerId>")
 def statisticsPlayerId(gamerId):
@@ -303,6 +311,14 @@ def statisticsPlayerId(gamerId):
 @app.route("/statistics/standings")
 def statisticsStandings():
     return render_template("standings.html")
+@app.route("/stream/tabell")
+def streamTabell():
+    providedTabell = None
+    if currentKampjson["liga"] == "Telialigaen":
+        providedTabell = hentJson("tableStanding")
+    else:
+        providedTabell = hentJson("TESStanding")
+    return render_template("stream/tabell.html", tabell = providedTabell)
 
 @app.route("/statistics/standings/json")
 def statisticsStandingsJson():

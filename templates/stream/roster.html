@@ -9,7 +9,7 @@
         </div>
     
         {% for spiller in kamp.lag1.spillere %}
-            <div class="spiller">
+            <div class="spiller" style="display: none;">
                 <!-- <h2>{{spiller.rolle}}</h2> -->
                 <h2>{{spiller.navn}}</h2>
             </div>
@@ -25,10 +25,39 @@
         </div>
     
         {% for spiller in kamp.lag2.spillere %}
-            <div class="spiller" id="lag2DIV">
+            <div class="spiller" id="lag2DIV" style="display: none;">
                 <!-- <h2>{{spiller.rolle}}</h2> -->
                 <h2>{{spiller.navn}}</h2>
             </div>
         {% endfor %}
     </div>
 </div>
+
+
+<script>
+    document.getElementById("lag1Roster").onload = startAnimasjoner();
+    function startAnimasjoner(){
+        console.log("DEMO");
+        console.log("DEMO");
+        let lagEls = document.getElementsByClassName("spiller");
+        for(let i=0; i<lagEls.length/2; i++){
+            setTimeout(function(){
+
+                // if(i >lagEls.length/2 -1){
+                //     lagEls[i].style.animationName = "visMotsatt";
+                // }else{
+                //     lagEls[i].style.animationName = "vis";
+                // }
+                console.log(lagEls.length);
+                console.log(i+lagEls.length/2);
+                console.log(lagEls[i+lagEls.length/2]);
+                lagEls[i].style.animationName = "vis";
+                lagEls[i+lagEls.length/2].style.animationName = "visMotsatt";
+                
+
+                lagEls[i].style.display = "block";
+                lagEls[i+lagEls.length/2].style.display = "block";
+            }, i*100);
+        }
+    }
+</script>

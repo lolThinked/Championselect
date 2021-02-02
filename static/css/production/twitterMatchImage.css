@@ -2,6 +2,9 @@ body{
     background-color: black;
     margin: 0px;
     overflow: hidden;
+    font-family: roboto;
+    font-weight: 200;
+    color: white;
 }
 .backgroundImage{
     width: 2000px;
@@ -9,4 +12,74 @@ body{
     position: absolute;
     top: 0px;
     left: 0px;
+}
+#spillLogo{
+    position: absolute;
+    top: 283px;
+    width: 225px;
+    left: 489px;
+}
+#ligalogo{
+    position: absolute;
+    top: 122px;
+    width: 225px;
+    left: 489px;
+}
+.team{
+    position: absolute;
+    top: 528px;
+    width: 225px;
+    left: 170px;
+}
+.team img{
+    width: 144px;
+    max-height: 150px;
+    max-width: 150px;
+}
+#team2{
+    direction: rtl;
+    left: 822px;
+}
+.team h1{
+    font-size: 3.5em;
+    position: relative;
+    left: -14px;
+    top: 120px;
+}
+
+.vsClass{
+    font-family: roboto thin;
+    font-size: 3.7em;
+    position: absolute;
+    top: 445px;
+    left: 531px;
+}
+.annenInfo{
+    position: absolute;
+    top: 919px;
+    left: 160px;
+    width: 874px;
+    /* background-color: #000000a1; */
+    border-top: 3px solid white;
+    display: flex;
+    font-size: 1.6em;
+    font-family: roboto thin;
+}
+#dato{
+    position: absolute;
+    right: 0px;
+}
+.twitchClass{
+    font-family: roboto thin;
+    font-size: 1.3em;
+    position: absolute;
+    top: 1040px;
+    left: 393px;
+}
+.twitchClass h2{
+    font-family: roboto;
+    font-size: 1.9em;
+    position: absolute;
+    top: 0px;
+    left: 153px;
 }

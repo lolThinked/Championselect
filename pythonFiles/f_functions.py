@@ -24,3 +24,18 @@ def hentInnKampoversikt():
 def lastInnCurrentKamp():
     with open("jsonFiles/kamper/currentKamp.json", "r") as f:
         return json.load(f)
+
+def hentInnSpillerOversikt():
+    with open("jsonFiles/spillerListe.json", "r") as f:
+        return json.load(f)
+
+def hentJson(navn):
+    with open("jsonFiles/" + navn + ".json", "r") as f:
+        return json.load(f)
+
+def hentLag(id):
+    if(os.path.exists("jsonFiles/lag/"+id+".json")):
+        with open("jsonFiles/lag/"+id+".json", "r") as f:
+            return json.load(f)
+    else:
+        return False

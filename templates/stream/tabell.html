@@ -1,0 +1,26 @@
+<link rel="stylesheet" href={{ url_for('static', filename='css/stream/tabell.css')}}>
+<div class="tabellContainer" id="tabellContainerID">
+    {% for lag in tabell %}
+        <div class="lag">
+            <h1>{{lag.participant.name}}</h1>
+            <img src="{{lag.participant.image.url}}" alt="{{lag.participant.name}}_Bilde" width="50px" height="50px" style="right: 0px; position: absolute; display: none;">
+        </div>
+    {% endfor %}
+</div>
+
+<script>
+
+
+    document.getElementById("tabellContainerID").onload = startAnimasjoner();
+    function startAnimasjoner(){
+        console.log("DEMO");
+        console.log("DEMO");
+        let lagEls = document.getElementsByClassName("lag");
+        for(let i=0; i<lagEls.length; i++){
+            setTimeout(function(){
+                lagEls[i].style.animationName = "vis";
+                lagEls[i].style.display = "block";
+            }, i*300);
+        }
+    }
+</script>

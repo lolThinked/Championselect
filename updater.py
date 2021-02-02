@@ -117,6 +117,7 @@ def lagDataBaseH():       #Høst 2020
         return {"error":"error"}
 def lagDataBaseFraLag():
     #miderltidig dataBase
+    spillerListe = []
     tempDatabase =[]
     lolStatsOnly =[]
     gamernoDatabase ={}
@@ -156,17 +157,24 @@ def lagDataBaseFraLag():
                 print("Gamerno Link:", str(gamernoUser["url"]))
                 databaseStats["failedGamernos"].append(gamernoUser["url"])
                 print("\n\n\n")
+                databaseStats["noLoLStats"] +=1
             else:
                 lolStatsOnly.append(playerStats)
                 playerStats["user"] = gamernoUser
                 tempDatabase.append(playerStats)
-                databaseStats["noLoLStats"] +=1
+                spiller = {
+                    "navn": playerStats["user"]["name"],
+                    "lolIngame": playerStats["summonerName"],
+                    "id": playerStats["user"]["id"],
+                    "gamernoBilde":playerStats["user"]["image"]
+                }
+                spillerListe.append(spiller)
         print("_"*10,"\n\n\n","Users with no LoL-Stats: ",str(databaseStats["noLoLStats"]),"/",str(databaseStats["amountPlayers"]))
     print("Teams: ",str(databaseStats["amountTeams"]))
     print("Players: ",str(databaseStats["amountPlayers"]))
     #print(tempDatabase)
     #print(databaseStats["failedGamernos"])
-    return tempDatabase
+    return tempDatabase, spillerListe
 
     #lag1Div
     #Hent hver spiller på alle Lagene
@@ -198,8 +206,9 @@ databaseIput = input("Lag database [Y/N]")
 if(databaseIput =="Y" or databaseIput=="y" or databaseIput =="yes" or databaseIput=="Yes"):
     dataBase = lagDataBase()
     #dataBase = lagDataBaseH()
-    database = lagDataBaseFraLag()
+    database, spillerListe = lagDataBaseFraLag()
     writeToJSONFile("database", dataBase)
+    writeToJSONFile("spillerListe", spillerListe)
 
 print("\n\n")
 testDefings("https://www.gamer.no/api/v1/tournaments/"+str(LeagueID)+"/tables")

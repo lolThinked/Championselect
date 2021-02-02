@@ -1,13 +1,13 @@
-<link rel="stylesheet" href={{ url_for('static', filename='css/kampoversikt.css')}}>
+<link rel="stylesheet" href={{ url_for('static', filename='css/stream/kampoversikt.css')}}>
 <!-- <img src="static/Overlayed.png" alt="overlayed" class="OverlayImage"> -->
-<div class="kamper">
+<div class="kamper" onload="startAnimasjoner" id="kampContainerID">
     
     
 
     <!--AUTOKAMP INFYLLING-->
     {% for kamp in kamper %}
     
-    <div class="kamp">
+    <div class="kamp" style="display: none;">
         <div class="kamp-top-container">
             <!--LAG 1-->
             <div class="lag lag1">
@@ -57,10 +57,13 @@
                 <button onclick="slettKamp('{{kamp.kampID}}')">SLETT</button>
                 <button onclick="rediger('{{kamp.kampID}}')">REDIGER</button>
                 <button onclick="byttSide('{{kamp.kampID}}')">BYTT SIDE</button>
-                <a href="{{ url_for('twitterMatchImage', id=kamp.kampID) }}">twitterMatchImage</a>
+                
             </div>
             <div>
                 <h2>{{kamp.dato}}</h2>
+            </div>
+            <div>
+                <a href="{{ url_for('twitterMatchImage', id=kamp.kampID) }}">twitterMatchImage</a>
             </div>
         </div>         
     </div>
@@ -71,6 +74,24 @@
 </div>
 <script>
     let kamperJS = {{kamper|safe}};
+    document.getElementById("kampContainerID").onload = startAnimasjoner();
+    document.getElementById("kampContainerID").style.visibility = "visible";
+    function startAnimasjoner(){
+        console.log("DEMO");
+        console.log("DEMO");
+        let kamperEls = document.getElementsByClassName("kamp");
+        for(let i=0; i<kamperEls.length; i++){
+            setTimeout(function(){
+                kamperEls[i].style.animationName = "vis";
+                kamperEls[i].style.display = "inline-block";
+            }, i*500);
+        }
+    }
+
+    function setAnimasjon(){
+
+    }
+
     function slettKamp(kampid){
             if(confirm("Vil du slette denne kampen?")){
                 console.log("BESTEMT SEG FOR Å SLETTE");

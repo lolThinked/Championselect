@@ -7,6 +7,8 @@
         <div>Spill:<H1 contenteditable="true" class="intypingField" id="spillID">{{lag.spill}}</H1></div>
         <div>Tag:<H1 contenteditable="true" class="intypingField" id="tagID">{{lag.tag}}</H1></div>
         <div>Bilde (link):<H1 contenteditable="true" class="intypingField" id="bildeID">{{lag.bilde}}</H1></div>
+
+        <div>Gamerno ID:<H1 contenteditable="true" class="intypingField" id="gamernoID">{{lag.gamernoID}}</H1></div>
         <div>ID:<H1 contenteditable="false" id="idID">{{lag.id}}</H1></div>
         <div id="spillereContainer">
             {% for spiller in lag.spillere %}
@@ -39,7 +41,8 @@
             tempObject["tag"] = document.getElementById("tagID").innerHTML;
             tempObject["bilde"] = document.getElementById("bildeID").innerHTML;
             tempObject["id"] = document.getElementById("idID").innerHTML;
-
+            tempObject["gamernoID"] = document.getElementById("gamernoID").innerHTML;
+            
             
             let spillerArray = [];
             let spillereELs = document.getElementsByClassName("spiller");

@@ -20,13 +20,27 @@ body{
     color: white;
     text-align: center;
     font-family: 'Roboto thin', sans-serif;
+    visibility: hidden;
 }
 
 .kamp{
     display: inline-block;
+    /* display: hidden; */
     width: 1000px;
     width: 1192px;
+    position: relative;
+    /* left: -1000px; */
     /* border: 1px solid green; */
+    /* animation-name: vis;  */
+    animation-duration: 1s;
+    
+}
+@keyframes vis{
+    
+    0%   {opacity: 0; left: -500px; display: hidden;}
+    25%  { display: inline-block;}
+    50% {left: 100px; display: inline-block;}
+    100% {opacity: 1; display: inline-block; left: 0px;}
 }
 .kamp-top-container{
     display: flex;
