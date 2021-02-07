@@ -2,7 +2,7 @@
 
 <div class="rosters">
     <div class="roster" id="lag1Roster">
-        <div class="roster-header">
+        <div class="roster-header" id="lag1DIV" style="display: none;">
             <img src="{{ url_for('static', filename='laglogoer/'+kamp.lag1.bilde+'')}}" alt="logo">
             <h1>{{kamp.lag1.navn}}</h1>
             
@@ -18,7 +18,7 @@
     
     
     <div class="roster" id="lag2Roster">
-        <div class="roster-header" id="lag2DIV">
+        <div class="roster-header" id="lag2DIV" style="display: none;">
             <img src="{{ url_for('static', filename='laglogoer/'+kamp.lag2.bilde+'')}}" alt="logo">
             <h1>{{kamp.lag2.navn}}</h1>
             
@@ -35,19 +35,45 @@
 
 
 <script>
-    document.getElementById("lag1Roster").onload = startAnimasjoner();
+    let rosterLink = "{{url_for('livecontrolSpesificScene', sceneName='teamRoster')}}";
+    let True = true;
+    let False = false;
+    let show = false;
+    setInterval(function(){
+        let xml = new XMLHttpRequest();
+        xml.open("GET", rosterLink, false);
+        
+        xml.onreadystatechange = function(){
+            if(xml.readyState == 4 && xml.status == 200){
+                //console.log("SUCCESS?")
+                //console.log(xml.responseText);
+                let tempDIct = JSON.parse(xml.responseText);
+                console.log(tempDIct);
+                if(tempDIct["show"]!=show){
+                    if(tempDIct["show"] == true){
+                        startAnimasjoner();
+                        show = true;
+                    }else{
+                        outro();
+                        show=false;
+                    }
+                }
+            }
+        }
+        xml.send();
+        
+    }, 1000);
+    //document.getElementById("lag1Roster").onload = startAnimasjoner();
     function startAnimasjoner(){
         console.log("DEMO");
         console.log("DEMO");
         let lagEls = document.getElementsByClassName("spiller");
+        document.getElementById("lag1DIV").style.display = "flex";
+        document.getElementById("lag2DIV").style.display = "flex";
+        document.getElementById("lag1DIV").style.animationName = "vis";
+        document.getElementById("lag2DIV").style.animationName = "visMotsatt";
         for(let i=0; i<lagEls.length/2; i++){
             setTimeout(function(){
-
-                // if(i >lagEls.length/2 -1){
-                //     lagEls[i].style.animationName = "visMotsatt";
-                // }else{
-                //     lagEls[i].style.animationName = "vis";
-                // }
                 console.log(lagEls.length);
                 console.log(i+lagEls.length/2);
                 console.log(lagEls[i+lagEls.length/2]);
@@ -57,6 +83,29 @@
 
                 lagEls[i].style.display = "block";
                 lagEls[i+lagEls.length/2].style.display = "block";
+            }, i*100);
+        }
+    }
+    function outro(){
+        let lagEls = document.getElementsByClassName("spiller");
+        document.getElementById("lag1DIV").style.animationName = "outro";
+        document.getElementById("lag2DIV").style.animationName = "outro";
+        for(let i=0; i<lagEls.length/2; i++){
+            setTimeout(function(){
+                // console.log(lagEls.length);
+                // console.log(i+lagEls.length/2);
+                // console.log(lagEls[i+lagEls.length/2]);
+                lagEls[i].style.animationName = "outro";
+                lagEls[i+lagEls.length/2].style.animationName = "outro";
+
+                
+
+                //lagEls[i].style.display = "none";
+                //lagEls[i+lagEls.length/2].style.display = "none";
+            }, i*100);
+            setTimeout(function(){
+                //lagEls[i].style.display = "none";
+                //lagEls[i+lagEls.length/2].style.display = "none";
             }, i*100);
         }
     }

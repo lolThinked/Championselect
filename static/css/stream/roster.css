@@ -21,6 +21,7 @@ body{
     position: relative;
     display: flex;
     animation: vis 1s;
+    animation-fill-mode: forwards;
 }
 .roster-header img{
     height: 100px;
@@ -37,7 +38,9 @@ body{
 }
 #lag2DIV{
     right: 0px;
+    
     animation: visMotsatt 1s;
+    animation-fill-mode: forwards;
 }
 #lag2DIV img{
     margin-right: 0px;
@@ -52,6 +55,7 @@ body{
     /* visibility: hidden; */
     /* animation: vis 1s; */
     animation-duration: 1s;
+    animation-fill-mode: forwards;
 }
 .spiller h2{
     font-size: 1.9em;
@@ -72,4 +76,11 @@ body{
     25%  { display: block;}
     50% {opacity: 1; right: 100px; display: block;}
     100% { display: block; right: 0px;}
+}
+
+@keyframes outro{
+    0% {opacity: 1;top: 0px;}
+    25%{top: -100px;}
+    50%{opacity: 0;}
+    100%{top:1000px;}
 }

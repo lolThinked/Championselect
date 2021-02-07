@@ -51,8 +51,8 @@
             "url":"viewSettings"
         },
         {
-            "navn":"LiveControlView",
-            "url":"viewLiveControl"
+            "navn":"LiveControl Module",
+            "url":"livecontrolModuleObs"
         }
     ]
 }

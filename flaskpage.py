@@ -258,14 +258,21 @@ def viewLiveControl():
 
 @app.route("/production/livecontrol/scene/<sceneName>", methods=["GET", "POST"])
 def livecontrolSpesificScene(sceneName):
+    global livecontrolJson
     if request.method == "GET":
-        return jsonify(livecontrolJson[sceneName])
+        for category in livecontrolJson:
+            for scene in  livecontrolJson[category]:
+                if scene == sceneName:
+                    return jsonify(livecontrolJson[category][scene])
+        #return jsonify(livecontrolJson[sceneName])
     elif request.method =="POST":
         indata = eval(request.data)
-        global livecontrolJson
         livecontrolJson[sceneName] = indata
         return "200"
 
+@app.route("/production/livecontrolModule/obs")
+def livecontrolModuleObs():
+    return render_template("production/_modulelivecontrol.html", livecontrol = livecontrolJson)
 @app.route("/production/livecontrol/json")
 def getLivecontrolJson():
     return jsonify(livecontrolJson)
