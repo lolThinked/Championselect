@@ -1,0 +1,31 @@
+.moduleLiveControlContainer{
+    display: flex;
+    width: 100%;
+}
+
+.liveControlCategory{
+    display: block;
+    margin: 20px;
+}
+.liveControlCategoryContainer{
+    display: flex;
+}
+
+.liveControlScene{
+    background-color: rgb(19, 9, 63);
+    color: white;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid rgb(19, 9, 63);
+    transition-duration: 0.2s;
+}
+.liveControlScene:hover{
+    cursor: pointer;
+    border: 2px solid rgb(81, 185, 255);
+    padding: 9px;
+}
+.show{
+    background-color: rgb(104, 255, 150);
+    color: black;
+    border: 1px solid  rgb(104, 255, 150);
+}

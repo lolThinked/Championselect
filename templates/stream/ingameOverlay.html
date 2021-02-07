@@ -2,7 +2,7 @@
     <!-- <meta http-equiv="refresh" content="2"> -->
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   </head>
-<link rel="stylesheet" href={{ url_for('static', filename='css/ingameOverlay.css')}}>
+<link rel="stylesheet" href={{ url_for('static', filename='css/stream/ingameOverlay.css')}}>
 
 <div class="textOverlay">
     <div class="tagAndScore">
@@ -28,6 +28,15 @@
 
 </div>
 
+<div class="tagLogoContainer">
+    <div class="tagLogo" id="tagLogoLag1">
+        <img src={{ url_for('static', filename= 'laglogoer/'+kamp.lag1.bilde )}} alt="Logo1">
+    </div>
+    <div class="tagLogo" id="tagLogoLag2">
+        <img src={{ url_for('static', filename= 'laglogoer/'+kamp.lag2.bilde )}} alt="Logo2">
+    </div>
+</div>
+
 <div class="playerCamContainer">
     <div class="infoBox" id="info1">
         <div class="camBox">
@@ -43,7 +52,37 @@
     </div>
 </div>
 
-<img src={{ url_for('static', filename='img/Overlays/AIM-LOL-OVER-280120v6b.svg')}} alt="IngameOverlay" id="backgroundImage">
+<div class="scoreBoardContent">
+    <div class="scoreboard-full" id="scoreboard-full">
+        <div class="scoreboard-half" id="scoreboard-left">
+            <div class="spillerBildeDiv">
+                <img src="" alt="spiller-left-bilde" class="spillerBilde" id="spillerBildeLeft">
+            </div>
+            <div class="statistikkDiv">
+                <div><h1 id="spillerNavnLeft">Touch</h1></div>
+                <div><h2>K/G - </h2><h2 id="killsPerGameLeft">K/G</h2></div>
+                <div><h2>D/G - </h2><h2 id="deathsPerGameLeft">D/G</h2></div>
+                <div><h2>Vision - </h2><h2 id="visionScoreLeft">VisionScore</h2></div>
+                <div><h2>KP - </h2><h2 id="killParticipationLeft">KP</h2></div>
+            </div>
+        </div>
+        <div class="scoreboard-half" id="scoreboard-right">
+            <div class="spillerBildeDiv">
+                <img src="" alt="spiller-right-bilde" class="spillerBilde" id="spillerBildeRight">
+            </div>
+            <div class="statistikkDiv">
+                <div><h1 id="spillerNavnRight">Touch</h1></div>
+                <div><h2>K/G - </h2><h2 id="killsPerGameRight">K/G</h2></div>
+                <div><h2>D/G - </h2><h2 id="deathsPerGameRight">D/G</h2></div>
+                <div><h2>Vision - </h2><h2 id="visionScoreRight">VisionScore</h2></div>
+                <div><h2>KP - </h2><h2 id="killParticipationRight">KP</h2></div>
+            </div>
+        </div>
+    </div>
+    
+    <img src="{{ url_for( 'static', filename='img/production/SVG/scoreBoardHvitOverlay.svg')}}" alt="hvitOverlay" id="scoreBoardOverlayImage">
+</div>
+<img src="{{ url_for('static', filename='img/Overlays/AIM-LOL-OVER-280120v7a.svg')}}" alt="IngameOverlay" id="backgroundImage">
 
 
 <script>
@@ -77,4 +116,130 @@
     }
     updateKampScore();
     fixKampTags();
+    function getPlayerJson(id){
+        var xhr = new XMLHttpRequest();
+        console.log(window.location.href);
+        xhr.open("GET", "{{ url_for('spillerJson', id=2474)}}", true);
+        xhr.send();
+        //xhr.onreadystatechange = processRequest;
+        xhr.onreadystatechange = function(){
+            if(xhr.readyState == 4 && xhr.status == 200){
+                //console.log(xhr.responseText);
+                showPlayerInScoreboard(JSON.parse(xhr.responseText));
+            }
+        }
+        var xhr1 = new XMLHttpRequest();
+        console.log(window.location.href);
+        xhr1.open("GET", "{{ url_for('spillerJson', id=42162)}}", true);
+        xhr1.send();
+        //xhr.onreadystatechange = processRequest;
+        xhr1.onreadystatechange = function(){
+            if(xhr1.readyState == 4 && xhr1.status == 200){
+                //console.log(xhr.responseText);
+                showPlayerInScoreboardRight(JSON.parse(xhr1.responseText));
+            }
+        }
+        
+
+        // let xml = new XMLHttpRequest();
+        // xml.open("GET", "{{ url_for('spillerJson', id=2474)}}", true);
+        // xml.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+        // xml.onreadystatechange = function(){
+        //     if(xml.readyState == 4 && xml.status == 200){
+        //         console.log(xml.responseText);
+        //     }
+        // }
+        // let stringified = JSON.stringify(kampData);
+        // xml.send(stringified);
+        // console.log(stringified);
+        // window.location.reload(false);
+    }
+    function showPlayerInScoreboard(playerJson){
+        //let scoreBoardEl = document.getElementById("scoreboard-left");  
+        console.log(playerJson);
+        //let spillerBildeEl = document.createElement("img");
+        let spillerBildeEl = document.getElementById("spillerBildeLeft");
+        spillerBildeEl.src = playerJson.user.proImage.original.url;
+        spillerBildeEl.width = 200;
+        spillerBildeEl.height = 200;
+        console.log(spillerBildeEl);
+        //let navnEl = document.createElement("h1");
+        let navnEl = document.getElementById("spillerNavnLeft");
+        navnEl.innerHTML = playerJson.user.name;
+        //let killsPerGameEl = document.createElement("h2");
+        let killsPerGameEl = document.getElementById("killsPerGameLeft");
+        killsPerGameEl.innerHTML = playerJson.killsPerMap;
+        //let deathsPerGameEl = document.createElement("h2");
+        let deathsPerGameEl = document.getElementById("deathsPerGameLeft");
+        deathsPerGameEl.innerHTML = playerJson.deathsPerMap;
+
+        let visionScoreEl = document.getElementById("visionScoreLeft");
+        visionScoreEl.innerHTML = playerJson.visionScore;
+
+        let killParticipationEl = document.getElementById("killParticipationLeft");
+        killParticipationEl.innerHTML = playerJson.killParticipation;
+
+        // scoreBoardEl.appendChild(spillerBildeEl);
+        // scoreBoardEl.appendChild(navnEl);
+        // scoreBoardEl.appendChild(killsPerGameEl);
+        // scoreBoardEl.appendChild(deathsPerGameEl);
+    }
+    function showPlayerInScoreboardRight(playerJson){
+        //let scoreBoardEl = document.getElementById("scoreboard-left");  
+        console.log(playerJson);
+        //let spillerBildeEl = document.createElement("img");
+        let spillerBildeEl = document.getElementById("spillerBildeRight");
+        spillerBildeEl.src = playerJson.user.proImage.original.url;
+        spillerBildeEl.width = 200;
+        spillerBildeEl.height = 200;
+        console.log(spillerBildeEl);
+        //let navnEl = document.createElement("h1");
+        let navnEl = document.getElementById("spillerNavnRight");
+        navnEl.innerHTML = playerJson.user.name;
+        //let killsPerGameEl = document.createElement("h2");
+        let killsPerGameEl = document.getElementById("killsPerGameRight");
+        killsPerGameEl.innerHTML = playerJson.killsPerMap;
+        //let deathsPerGameEl = document.createElement("h2");
+        let deathsPerGameEl = document.getElementById("deathsPerGameRight");
+        deathsPerGameEl.innerHTML = playerJson.deathsPerMap;
+
+        let visionScoreEl = document.getElementById("visionScoreRight");
+        visionScoreEl.innerHTML = playerJson.visionScore;
+
+        let killParticipationEl = document.getElementById("killParticipationRight");
+        killParticipationEl.innerHTML = playerJson.killParticipation;
+
+        // scoreBoardEl.appendChild(spillerBildeEl);
+        // scoreBoardEl.appendChild(navnEl);
+        // scoreBoardEl.appendChild(killsPerGameEl);
+        // scoreBoardEl.appendChild(deathsPerGameEl);
+    }
+    getPlayerJson();
 </script>
+
+<style>
+    #tagLogoLag1{
+        /* -webkit-mask-image: url({{ url_for('static', filename='img/production/TEAM-CROP-OVERLAY-BLUE.png')}});
+        -webkit-mask-size: 132px;
+        -webkit-mask-repeat: no-repeat;  */
+        /* background-color:red; */
+        -webkit-mask-image: url({{ url_for('static', filename='img/production/Asset1.svg')}});
+        -webkit-mask-size: 144px;
+        -webkit-mask-repeat: no-repeat;
+    }
+    #tagLogoLag2{
+        /* -webkit-mask-image: url({{ url_for('static', filename='img/production/TEAM-CROP-OVERLAY.png')}});
+        -webkit-mask-size: 132px;
+        -webkit-mask-repeat: no-repeat;  */
+        /* background-color:red; */
+        -webkit-mask-image: url({{ url_for('static', filename='img/production/Asset2.svg')}});
+        -webkit-mask-size: 144px;
+        -webkit-mask-repeat: no-repeat; 
+    }
+    .scoreBoardContent{
+        -webkit-mask-image: url({{ url_for('static', filename='img/production/SVG/ScoreboardBlack.svg')}});
+        -webkit-mask-size: 752px;
+        -webkit-mask-repeat: no-repeat; 
+    }
+    
+</style>

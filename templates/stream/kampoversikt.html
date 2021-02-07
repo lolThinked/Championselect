@@ -64,6 +64,7 @@
             </div>
             <div>
                 <a href="{{ url_for('twitterMatchImage', id=kamp.kampID) }}">twitterMatchImage</a>
+                <button onclick="lagTwitterBilde('{{kamp.kampID}}')">Lag Twitterbilde</button>
             </div>
         </div>         
     </div>
@@ -112,7 +113,20 @@
                 window.location.reload(false);
             }
         }
-    
+    function lagTwitterBilde(id){
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", "{{url_for('makeTwitterImage')}}", true);
+        xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+        xhr.onreadystatechange = function(){
+                    if(xml.readyState == 4 && xml.status == 200){
+                        console.log("SUCCESS?")
+                        console.log(xml.responseText);
+                    }
+                }
+        let tmpObj = {"id":id};
+        let stringified = JSON.stringify(tmpObj);
+        xhr.send(stringified);
+    }
     function rediger(kampid){
         console.log(kampid);
     }

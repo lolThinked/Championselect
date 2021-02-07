@@ -1,0 +1,58 @@
+{
+    "stream":[
+        {
+            "navn":"Kampoversikt",
+            "url":"kampoversikt"
+        },
+        {
+            "navn":"Lobby",
+            "url":"lobby"
+        },
+        {
+            "navn":"Championselect",
+            "url":"champselect"
+        },
+        {
+            "navn":"Championselect - Overlay",
+            "url":"championselectOverlay"
+        },
+        
+        {
+            "navn":"StreamTabell",
+            "url":"streamTabell"
+        },
+        
+        {
+            "navn":"IngameOverlay",
+            "url":"ingameOverlay"
+        },
+        {
+            "navn":"Team Rosters",
+            "url":"streamRoster"
+        }
+    ],
+    "caster":[
+        {
+            "navn":"Dashboard - Caster",
+            "url":"casterDashboard"
+        },
+        {
+            "navn": "Ingame controller",
+            "url" :"casterIngame"
+        },
+        {
+            "navn":"LiveControlView",
+            "url":"viewLiveControl"
+        }
+    ],
+    "general":[
+        {
+            "navn":"Instillinger",
+            "url":"viewSettings"
+        },
+        {
+            "navn":"LiveControlView",
+            "url":"viewLiveControl"
+        }
+    ]
+}

@@ -30,6 +30,7 @@ body{
     top: 528px;
     width: 225px;
     left: 170px;
+    white-space: nowrap;
 }
 .team img{
     width: 144px;
@@ -45,6 +46,7 @@ body{
     position: relative;
     left: -14px;
     top: 120px;
+    
 }
 
 .vsClass{

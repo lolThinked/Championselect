@@ -1,0 +1,34 @@
+body{
+
+}
+
+.settingsContainer{
+    padding: 100px;
+    display: flex;
+}
+.category{
+    width: 500px;
+    background-color: #224376;
+    border: 1px solid grey;
+    padding: 40px;
+    margin: 20px;
+}
+
+.setting{
+    width: 100%;
+    border: 1px solid white;
+}
+
+
+
+h1{
+
+}
+h2{
+
+}
+h3{
+    color: bisque;
+    /* background-color: aliceblue; */
+    border: 1px solid green;
+}

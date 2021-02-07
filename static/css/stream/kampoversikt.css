@@ -21,6 +21,11 @@ body{
     text-align: center;
     font-family: 'Roboto thin', sans-serif;
     visibility: hidden;
+    background-color: #0000001f;
+    width: 1193px;
+    border-radius: 38px;
+    transition-duration: 4s;
+    animation-duration: 1s;
 }
 
 .kamp{

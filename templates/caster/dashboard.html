@@ -7,7 +7,7 @@
         <div class="currentKamp-content">
             <div class="lagInfo">
                 <div class="lag" id="blueTeamContainer">
-                    <input type="number" id="lag1Score" value="{{kamp.lag1.score}}"></input>
+                    <input type="number" id="lag1Score" value={{kamp.lag1.score}}></input>
                     <h2 contenteditable="True" id="lag1Navn">{{kamp.lag1.navn}}</h2>
                     <h2 contenteditable="True" id="lag1TagId">{{kamp.lag1.tag}}</h2>
                     <!-- <input type="text" id="lag1TagId" value="{{kamp.lag1.tag}}"> -->
@@ -19,7 +19,7 @@
                     </select>
                 </div>
                 <div class="lag" id="redTeamContainer">
-                    <input type="number" id="lag2Score" value="{{kamp.lag2.score}}"></input>
+                    <input type="number" id="lag2Score" value={{kamp.lag2.score}}></input>
                     <h2 contenteditable="True" id="lag1Navn">{{kamp.lag2.navn}}</h2>
                     <h2 contenteditable="True" id="lag2TagId">{{kamp.lag2.tag}}</h2>
                     <!-- <input type="text" id="lag2TagId" value="{{kamp.lag2.tag}}"> -->
@@ -54,7 +54,8 @@
             </div>
             
         </div>
-        <h1>Ny eller Bytt Nåværende kamp</h1>
+        <!-- <h1>Ny eller Bytt Nåværende kamp</h1> -->
+        {% include "production/_modulelivecontrol.html" %}
         <div class="currentKamp-newNext">
 
         </div>
@@ -65,9 +66,9 @@
     console.log(kampData);
 
     function rediger(){
-        kampData.lag1.score = document.getElementById("lag1Score").value;
-        kampData.lag2.score = document.getElementById("lag2Score").value;
-
+        kampData.lag1.score = Number(document.getElementById("lag1Score").value);
+        kampData.lag2.score = Number(document.getElementById("lag2Score").value);
+        
         let xml = new XMLHttpRequest();
         xml.open("POST", "/currentKamp/update", true);
         xml.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
@@ -79,7 +80,6 @@
         let stringified = JSON.stringify(kampData);
         xml.send(stringified);
         console.log(stringified);
-        //lagKamp(tmpObj);
         window.location.reload(false);
 
     }

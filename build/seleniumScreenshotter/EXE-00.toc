@@ -1,0 +1,128 @@
+('C:\\Users\\Fabian\\Desktop\\Hopland '
+ 'Digital\\Prosjekter\\Championselect\\dist\\seleniumScreenshotter.exe',
+ True,
+ False,
+ False,
+ 'C:\\Users\\Fabian\\Desktop\\Hopland '
+ 'Digital\\Prosjekter\\Championselect\\icon.ico',
+ None,
+ False,
+ False,
+ '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v1"><assemblyIdentity name="seleniumScreenshotter" processorArchitecture="amd64" type="win32" version="1.0.0.0"/><dependency><dependentAssembly><assemblyIdentity language="*" name="Microsoft.Windows.Common-Controls" processorArchitecture="*" publicKeyToken="6595b64144ccf1df" type="win32" version="6.0.0.0"/><compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1"/></dependentAssembly></dependency><compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1"><application><supportedOS Id="{e2011457-1546-43c5-a5fe-008deee3d3f0}"/><supportedOS Id="{35138b9a-5d96-4fbd-8e2d-a2440225f93a}"/><supportedOS Id="{4a2f28e3-53b9-4441-ba9c-d69d4a4a6e38}"/><supportedOS Id="{1f676c76-80e1-4239-95bb-83d0f6d0da78}"/><supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}"/></application></compatibility></assembly>',
+ True,
+ 'seleniumScreenshotter.pkg',
+ [('PYZ-00.pyz',
+   'C:\\Users\\Fabian\\Desktop\\Hopland '
+   'Digital\\Prosjekter\\Championselect\\build\\seleniumScreenshotter\\PYZ-00.pyz',
+   'PYZ'),
+  ('struct',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\struct.pyo',
+   'PYMODULE'),
+  ('pyimod01_os_path',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\PyInstaller\\loader\\pyimod01_os_path.pyc',
+   'PYMODULE'),
+  ('pyimod02_archive',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\PyInstaller\\loader\\pyimod02_archive.pyc',
+   'PYMODULE'),
+  ('pyimod03_importers',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\PyInstaller\\loader\\pyimod03_importers.pyc',
+   'PYMODULE'),
+  ('pyiboot01_bootstrap',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\PyInstaller\\loader\\pyiboot01_bootstrap.py',
+   'PYSOURCE'),
+  ('seleniumScreenshotter',
+   'C:\\Users\\Fabian\\Desktop\\Hopland '
+   'Digital\\Prosjekter\\Championselect\\seleniumScreenshotter.py',
+   'PYSOURCE'),
+  ('python36.dll',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\python36.dll',
+   'BINARY'),
+  ('VCRUNTIME140.dll',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\VCRUNTIME140.dll',
+   'BINARY'),
+  ('_ssl',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\DLLs\\_ssl.pyd',
+   'EXTENSION'),
+  ('pyexpat',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\DLLs\\pyexpat.pyd',
+   'EXTENSION'),
+  ('_hashlib',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\DLLs\\_hashlib.pyd',
+   'EXTENSION'),
+  ('_lzma',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\DLLs\\_lzma.pyd',
+   'EXTENSION'),
+  ('_socket',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\DLLs\\_socket.pyd',
+   'EXTENSION'),
+  ('_bz2',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\DLLs\\_bz2.pyd',
+   'EXTENSION'),
+  ('unicodedata',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\DLLs\\unicodedata.pyd',
+   'EXTENSION'),
+  ('select',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\DLLs\\select.pyd',
+   'EXTENSION'),
+  ('_ctypes',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\DLLs\\_ctypes.pyd',
+   'EXTENSION'),
+  ('base_library.zip',
+   'C:\\Users\\Fabian\\Desktop\\Hopland '
+   'Digital\\Prosjekter\\Championselect\\build\\seleniumScreenshotter\\base_library.zip',
+   'DATA'),
+  ('selenium\\webdriver\\firefox\\amd64\\x_ignore_nofocus.so',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\selenium\\webdriver\\firefox\\amd64\\x_ignore_nofocus.so',
+   'DATA'),
+  ('selenium\\webdriver\\remote\\isDisplayed.js',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\selenium\\webdriver\\remote\\isDisplayed.js',
+   'DATA'),
+  ('selenium\\webdriver\\firefox\\x86\\x_ignore_nofocus.so',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\selenium\\webdriver\\firefox\\x86\\x_ignore_nofocus.so',
+   'DATA'),
+  ('selenium\\webdriver\\firefox\\webdriver.xpi',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\selenium\\webdriver\\firefox\\webdriver.xpi',
+   'DATA'),
+  ('selenium\\webdriver\\remote\\getAttribute.js',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\selenium\\webdriver\\remote\\getAttribute.js',
+   'DATA'),
+  ('selenium\\webdriver\\firefox\\webdriver_prefs.json',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\selenium\\webdriver\\firefox\\webdriver_prefs.json',
+   'DATA'),
+  ('seleniumScreenshotter.exe.manifest',
+   'C:\\Users\\Fabian\\Desktop\\Hopland '
+   'Digital\\Prosjekter\\Championselect\\build\\seleniumScreenshotter\\seleniumScreenshotter.exe.manifest',
+   'BINARY'),
+  ('pyi-windows-manifest-filename seleniumScreenshotter.exe.manifest',
+   '',
+   'OPTION')],
+ [],
+ False,
+ False,
+ 1612423153,
+ [('run.exe',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\PyInstaller\\bootloader\\Windows-64bit\\run.exe',
+   'EXECUTABLE')])

@@ -1,3 +1,9 @@
+body{
+    font-family: 'Roboto thin';
+    text-align: center;
+    background-color: #1a283e;
+}
+
 button{
     background-color: transparent;
     display: inline-block;

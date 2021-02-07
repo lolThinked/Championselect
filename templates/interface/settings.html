@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" href={{ url_for('static', filename='css/interface/settings.css')}}>
+    <div class="settingsContainer">
+        <!-- <h2>{{settings}}</h2> -->
+        {% for category in settings %}
+            <div class="category">
+                <h1>{{category}}</h1>
+                {% for setting in settings[category] %}
+                    <div class="setting">
+                        <h2 contenteditable="false" >{{setting}}</h2>
+                        <h3 contenteditable="true" id="{{category+setting}}">{{settings[category][setting]}}</h2>
+                        
+                    </div>
+                    
+                {% endfor %}
+            </div>
+
+        {% endfor %}
+    </div>
+
+
+
+
+{% endblock content %}

@@ -188,12 +188,12 @@
 		</div>
 		<div class="timer">
 			<div id="timerBlue">
-				<h2 class="timerText">10</h2>
+				<h2 class="timerText">0</h2>
 				<img src="static/timer/Blue.png"></img>
 
 			</div>
 			<div id="timerRed">
-				<h2 class="timerText">10</h2>
+				<h2 class="timerText">0</h2>
 				<img src="static/timer/Red.png"></img>
 
 			</div>
@@ -221,6 +221,9 @@
 
 
 </div>
+<script>
+	let settings = {{settings|safe}};
+</script>
 <script src={{ url_for('static', filename='index.js')}} ></script>
 <script>
 

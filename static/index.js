@@ -28,9 +28,16 @@ var redBanDiv = document.querySelectorAll("div#redTeamBans > div.ban > div.Bante
 var phaseDiv = document.getElementById("phase");
 
 let delaytid = 180000;
-delaytid = 10000;
+if(settings != undefined){
+    console.log(settings);
+    delaytid= settings.lol.championSelectDelay * 1000;
+    console.log(delaytid);
+    console.log("DELAY TID FRA INSTILLINGER");
+}
+console.log(delaytid);
+//delaytid = 10000;
 //delaytid = 210000; //3min 30sek
-delaytid = 180000; //3min
+//delaytid = 180000; //3min
 //delaytid = 5000;
 //console.log("INFO");
 

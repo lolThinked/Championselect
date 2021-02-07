@@ -23,6 +23,7 @@ def hentInnKampoversikt():
 
 def lastInnCurrentKamp():
     with open("jsonFiles/kamper/currentKamp.json", "r") as f:
+        #print(f)
         return json.load(f)
 
 def hentInnSpillerOversikt():
@@ -39,3 +40,9 @@ def hentLag(id):
             return json.load(f)
     else:
         return False
+
+def hentInstillinger():
+    with open("jsonFiles/settings.json","r") as f:
+        print(f)
+        #return f.read()
+        return json.load(f)

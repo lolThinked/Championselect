@@ -19,8 +19,8 @@ savefile.write(settings[0]+"\n")
 savefile.write("http://ddragon.leagueoflegends.com/cdn/" + currentPatch + "/data/en_US/champion.json\n")
 savefile.write("http://ddragon.leagueoflegends.com/cdn/" + currentPatch + "/data/en_US/summoner.json\n")
 savefile.close()
-LeagueID= 6955 #Vår 2020
-LeagueID= 7993 #Høst 2020
+tlV2020= 6955 #Vår 2020
+tlH2020= 7993 #Høst 2020
 LeagueID= 8597 #Vår 2021 HELE Lol
 LeagueID = 8647 #Bare 1.Div
 TeliaID = 8500
@@ -132,44 +132,53 @@ def lagDataBaseFraLag():
     tabellForLeague = requests.get(
         "https://www.gamer.no/api/v1/tournaments/"+str(LeagueID)+"/tables",
         headers={"Authorization": "04d8d48c80dfc8f5a1eae4b459ba9253c4ff46caa2ef2cfc2fbea87f4d185ab5"}).json()["response"]
+    tabellForLeague = lagTabellmedID(LeagueID)
+    tabellForLeague+= lagTabellmedID(TeliaID)
+    tabellForLeague+= lagTabellmedID(tlH2020)
     #print(tabellForLeague)
-
+    teamIds =[]
     for team in tabellForLeague:
         teamId = team["participant"]["teamId"]
-        #print(team["participant"]["teamId"])
-        databaseStats["amountTeams"] +=1
-        lolLagFraGamerno = requests.get(
-            "https://www.gamer.no/api/v1/teams/"+str(teamId)+"/players",
-            headers={"Authorization": "04d8d48c80dfc8f5a1eae4b459ba9253c4ff46caa2ef2cfc2fbea87f4d185ab5"}).json()["response"]
-        #print(lolLagFraGamerno)
-        for gamernoUser in lolLagFraGamerno:
-            databaseStats["amountPlayers"] +=1
-            gamernoDatabase[gamernoUser["id"]] = gamernoUser
-            playerStats = requests.get(
-                "https://www.gamer.no/api/v1/users/"+str(gamernoUser["id"])+"/lolstats",
+        hasNotSeenBefore = True
+        for id in teamIds:
+            if id == teamId:
+                hasNotSeenBefore = False
+        if hasNotSeenBefore:
+            teamIds.append(teamId)
+            #print(team["participant"]["teamId"])
+            databaseStats["amountTeams"] +=1
+            lolLagFraGamerno = requests.get(
+                "https://www.gamer.no/api/v1/teams/"+str(teamId)+"/players",
                 headers={"Authorization": "04d8d48c80dfc8f5a1eae4b459ba9253c4ff46caa2ef2cfc2fbea87f4d185ab5"}).json()["response"]
-            #print(playerStats)
-            #print(type(playerStats))
-            print("\n"*50,"PROGRESS - ",str(databaseStats["amountTeams"]),"/10")
-            if(playerStats == "Not found"):
-                print("NOT FOUND")
-                print("Gamerno ID:", str(gamernoUser["id"]))
-                print("Gamerno Link:", str(gamernoUser["url"]))
-                databaseStats["failedGamernos"].append(gamernoUser["url"])
-                print("\n\n\n")
-                databaseStats["noLoLStats"] +=1
-            else:
-                lolStatsOnly.append(playerStats)
-                playerStats["user"] = gamernoUser
-                tempDatabase.append(playerStats)
-                spiller = {
-                    "navn": playerStats["user"]["name"],
-                    "lolIngame": playerStats["summonerName"],
-                    "id": playerStats["user"]["id"],
-                    "gamernoBilde":playerStats["user"]["image"]
-                }
-                spillerListe.append(spiller)
-        print("_"*10,"\n\n\n","Users with no LoL-Stats: ",str(databaseStats["noLoLStats"]),"/",str(databaseStats["amountPlayers"]))
+            #print(lolLagFraGamerno)
+            for gamernoUser in lolLagFraGamerno:
+                databaseStats["amountPlayers"] +=1
+                gamernoDatabase[gamernoUser["id"]] = gamernoUser
+                playerStats = requests.get(
+                    "https://www.gamer.no/api/v1/users/"+str(gamernoUser["id"])+"/lolstats",
+                    headers={"Authorization": "04d8d48c80dfc8f5a1eae4b459ba9253c4ff46caa2ef2cfc2fbea87f4d185ab5"}).json()["response"]
+                #print(playerStats)
+                #print(type(playerStats))
+                print("\n"*50,"PROGRESS - ",str(databaseStats["amountTeams"]),"/10")
+                if(playerStats == "Not found"):
+                    print("NOT FOUND")
+                    print("Gamerno ID:", str(gamernoUser["id"]))
+                    print("Gamerno Link:", str(gamernoUser["url"]))
+                    databaseStats["failedGamernos"].append(gamernoUser["url"])
+                    print("\n\n\n")
+                    databaseStats["noLoLStats"] +=1
+                else:
+                    lolStatsOnly.append(playerStats)
+                    playerStats["user"] = gamernoUser
+                    tempDatabase.append(playerStats)
+                    spiller = {
+                        "navn": playerStats["user"]["name"],
+                        "lolIngame": playerStats["summonerName"],
+                        "id": playerStats["user"]["id"],
+                        "gamernoBilde":playerStats["user"]["image"]
+                    }
+                    spillerListe.append(spiller)
+            print("_"*10,"\n\n\n","Users with no LoL-Stats: ",str(databaseStats["noLoLStats"]),"/",str(databaseStats["amountPlayers"]))
     print("Teams: ",str(databaseStats["amountTeams"]))
     print("Players: ",str(databaseStats["amountPlayers"]))
     #print(tempDatabase)
@@ -202,8 +211,14 @@ teliaEsportTabell = lagTabellmedID(TeliaID)
 
 writeToJSONFile("tableStanding", table)
 writeToJSONFile("TESStanding", teliaEsportTabell)
-databaseIput = input("Lag database [Y/N]")
+databaseIput = input("Lag database [Y/N] Big for alle lag i hele Tl \n:")
 if(databaseIput =="Y" or databaseIput=="y" or databaseIput =="yes" or databaseIput=="Yes"):
+    dataBase = lagDataBase()
+    #dataBase = lagDataBaseH()
+    database, spillerListe = lagDataBaseFraLag()
+    writeToJSONFile("database", dataBase)
+    writeToJSONFile("spillerListe", spillerListe)
+elif(databaseIput == "Big"):
     dataBase = lagDataBase()
     #dataBase = lagDataBaseH()
     database, spillerListe = lagDataBaseFraLag()

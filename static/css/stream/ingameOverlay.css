@@ -1,0 +1,200 @@
+body{
+    background-color: black;
+    margin: 0px;
+    overflow: hidden;
+}
+
+#backgroundImage{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 1920px;
+    height: 1080px;
+    z-index: 1;
+}
+.textOverlay{
+    z-index: 5;
+    font-family:'Roboto',sans-serif;
+    font-weight:300;
+    color:#FFFFFF;
+}
+.tag{
+    position: absolute;
+    z-index: 5;
+    top: -16px;
+    top: -8px;
+    font-size: 1.6em;
+}
+#tagBlue{
+    left: 522px;
+}
+#tagRed{
+    right:507px;
+}
+
+.scoreContainer{
+    top: 44px;
+    z-index: 5;
+    position: absolute;
+    left: 539px;
+    direction: rtl;
+    /* background-color: red; */
+    width: 58px;
+    display: flex;
+    height: 5px;
+}
+#scoreContainerRed{
+    left: 1335px;
+    direction: ltr;
+}
+.score-orb-image{
+    width: 6px;
+    margin: 5px;
+    height: 6px;
+}
+
+.scoreBoardContent{
+    display: none;
+    position: absolute;
+    top: 846px;
+    height: 239px;
+    left: 591px;
+    width: 751px;
+    z-index: 7;
+    /* background-color: #ff0000d4; */
+}
+.scoreboard-full{
+    margin-left: 14px;
+    margin-top: 7px;
+    background-color: rgb(0 11 23 / 73%);
+    width: 96.4%;
+    height: 100%;
+    padding: 2px;
+    display: flex;
+}
+
+#scoreBoardOverlayImage{
+    position: absolute;
+    z-index: 6;
+    width: 753px;
+    height: 399px;
+    top: -84px;
+    left: 0px;
+
+}
+
+.scoreboard-half{
+    width: 50%;
+    display: flex;
+}
+#scoreboard-right{
+    direction: rtl;
+}
+.spillerBildeDiv{
+    
+}
+.spillerBilde{
+    /* border-radius: 25px; */
+    width: 225px;
+    height: 225px;
+    top: -5px;
+    position: relative;
+    left: -3px;
+}
+#spillerBildeRight{
+    left: 3px;
+}
+.statistikkDiv{
+    color: white;
+    font-family: roboto;
+    text-align: center;
+}
+.statistikkDiv h2{
+    font-size: 1em;
+
+}
+.statistikkDiv div{
+    display: flex;
+    margin: auto;
+    margin-top: -14px;
+}
+
+
+
+
+
+
+
+.tagLogoContainer{
+    display: flex;
+    z-index: 3;
+}
+
+.tagLogo img{
+    width: 78px;
+    position: relative;
+    top: -4px;
+    left: 12px;
+    opacity: 1;
+}
+#tagLogoLag1 img{
+    left: 33px;
+}
+.tagLogo{
+    position: absolute;
+    z-index: 1;
+    left: 472px;
+    top: 2px;
+    width: 200px;
+    /* svg */
+    left: 464px;
+}
+#tagLogoLag2{
+    left: 1325px;
+    /* svg */
+    left: 1324px; 
+}
+
+
+.infoBox{
+    z-index: 3;
+    border: 2px solid white;
+    width: 283px;
+    height: 214px;
+    position: absolute;
+    bottom: 0px;
+    top: 862px;
+    left: 316px;  
+    width: 293px;
+}
+#info1{
+
+}
+#info2{
+    left: 1332px;
+}
+
+.playerCamContainer{
+    display: none;
+}
+.camBox{
+    /* width: 350px;
+    height: 400px; */
+}
+.camBox img{
+    /* width: 350px;
+    height: 350px; */
+    width: 100%;
+}
+.camBox h2{
+    background-color: #0b0b0b;
+    width: 100%;
+    position: absolute;
+    bottom: -22px;
+    text-align: center;
+    color: white;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    border-top: 1px solid white;
+}
+

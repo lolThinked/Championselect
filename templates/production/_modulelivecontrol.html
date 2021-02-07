@@ -1,0 +1,103 @@
+<link rel="stylesheet" href={{ url_for('static', filename='css/production/livecontrolModule.css')}}>
+<div class="moduleLiveControlContainer" id="moduleLiveController" onload="initializeLivecontrol()">
+    {% for category in livecontrol %}
+    <div class="liveControlCategory">   
+        <h1>{{category}}</h1>
+        <div class="liveControlCategoryContainer">
+            {% for scene in livecontrol[category] %}
+                <div class="liveControlScene show" onclick="hideShowScene('{{scene}}ID')" id="{{scene}}ID">
+                    <h2>{{scene}}</h2>
+                </div>
+            {% endfor %}   
+        </div>
+        
+    </div>  
+    {% endfor %}
+</div>
+
+
+
+<script>
+    let True = true;
+    let False = false;
+    let liveControlInfo = {{livecontrol|safe}};
+    let updateLiveControlLink = "{{url_for('updateLiveControl')}}";
+    let getLivecontrolJsonLink = "{{url_for('getLivecontrolJson')}}";
+
+    setInterval(function(){
+        let xml = new XMLHttpRequest();
+        xml.open("GET", getLivecontrolJsonLink, false);
+        
+        xml.onreadystatechange = function(){
+            if(xml.readyState == 4 && xml.status == 200){
+                //console.log("SUCCESS?")
+                //console.log(xml.responseText);
+                let tempDIct = JSON.parse(xml.responseText);
+                console.log(tempDIct);
+                liveControlInfo=tempDIct;
+            }
+        }
+        xml.send();
+        
+    }, 1000);
+    console.log(liveControlInfo);
+    initializeLivecontrol();
+    function initializeLivecontrol(){
+        for(var category in liveControlInfo){
+            console.log(category);
+            console.log("SCENE");
+            for(var scene in liveControlInfo[category]){
+                let objScene = liveControlInfo[category][scene];
+                if(objScene["show"] == false){
+                    document.getElementById(scene+"ID").classList.remove("show");
+                    document.getElementById(scene+"ID").classList.add("hide");
+                }
+                console.log(scene);
+            }
+        }
+    }
+
+    function hideShowScene(sceneID){
+        console.log(sceneID);
+        for(var category in liveControlInfo){
+
+            for(var scene in liveControlInfo[category]){
+                let objScene = liveControlInfo[category][scene];
+                //console.log(scene +"ID" , sceneID);
+                if((scene+"ID") == sceneID){
+                    console.log("DONE");
+                    console.log(objScene);
+                    if(objScene["show"] == true){
+                        objScene["show"]= false;
+                        document.getElementById(sceneID).classList.remove("show");
+                        document.getElementById(sceneID).classList.add("hide");
+                        
+                        
+                    }else if (objScene["show"] == false){
+                        objScene["show"] = true;
+                        document.getElementById(sceneID).classList.remove("hide");
+                        document.getElementById(sceneID).classList.add("show");
+
+                    }
+                    console.log(liveControlInfo);
+                }
+            }
+        }
+        let xml = new XMLHttpRequest();
+        xml.open("POST", updateLiveControlLink, true);
+        xml.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+        xml.onreadystatechange = function(){
+            if(xml.readyState == 4 && xml.status == 200){
+                console.log("SUCCESS?")
+                console.log(xml.responseText);
+            }
+        }
+        let stringified = JSON.stringify(liveControlInfo);
+        xml.send(stringified);
+        
+    }
+
+    // document.getElementById("moduleLiveController").addEventListener(onload, function(){
+        
+    // });
+</script>

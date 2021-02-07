@@ -4,6 +4,7 @@
     <div class="lagreDiv" onclick="lagreLag()"><h2>Lagre</h2></div>
     <div class="lag">
         <div>Navn:<H1 contenteditable="true" class="intypingField"  id="navnID">{{lag.navn}}</H1></div>
+        <div>Kallenavn:<H1 contenteditable="true" class="intypingField"  id="kallenavnID">{{lag.kallenavn}}</H1></div>
         <div>Spill:<H1 contenteditable="true" class="intypingField" id="spillID">{{lag.spill}}</H1></div>
         <div>Tag:<H1 contenteditable="true" class="intypingField" id="tagID">{{lag.tag}}</H1></div>
         <div>Bilde (link):<H1 contenteditable="true" class="intypingField" id="bildeID">{{lag.bilde}}</H1></div>
@@ -12,10 +13,26 @@
         <div>ID:<H1 contenteditable="false" id="idID">{{lag.id}}</H1></div>
         <div id="spillereContainer">
             {% for spiller in lag.spillere %}
-            <div class="spiller">
-                <div>Gamer tag:<H1 contenteditable="true" class="intypingField">{{spiller.navn}}</H1></div>
+            {% set outer_loop = loop %}
+            
+            <div class="spiller" id="Spiller{{loop.index}}ID">
+                
+                <div>Spiller:<H1 value="{{spiller.navn}}" id="Spiller{{loop.index}}NameID" contenteditable="true" class="intypingField" onclick="makeCurrentPlayerSelected('Spiller{{loop.index}}')" onkeyup="matchString('Spiller{{loop.index}}')">{{spiller.navn}}</H1></div>
+                 
+                <div>SpillerID:<H1 contenteditable="true" class="intypingField">{{spiller.id}}</H1></div>
                 <div>Rolle:<H1 contenteditable="true" class="intypingField">{{spiller.rolle}}</H1></div>
-                <div>Spill:<H1 contenteditable="true" class="intypingField">{{spiller.spill}}</H1></div>
+                <div>Bilde:<H1 contenteditable="true" class="intypingField">{{spiller.spillerBilde}}</H1></div>
+                <div>Ingame navn:<H1 contenteditable="true" class="intypingField">{{spiller.ingameNavn}}</H1></div>
+                <div class="playerSelectDiv" id="Spiller{{loop.index}}PSD" style="visibility: hidden;"> 
+                    {% for player in alleSpillere %}
+                        <div class="playerDiv" value="{{player.id}}" onclick="addPlayerToSelect('Spiller{{outer_loop.index}}','{{player.id}}','{{player.navn}}','{{player.gamernoBilde}}', '{{player.lolIngame}}' )">
+                            <p>{{player.navn}}</p>
+                            <h2 style="display:none;">{{player.id}}</h2>
+                            <h2 style="display:none;">{{player.lolIngame}}</h2>
+                        </div>
+                    {% endfor %}
+                </div> 
+                <div style="display: none;">Spill:<H1 contenteditable="true" class="intypingField">{{spiller.spill}}</H1></div>
             </div>
             {% endfor %}
         </div>
@@ -24,6 +41,111 @@
         <button onclick="leggTilNySpiller()">Legg til ny spiller</button>
     </div>
     <script>
+        let selectedEl;
+        let selectedNameIDEl;
+        let h1PreviousValue;
+        document.addEventListener("click", function(event){
+            if(selectedEl!= null){
+                if(selectedEl.contains(event.target) ||selectedNameIDEl.contains(event.target)){
+                    console.log("has Target");
+                }else{
+                    selectedEl.style.visibility = "hidden";
+
+                    console.log(selectedNameIDEl);
+                    selectedNameIDEl.innerHTML = h1PreviousValue;
+                    selectedEl = null;
+                    selectedNameIDEl = null;
+                    h1PreviousValue = null;
+
+                    
+                    console.log("Out of Target");
+                }
+            }else{
+                console.log("selected =  NULL");
+            }
+            
+        });
+        function makeCurrentPlayerSelected(spillerIDNumber){
+            let plrSlctDivEls = document.getElementsByClassName("playerSelectDiv");
+            for(let i =0; i<plrSlctDivEls.length; i++){
+                plrSlctDivEls[i].style.visibility = "hidden";
+            }
+            document.getElementById(spillerIDNumber+"PSD").style.visibility = "visible";
+            selectedEl = document.getElementById(spillerIDNumber+"PSD");
+            selectedNameIDEl = document.getElementById(spillerIDNumber+"NameID");
+            h1PreviousValue = selectedNameIDEl.innerHTML;
+        }
+
+        function matchString(spillerId){
+            //let spillerNavnEl = document.getElementById(spillerId+"NameID");
+            let searchString = document.getElementById(spillerId+"NameID").innerHTML.toLowerCase();
+            const regex = new RegExp("^"+searchString+'[a-zA-Z0-9\\s]*$','i');
+            console.log(regex);
+            let psdEls = document.getElementById(spillerId+"PSD").children;
+            for(let i = 0; i<psdEls.length; i++){
+                //let txtValue = psdEls[i].innerHTML;
+                let cmprValue1 = psdEls[i].children[0].innerHTML;
+                let cmprValue2 = psdEls[i].children[1].innerHTML;
+                let cmprValue3 = psdEls[i].children[2].innerHTML;
+
+                // let cmprResult1 = cmprValue1.toLowerCase().indexOf(searchString);
+                // let cmprResult2 = cmprValue2.toLowerCase().indexOf(searchString);
+                // let cmprResult3 = cmprValue3.toLowerCase().indexOf(searchString);
+                // if(cmprResult1 > -1 || cmprResult2 > -1 || cmprResult3 > -1){
+                //     psdEls[i].style.display = "";
+                // }else{
+                //     psdEls[i].style.display ="none";
+                // }
+                let rgx1 = regex.test(cmprValue1);
+                let rgx2 = regex.test(cmprValue2);
+                let rgx3 = regex.test(cmprValue3);
+                //let rgx4 = regex.test(cmprValue3);
+                //console.log(cmprValue1, cmprValue2,cmprValue3);
+                console.log(regex, rgx1, cmprValue1, rgx2, cmprValue2 ,rgx3, cmprValue3);
+                if(rgx1 || rgx2 || rgx3){
+                    psdEls[i].style.display = "";
+                }else{
+                    psdEls[i].style.display ="none";
+                }
+            }
+
+        }
+
+        function addPlayerToSelect(selectLoopID, playerID, playerName, playergamernoImageLink, lolIngame){
+            let spillerDivEl = document.getElementById(selectLoopID+"ID");
+            let splEls = spillerDivEl.children;
+            console.log(spillerDivEl);
+            console.log(splEls[0].children);
+            
+            splEls[0].children[0].innerHTML = playerName;
+            splEls[1].children[0].innerHTML = playerID;
+            splEls[3].children[0].innerHTML = playergamernoImageLink;
+            splEls[4].children[0].innerHTML = lolIngame;
+            h1PreviousValue = playerName;
+            //splEls[0][0].innerHTML = playerName;
+
+
+        }
+        function searchSelect(textInputID){
+            let searchTextEl = document.getElementById(textInputID+"ID");
+            let searchedTextLowercase = searchTextEl.value.toLowerCase();
+            let selectEl = document.getElementById(textInputID+"SelectID");
+            let optionsArrayEls = selectEl.options;
+            console.log(textInputID);
+
+            if(document.getElementById(textInputID+"ID").value == ""){
+                    optionsArrayEls[0].selected = true;
+                    return ;
+                }
+            for(let i =0; i<optionsArrayEls.length; i++){
+                if(optionsArrayEls[i].value.indexOf(searchedTextLowercase)==0){
+                    optionsArrayEls[i].selected = true;
+                }
+
+                
+            }
+
+        }
         let spillcontainerEL = document.getElementById("spillereContainer");
         function leggTilNySpiller(){
             let spillerDiv = document.createElement("div");
@@ -37,6 +159,7 @@
         function lagreLag(){
             let tempObject = {};
             tempObject["navn"] = document.getElementById("navnID").innerHTML;
+            tempObject["kallenavn"] = document.getElementById("kallenavnID").innerHTML;
             tempObject["spill"] = document.getElementById("spillID").innerHTML;
             tempObject["tag"] = document.getElementById("tagID").innerHTML;
             tempObject["bilde"] = document.getElementById("bildeID").innerHTML;
@@ -50,9 +173,11 @@
             for(let i =0; i<spillereELs.length; i++){
                 let tempPlayerObject =  {};
                 let sELs = spillereELs[i].children;
-                tempPlayerObject["rolle"] = sELs[1].children[0].innerHTML;
                 tempPlayerObject["navn"] = sELs[0].children[0].innerHTML;
-                tempPlayerObject["spill"] = sELs[2].children[0].innerHTML;
+                tempPlayerObject["id"] = sELs[1].children[0].innerHTML;
+                tempPlayerObject["rolle"] = sELs[2].children[0].innerHTML;
+                tempPlayerObject["spillerBilde"] = sELs[3].children[0].innerHTML;
+                tempPlayerObject["ingameNavn"] = sELs[4].children[0].innerHTML;
                 spillerArray.push(tempPlayerObject);
             }
             tempObject["spillere"] = spillerArray;

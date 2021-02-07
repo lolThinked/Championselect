@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, render_template, jsonify, url_for, send_from_directory, redirect, request
 from flask_login import current_user, login_user, logout_user, login_required, LoginManager
-from pythonFiles.f_functions import hentInnLagoversikt, hentInnKampoversikt, lastInnCurrentKamp, hentInnSpillerOversikt, hentJson, hentLag
+from pythonFiles.f_functions import hentInnLagoversikt, hentInnKampoversikt, lastInnCurrentKamp, hentInnSpillerOversikt, hentJson, hentLag, hentInstillinger
 from operator import itemgetter
+import subprocess
+
 import uuid
 import json
 import os
@@ -11,6 +13,9 @@ app = Flask(__name__)
 
 login= LoginManager(app)
 login.login_view = "login"
+
+false = False
+true = True
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
@@ -31,9 +36,17 @@ kampoversiktjson = [
 gamerNoDatabase = hentJson("database")
 lagoversiktjson = hentInnLagoversikt()
 kampoversiktjson = hentInnKampoversikt()
+
 global currentKampjson
+
 currentKampjson = lastInnCurrentKamp()
+
+#print(currentKampjson)
+
 spillerListe = hentInnSpillerOversikt()
+homePageLinkerJson = hentJson("homepageLinker")
+settings = hentInstillinger()
+livecontrolJson = hentJson("production/livecontrol")
 #print(currentKamp)
 def getOversikt():
     return lagoversiktjson
@@ -60,7 +73,19 @@ lagoversikt = {
 
 
      
+showHideQueue = {
+    "ingame":[
+        {
+            "commandName":"",
+            "action":"action",
+            "data":"data"
+        }
+    ],
+    "pregame":[
 
+    ]
+
+}
 
 
 
@@ -78,7 +103,7 @@ def lagNyCurrentKamp():
 
 @app.route("/")
 def home():
-    return render_template("interface/homePage.html", user=current_user, current_user=current_user)
+    return render_template("interface/homePage.html", user=current_user, current_user=current_user, linker=homePageLinkerJson)
 
 @app.route("/kampeditor")
 def kampeditor():
@@ -163,7 +188,7 @@ def editLag(id):
         return "LAGET FINNES IKKE"
     else:
         print(laget)
-        return render_template("interface/lageditor.html", user=current_user, lag=laget)
+        return render_template("interface/lageditor.html", user=current_user, lag=laget, alleSpillere=spillerListe)
 @app.route("/lag/<id>/save", methods=["POST"])
 def lagreLag(id):
     print("\n\n\n REQUEST")
@@ -201,17 +226,60 @@ def spillerTilStream(id):
             spiller = spillerLOOP
             break
     return render_template("stream/spiller.html", spiller=spiller)
+
+@app.route("/spillere/<id>/json")
+def spillerJson(id):
+    spiller = None
+    for spillerLOOP in gamerNoDatabase:
+        if spillerLOOP["user"]["id"] == int(id):
+            print(spillerLOOP["user"]["id"])
+            spiller = spillerLOOP
+            break
+    return jsonify(spiller)
     
 
 
 @app.route("/caster/dashboard")
 def casterDashboard():
-    print(hentCurrentKamp())
-    return render_template("caster/dashboard.html", alleLag=hentAlleLag(), kamp = currentKampjson)
+    #print("CASTER DASHBOARD")
+    #print(hentCurrentKamp())
+    #print(currentKampjson)
+    return render_template("caster/dashboard.html", alleLag=hentAlleLag(), kamp = currentKampjson, livecontrol = livecontrolJson)
 
 @app.route("/caster/ingame")
 def casterIngame():
-    return "INGAME"
+    return render_template("interface/ingameController.html", kamp = currentKampjson)
+
+@app.route("/production/livecontrol/view")
+@app.route("/production/livecontrol")
+def viewLiveControl():
+    return render_template("production/livecontrol.html", livecontrol = livecontrolJson)
+
+
+@app.route("/production/livecontrol/scene/<sceneName>", methods=["GET", "POST"])
+def livecontrolSpesificScene(sceneName):
+    if request.method == "GET":
+        return jsonify(livecontrolJson[sceneName])
+    elif request.method =="POST":
+        indata = eval(request.data)
+        global livecontrolJson
+        livecontrolJson[sceneName] = indata
+        return "200"
+
+@app.route("/production/livecontrol/json")
+def getLivecontrolJson():
+    return jsonify(livecontrolJson)
+
+@app.route("/production/livecontrol/update", methods=["POST"])
+def updateLiveControl():
+    indata = eval(request.data)
+    global livecontrolJson
+    livecontrolJson = indata
+    print(livecontrolJson)
+    with open("jsonFiles/production/livecontrol.json", "w") as f:
+        json.dump(livecontrolJson, f)
+    return "200"
+
 
 @app.route("/stream/currentkamp")
 def streamCurrentKamp():
@@ -221,15 +289,19 @@ def streamCurrentKamp():
 def getCurrentKamp():
     return jsonify(currentKamp)
     
-print(currentKampjson)
+#print(currentKampjson)
 @app.route("/currentKamp/update", methods=["POST"])
 def updateCurrentKamp():
+    #print(currentKampjson)
     global currentKampjson
+    #print("CURRENT KAMP")
+    #print(currentKampjson)
     indata = eval(request.data)
-    print(currentKampjson)
+    #print(currentKampjson)
     currentKampjson = indata
     with open("jsonFiles/kamper/currentKamp.json","w") as f:
         json.dump(indata, f)
+    #print(currentKampjson)
     return "SUCCESS"
 
 @app.route("/currentKamp/newFromID", methods=["POST"])
@@ -268,6 +340,13 @@ def twitterMatchImage(id):
             kamptilSide = kamp
             break
     return render_template("production/twitterMatchImage.html", kamp = kamptilSide)
+@app.route("/production/makeTwitterImage", methods=["POST"])
+def makeTwitterImage():
+    indata = eval(request.data)
+    stringForTwitter = "seleniumScreenshotter.exe" + indata["id"]
+    #subprocess.run(['seleniumScreenshotter.exe', indata["id"]])
+    os.system("seleniumScreenshotter.exe "+indata["id"])
+    return "200"
 
 @app.route("/stream/ingameOverlay")
 def ingameOverlay():
@@ -278,14 +357,15 @@ def streamRoster():
 
 @app.route("/championselectOverlay")
 def championselectOverlay():
+    print(currentKampjson)
     return render_template("stream/championselectOverlay.html", kamp = currentKampjson)
 @app.route("/champselect")
 def champselect():
-    return render_template("champselect.html")
+    return render_template("champselect.html", settings=settings)
 
 @app.route("/lobby")
 def lobby():
-    return render_template("stream/lobby.html")
+    return render_template("lobby.html")
 
 @app.route("/lobby/json")
 def lobbyJson():
@@ -350,6 +430,18 @@ def champselectTimer():
     jsonFile = hentJson("timer")
     return jsonify(jsonFile)
 
+
+
+@app.route("/settings")
+def viewSettings():
+    return render_template("interface/settings.html", settings=settings)
+@app.route("/settings/update", methods=["POST"])
+def updateSettings():
+    global settings
+    settings = eval(request.data)
+    with open("jsonFiles/settings.json","w") as f:
+        json.dump(settings, f)
+    return "200"
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -497,7 +589,7 @@ def lagCustomLagoversikt():
     return customKampoversikt
     
 
-lagNyCurrentKamp()
+#lagNyCurrentKamp()
 
 @app.route('/favicon.ico')
 def favicon():

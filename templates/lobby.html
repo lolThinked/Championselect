@@ -1,0 +1,188 @@
+
+  <title>Thinked</title>
+  <link rel="stylesheet" href={{ url_for('static', filename='css/lobbyIndex.css')}}>
+	<div class="main-app">
+    <div class="teams">
+      <div class="team" id="blueTeam">
+        <div class="player" id="0">
+          <h1 class="summonerName">Empty</h1>
+          <h3 class="level"></h3>
+          <img src="" alt="" class="summonerIconId">
+        </div>
+        <div class="player" id="1">
+          <h1 class="summonerName">Empty</h1>
+          <h3 class="level"></h3>
+          <img src="" alt="" class="summonerIconId">
+        </div>
+        <div class="player" id="2">
+          <h1 class="summonerName">Empty</h1>
+          <h3 class="level"></h3>
+          <img src="" alt="" class="summonerIconId">
+        </div>
+        <div class="player" id="3">
+          <h1 class="summonerName">Empty</h1>
+          <h3 class="level"></h3>
+          <img src="" alt="" class="summonerIconId">
+        </div>
+        <div class="player" id="4">
+          <h1 class="summonerName">Empty</h1>
+          <h3 class="level"></h3>
+          <img src="" alt="" class="summonerIconId">
+        </div>
+      </div>
+      <div class="team" id="redTeam">
+        <div class="player" id="5">
+          <h1 class="summonerName">Empty</h1>
+          <h3 class="level"></h3>
+          <img src="" alt="" class="summonerIconId">
+        </div>
+        <div class="player" id="6">
+          <h1 class="summonerName">Empty</h1>
+          <h3 class="level"></h3>
+          <img src="" alt="" class="summonerIconId">
+        </div>
+        <div class="player" id="7">
+          <h1 class="summonerName">Empty</h1>
+          <h3 class="level"></h3>
+          <img src="" alt="" class="summonerIconId">
+        </div>
+        <div class="player" id="8">
+          <h1 class="summonerName">Empty</h1>
+          <h3 class="level"></h3>
+          <img src="" alt="" class="summonerIconId">
+        </div>
+        <div class="player" id="9">
+          <h1 class="summonerName">Empty</h1>
+          <h3 class="level"></h3>
+          <img src="" alt="" class="summonerIconId">
+        </div>
+      </div>
+    </div>
+    <div class="specTime">
+
+      <div class="spectators">
+        <div class="spectator" id="11">
+          <h1 class="summonerName">Empty</h1>
+          <h3 class="level"></h3>
+          <img src="" alt="" class="summonerIconId">
+        </div>
+        <div class="spectator" id="12">
+          <h1 class="summonerName">Empty</h1>
+          <h3 class="level"></h3>
+          <img src="" alt="" class="summonerIconId">
+        </div>
+        <div class="spectator" id="13">
+          <h1 class="summonerName">Empty</h1>
+          <h3 class="level"></h3>
+          <img src="" alt="" class="summonerIconId">
+        </div>
+        <div class="spectator" id="14">
+          <h1 class="summonerName">Empty</h1>
+          <h3 class="level"></h3>
+          <img src="" alt="" class="summonerIconId">
+        </div>
+      </div>
+      <div class="timerBox">
+        <h1>Tid til start: </h1>
+      </div>
+    </div>
+  </div>
+<script>
+
+let summonerNameAll = document.querySelectorAll(".player > h1")
+let timerBoxEl = document.getElementsByClassName("timerBox");
+console.log("INFO");
+function getInfo(){
+	console.log("HenterInfo");
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', "http://localhost:5000/lobby/json", true);
+	xhr.send();
+	xhr.onreadystatechange = processRequest;
+		function processRequest(e) {
+		//	console.log(xhr.readyState)
+	    if (xhr.readyState == 4 && xhr.status == 200) {
+	        // time to partay!!!
+					var response = JSON.parse(xhr.responseText);
+					//SummonerNames
+          console.log(response);
+          if(response ==null){
+            return
+          }
+          for(let i=0; i<5; i++){
+            //Blueside
+            let summonerName = "Empty";
+            if(i >= response.gameConfig.customTeam100.length){
+
+            }else if(!response.gameConfig.customTeam100[i].isBot){
+              summonerName = response.gameConfig.customTeam100[i].summonerName;
+            }else{
+              summonerName = "Bot";
+            }
+            summonerNameAll[i].innerHTML = summonerName;
+            //Redside
+            summonerName = "Empty";
+            if(i >= response.gameConfig.customTeam200.length){
+
+            }else if(!response.gameConfig.customTeam200[i].isBot){
+              summonerName = response.gameConfig.customTeam200[i].summonerName;
+            }else{
+              summonerName = "Bot";
+            }
+            summonerNameAll[i+5].innerHTML = summonerName;
+          }
+
+
+				}
+	    }
+}
+function getTimer(){
+	console.log("HenterTimer");
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', "http://localhost:5000/lobby/timer", true);
+	xhr.send();
+	xhr.onreadystatechange = processRequest;
+		function processRequest(e) {
+			console.log(xhr.readyState)
+	    if (xhr.readyState == 4 && xhr.status == 200) {
+	        // time to partay!!!
+					var response = JSON.parse(xhr.responseText);
+          console.log(response);
+          if(response.time == 400){
+            timerBoxEl[0].innerHTML = "<h1>Tid til start: 3min+</h1>";
+          }else if( response.time == 0){
+            timerBoxEl[0].innerHTML = "<h1>Starter snart!</h1>";
+          }else {
+            timerBoxEl[0].innerHTML = "<h1>Tid til start: " +response.time +"s</h1>";
+          }
+
+	    }
+	}
+}
+function timer(ms) {
+ return new Promise(res => setTimeout(res, ms));
+}
+//setInterval(getInfo(), 500);
+//getInfo();
+var teller = 0;
+async function load () {
+  while(true) {
+		if(teller == 4){
+			getTimer();
+			getInfo();
+			teller = 0;
+		}else{
+			getTimer();
+      //getInfo();
+			teller++;
+		}
+
+
+    await timer(500);
+  }
+}
+getTimer();
+getInfo();
+load();
+
+
+</script>

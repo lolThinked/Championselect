@@ -20,13 +20,15 @@
 }
 .lag div{
     margin: 20px;
-    display: flex;
+    /* display: flex; */
 }
 .intypingField{
     border-bottom: 1px solid #a6e7ff;
     width: 400px;
     margin:20px;
     margin: auto;
+    height: 40px;
+    contain: content;
 }
 #spillereContainer{
     width: 100%;
@@ -35,4 +37,31 @@
 }
 .spiller{
     display: flex;
+    margin-bottom: 20px;
+}
+
+
+.playerSelectContainer{
+    
+}
+.playerSelectDiv{
+    position: absolute;
+    display: block;
+    height: 160px;
+    contain: strict;
+    min-width: 300px;
+    overflow-x: auto;
+    width: 400px;
+    background-color: #1b1b1b;
+    border: 1px solid #f840ff;
+    left: 449px;
+}
+.playerDiv{
+    border-bottom: 1px solid white;
+    font-size: 1.7em;
+}
+.playerDiv:hover{
+    cursor: pointer;
+    background-color: #00ff26;
+    color: white;
 }
