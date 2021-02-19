@@ -1,0 +1,46 @@
+<link rel="stylesheet" href={{ url_for('static', filename='css/modules/playerCamSelectModule.css')}}>
+
+
+<div class="playerCamSelect">
+    {% for player in kamp.lag1.spillere %}
+    {% set player2 = kamp.lag2.spillere[loop.index-1] %}
+    
+    <div class="playerCamSelectDiv" id="{{loop.index-1}}" onclick="selectPlayerById({{loop.index-1}})">
+        <h1>{{player.navn}}</h1>
+        {% if player2 %}
+        <h1>{{player2.navn}}</h1>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+
+
+<script>
+
+
+    function selectPlayerById(playerSelectID){
+        console.log(playerSelectID);
+        liveControlInfo.ingame.playerCams.data.player1ToShow = playerSelectID;
+        liveControlInfo.ingame.playerCams.data.player2ToShow = playerSelectID;
+        let ELs = document.getElementsByClassName("playerCamSelectDiv");
+        for(let i =0; i<ELs.length; i++){
+            ELs[i].classList.remove("show");
+            ELs[i].classList.add("hide");
+            
+        }
+        document.getElementById(""+playerSelectID+"").classList.add("show");
+        document.getElementById(""+playerSelectID+"").classList.remove("hide");
+        let xml = new XMLHttpRequest();
+        xml.open("POST", updateLiveControlLink, true);
+        xml.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+        xml.onreadystatechange = function(){
+            if(xml.readyState == 4 && xml.status == 200){
+                console.log("SUCCESS?")
+                console.log(xml.responseText);
+            }
+        }
+        let stringified = JSON.stringify(liveControlInfo);
+        xml.send(stringified);
+        
+    }
+</script>

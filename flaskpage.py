@@ -48,6 +48,7 @@ currentKampjson = lastInnCurrentKamp()
 
 #print(currentKampjson)
 
+kameraOversiktJson = hentJson("production/playerCamOverview")
 spillerListe = hentInnSpillerOversikt()
 homePageLinkerJson = hentJson("homepageLinker")
 settings = hentInstillinger()
@@ -354,7 +355,7 @@ def viewTestNinjaStream():
 
 @app.route("/stream/ingame/playerCams")
 def playerCamStreamView():
-    return render_template("stream/ingamePlayercams.html", kamp = currentKampjson)
+    return render_template("stream/ingamePlayercams.html", kamp = currentKampjson, kameraOversikt = kameraOversiktJson)
 
 @app.route("/stream/currentkamp")
 def streamCurrentKamp():
@@ -420,6 +421,7 @@ def newCurrentMatchPost():
     kamp["lag2"]["score"] = 0
     global currentKampjson
     currentKampjson = kamp
+    lagKameraOversiktJson(currentKampjson)
     print(kamp)
     #print("TEST")
     #lagNyCurrentKamp()
@@ -712,8 +714,37 @@ def lagCustomLagoversikt():
     print("\nKAMPOVERSIKT\n")
     print(kampoversiktjson)
     return customKampoversikt
-    
 
+
+def lagKameraOversiktJson(currentKamp):
+    #Takes in current kamp
+    # Creates an overview of all the kameralinks
+    global kameraOversiktJson
+    lag1Liste = []
+    lag2Liste = []
+    for player in currentKamp["lag1"]["spillere"]:
+        tempID = player["id"]
+        if(tempID!=""):
+            print(tempID)
+            lag1Liste.append(hentKameraLinkerMedId(tempID))
+    kameraOversiktJson["lag1"] = lag1Liste
+    for player in currentKamp["lag2"]["spillere"]:
+        tempID = player["id"]
+        if(tempID!=""):
+            print(tempID)
+            lag2Liste.append(hentKameraLinkerMedId(tempID))
+    kameraOversiktJson["lag2"] = lag2Liste
+    print(len(lag1Liste), len(lag2Liste))
+    with open("jsonFiles/production/playerCamOverview.json", "w") as f:
+        json.dump(kameraOversiktJson, f)
+    
+def hentKameraLinkerMedId(id):
+    if(id == ""):
+        return 
+    #id = str(id)
+    obsNinjaLink = ("spillere/obsninja/"+str(id)+"")
+    print(obsNinjaLink)
+    return hentJson(obsNinjaLink)
 #lagNyCurrentKamp()
 
 @app.route('/favicon.ico')

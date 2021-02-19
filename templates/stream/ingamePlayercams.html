@@ -2,44 +2,62 @@
 
 <div class="teamContainer" id="teamContainerDiv">
     <div class="team" id="blueTeam">
-        <div class="player">
-            <iframe src="https://obs.ninja/?view=pvHkUuA&scene&room=Thinked&password=Thinked" frameborder="0"></iframe>
-            <div><h1>Thinked Cam</h1></div>
+        {% for player in kameraOversikt.lag1 %}
+        <div class="player bluePlayer" id="{{player.id}}">
+            <iframe src="{{player.view}}" frameborder="0"></iframe>
+            <div><h1>{{player.name}}</h1></div>
         </div>
-        <div class="player">
-            <iframe src="https://obs.ninja/?view=ZpeXB5M&scene&room=Thinked&password=Thinked" frameborder="0"></iframe>
-            <div><h1>Thinked Screen</h1></div>
-        </div>
+        {% endfor %}
     </div>
     <div class="team" id="redTeam">
-        <div class="player">
-            <iframe src="https://obs.ninja/?view=5gqevyv&scene&room=Thinked&password=Thinked" frameborder="0"></iframe>
-            <div><h1>Thinked Red Cam</h1></div>
+        {% for player in kameraOversikt.lag2 %}
+        <div class="player redPlayer" id="{{player.id}}">
+            <iframe src="{{player.view}}" frameborder="0"></iframe>
+            <div><h1>{{player.name}}</h1></div>
         </div>
-        <div class="player">
-            <iframe src="https://obs.ninja/?view=2BaYcVD&scene&room=Thinked&password=Thinked" frameborder="0"></iframe>
-            <div><h1>Thinked Red Screen</h1></div>
-        </div>
+        {% endfor %}
     </div>
 </div>
 <h1 style="display: none;">{{kamp.dato}}</h1>
 
-
+<img src="{{ url_for('static', filename='img/Overlays/ING_VRLY_MP42V2.svg')}}" alt="IngameOverlay" id="backgroundImage">
 <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.2/socket.io.js" crossorigin="anonymous"></script>
 <script>
-    
+    let kameraOversiktObject = {{kameraOversikt|safe}};
     let rosterLink = "{{url_for('livecontrolSpesificScene', sceneName='playerCams')}}";
+    let bluePlayerEls = document.getElementsByClassName("bluePlayer");
+    let redPlayersEls = document.getElementsByClassName("redPlayer");
     const sceneName = "playerCams";
     var socket = io();
     
     const True = true;
     const False = false;
-    let show = false;
+    let show = true;
+    let viewedPlayerIds = 0;
     socket.on('livecontrolupdate', function(data){
         console.log("message");
         console.log(data);
         checkHideShow(data.ingame[sceneName]);
+        updateVisiblePlayer(data.ingame[sceneName].data);
     });
+    
+    function updateVisiblePlayer(data){
+        for(let i =0; i<kameraOversiktObject.lag1.length; i++){
+            if(data.player1ToShow != i){
+                bluePlayerEls[i].style.display = "none";
+            }else{
+                bluePlayerEls[i].style.display = "block";
+            }
+        }
+        for(let i =0; i<kameraOversiktObject.lag2.length; i++){
+            if(data.player2ToShow != i){
+                redPlayersEls[i].style.display = "none";
+            }else{
+                redPlayersEls[i].style.display = "block";
+            }
+        }
+    }
+
     function getLivecontrolJsonData(){
         let xml = new XMLHttpRequest();
         xml.open("GET", rosterLink, false);  
@@ -49,6 +67,7 @@
                 console.log("GET LIVE JSON");
                 console.log(tempDIct);
                 checkHideShow(tempDIct);    
+                updateVisiblePlayer(tempDIct.data);
             }
         }
         xml.send();
@@ -70,6 +89,7 @@
     }
 
     function contentShow(){
+        console.log("Show");
         document.getElementById("teamContainerDiv").style.animationName="vis";
         // document.getElementById("scoreBoardContent").style.opacity = 1;
         // document.getElementsByClassName("scoreboard-half")[0].style.animationName = "vis";
@@ -78,12 +98,14 @@
     }
 
     function contentHide(){
+        console.log("HIDE");
         document.getElementById("teamContainerDiv").style.animationName="skjul";
         // document.getElementById("scoreBoardContent").style.opacity = 0;
         // document.getElementsByClassName("scoreboard-half")[0].style.animationName = "skjul";
         // document.getElementsByClassName("scoreboard-half")[1].style.animationName = "skjul";
     }
-
+    getLivecontrolJsonData();
+    //contentHide();
 
 
 
