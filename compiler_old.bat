@@ -1,3 +1,0 @@
-start pyinstaller -i"C:\Users\Fabian\Desktop\Streaming\PROJECTS\LCSChampionSelect\icon.ico" -F C:\Users\Fabian\Desktop\Streaming\PROJECTS\LCSChampionSelect\flaskpage.py
-start pyinstaller -i"C:\Users\Fabian\Desktop\Streaming\PROJECTS\LCSChampionSelect\icon.ico" -F C:\Users\Fabian\Desktop\Streaming\PROJECTS\LCSChampionSelect\updater.py
-start pyinstaller -i"C:\Users\Fabian\Desktop\Streaming\PROJECTS\LCSChampionSelect\icon.ico" -F C:\Users\Fabian\Desktop\Streaming\PROJECTS\LCSChampionSelect\webSocketer.py

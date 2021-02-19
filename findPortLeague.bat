@@ -1,1 +1,0 @@
-Get-NetTCPConnection -OwningProcess $(Get-Process 'League of Legends').Id | Where-Object { $_.LocalAddress -EQ '127.0.0.1' -And $_.RemoteAddress -EQ '0.0.0.0' } | Select-Object LocalAddress,LocalPort
