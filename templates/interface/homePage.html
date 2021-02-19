@@ -19,6 +19,7 @@
         </div>         
         {% endfor %}
       </div>
+      <h2>Caster linker:</h2>
       <div class="caster-content">
         {% for link in linker.caster %}
         <div class="linkGroupContainerDiv" onclick="gotToLink('{{ url_for(link.url) }}')">
@@ -27,19 +28,21 @@
             <button onclick="copyMe('{{link.url}}')" value="{{ url_for(link.url) }}" id="link.url">Click to Copy link!</button>
         </div>         
         {% endfor %}
-      </div>
-      <div class="producer-content">
-        {% for link in linker.producer %}
-        <div class="linkGroupContainerDiv" onclick="gotToLink('{{ url_for(link.url) }}')">
-          <a href="{{ url_for(link.url) }}" ><h3>{{link.navn}}</h3></a>
-            <!-- <h2>{{link.navn}}</h2> -->
-            <button onclick="copyMe('{{link.url}}')" value="{{ url_for(link.url) }}" id="link.url">Click to Copy link!</button>
-        </div>         
-        {% endfor %}
-      </div>
+      </div>  
       <div>
+        <h2>General</h2>
         <div class="general-links">
           {% for link in linker.general %}
+          <div class="linkGroupContainerDiv" onclick="gotToLink('{{ url_for(link.url) }}')">
+            <a href="{{ url_for(link.url) }}" ><h3>{{link.navn}}</h3></a>
+              <!-- <h2>{{link.navn}}</h2> -->
+              <button onclick="copyMe('{{link.url}}')" value="{{ url_for(link.url) }}" id="link.url">Click to Copy link!</button>
+          </div>         
+          {% endfor %}
+        </div>
+        <h2>Production</h2>
+        <div class="producer-content">
+          {% for link in linker.producer %}
           <div class="linkGroupContainerDiv" onclick="gotToLink('{{ url_for(link.url) }}')">
             <a href="{{ url_for(link.url) }}" ><h3>{{link.navn}}</h3></a>
               <!-- <h2>{{link.navn}}</h2> -->

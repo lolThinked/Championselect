@@ -14,6 +14,7 @@ body{
     display: none;
     animation-duration: 0.7s;
     position: relative;
+    animation-fill-mode: forwards;
 }
 @keyframes vis{
     
@@ -21,4 +22,12 @@ body{
     25%  { display: block;}
     50% {opacity: 1; left: 100px; display: block;}
     100% { display: block; left: 0px;}
+}
+
+@keyframes skjul{
+    
+    0% { display: block; left: 0px;}
+    25% {opacity: 1; left: 100px; display: block;}
+    50%  { display: block;}
+    100%   {opacity: 0; left: -500px; display: none;}
 }

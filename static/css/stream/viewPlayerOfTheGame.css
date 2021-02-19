@@ -1,0 +1,19 @@
+body{
+    background-color: black;
+    color:white;
+    font-family: roboto thin;
+}
+.casterContainerDiv{
+    width: 960px;
+    display: flex;   
+}
+.caster{
+    height: 300px;
+    margin: 10px;
+    width: 300px;
+    border: 1px solid white;
+}
+.caster h1{
+
+    margin: 70px;
+}

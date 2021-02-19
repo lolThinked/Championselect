@@ -1,0 +1,68 @@
+body{
+    /* background-color: black; */
+    color: white;
+    font-family: roboto thin;
+    margin: 0px;
+}
+.BackgroundImage{
+    width: 1920px;
+    height: 1080px;
+    z-index: -1;
+
+    margin: 0px; 
+    position: absolute; 
+    top: 0px; 
+    left: 0px;
+    display: none;
+}
+.kamper{
+    display: block;
+    position: absolute;
+    top: 253px;
+
+}
+.kamp{
+    display: flex;
+    width: 484px;
+    /* background-color: #1a1a1a; */
+    margin-bottom: 28px;
+    position: relative;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+}
+.spacer{
+    width: 166px;
+    margin-left: 25px;
+}
+.motClass{
+    width: 78px;
+    margin-left: 42px;
+}
+.kamp-top-container{
+    display: flex;
+}
+.lag-image-container img{
+    max-width: 65px;
+    max-height: 65px;
+}
+
+/* 
+@keyframes vis{
+    0%{left: -1000px;}
+    100%{}
+} */
+
+@keyframes vis{
+    
+    0%   {left: -1000px; opacity: 0;}
+    25%  {}
+    50% {left: 30px;}
+    100% {left: 0px; opacity: 1;} 
+}
+@keyframes skjul{
+    0%   {left: 0px; opacity: 1;}
+    25%  { left: 30px; }
+    50% {}
+    100%{left: -500px; opacity: 0;}
+}
+

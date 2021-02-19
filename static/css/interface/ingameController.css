@@ -1,0 +1,45 @@
+
+
+
+
+
+#IngameOverlayStandard{
+    position: absolute;
+    top: 60px;
+    left: 0px;
+    height:860px;
+    z-index: -2;
+    display: none;
+}
+
+
+#spillereContainer{
+    margin: auto !important;
+    width: 640px !important;
+    display: flex !important; 
+    margin-top: 20px !important;
+    color: #ffffff !important;
+}
+
+
+.intypingField{
+    width: 300px;
+}
+.spiller{
+    margin: 20px;
+    background-color: #1e1e1e;
+    border: 1px solid #52ff56;
+    display: block !important;
+}
+
+.playerSelectDiv{
+    height: 212px !important;
+}
+#Spiller1PSD{
+    top: 159px;
+    left: 661px;
+}
+#Spiller2PSD{
+    top: 159px;
+    left: 1104px;
+}

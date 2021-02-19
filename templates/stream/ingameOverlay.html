@@ -52,7 +52,7 @@
     </div>
 </div>
 
-<div class="scoreBoardContent">
+<div class="scoreBoardContent" id="scoreBoardContent">
     <div class="scoreboard-full" id="scoreboard-full">
         <div class="scoreboard-half" id="scoreboard-left">
             <div class="spillerBildeDiv">
@@ -84,9 +84,64 @@
 </div>
 <img src="{{ url_for('static', filename='img/Overlays/AIM-LOL-OVER-280120v7a.svg')}}" alt="IngameOverlay" id="backgroundImage">
 
-
+<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.2/socket.io.js" crossorigin="anonymous"></script>
 <script>
+    let rosterLink = "{{url_for('livecontrolSpesificScene', sceneName='playerCompare')}}";
+    const sceneName = "playerCompare";
+    var socket = io();
+    
+    const True = true;
+    const False = false;
+    let show = false;
+    socket.on('livecontrolupdate', function(data){
+        console.log("message");
+        console.log(data);
+        checkHideShow(data.ingame[sceneName]);
+    });
+    function getLivecontrolJsonData(){
+        let xml = new XMLHttpRequest();
+        xml.open("GET", rosterLink, false);  
+        xml.onreadystatechange = function(){
+            if(xml.readyState == 4 && xml.status == 200){
+                let tempDIct = JSON.parse(xml.responseText);
+                console.log("GET LIVE JSON");
+                console.log(tempDIct);
+                checkHideShow(tempDIct);    
+            }
+        }
+        xml.send();
+    }
+    getLivecontrolJsonData();
+    function checkHideShow(tempDIct){
+        console.log(tempDIct);
+        if(tempDIct["show"]!=show){
+            if(tempDIct["show"] == true){
+                contentShow();
+                show = true;
+                getUpdatedPlayerFocus();
+            }else{
+                contentHide();
+                show=false;
+            }
+        }
+    }
+
+    function contentShow(){
+        document.getElementById("scoreBoardContent").style.display="block";
+        document.getElementById("scoreBoardContent").style.opacity = 1;
+        document.getElementsByClassName("scoreboard-half")[0].style.animationName = "vis";
+        document.getElementsByClassName("scoreboard-half")[1].style.animationName = "vis";
+
+    }
+
+    function contentHide(){
+        document.getElementById("scoreBoardContent").style.display="block";
+        document.getElementById("scoreBoardContent").style.opacity = 0;
+        document.getElementsByClassName("scoreboard-half")[0].style.animationName = "skjul";
+        document.getElementsByClassName("scoreboard-half")[1].style.animationName = "skjul";
+    }
     let kampInfo = {{ kamp|safe }};
+    
     function updateKampScore(){
         let blueTeamScoreEl = document.getElementById("scoreContainerBlue");
         let redTeamScoreEl = document.getElementById("scoreContainerRed");
@@ -116,27 +171,36 @@
     }
     updateKampScore();
     fixKampTags();
-    function getPlayerJson(id){
+    function getPlayerJson(id,id2){
         var xhr = new XMLHttpRequest();
         console.log(window.location.href);
-        xhr.open("GET", "{{ url_for('spillerJson', id=2474)}}", true);
-        xhr.send();
+        let spillerLink = "{{ url_for('getSpillerJson')}}";
+        console.log(spillerLink);
+        xhr.open("POST", "{{ url_for('getSpillerJson')}}", true);
+        xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+        //xhr.open("GET", "{{ url_for('spillerJson', id=2474)}}", true);
+        let stringified = JSON.stringify({"id":id});
+        let stringified2 = JSON.stringify({"id":id2});
+        xhr.send(stringified);
         //xhr.onreadystatechange = processRequest;
         xhr.onreadystatechange = function(){
             if(xhr.readyState == 4 && xhr.status == 200){
                 //console.log(xhr.responseText);
-                showPlayerInScoreboard(JSON.parse(xhr.responseText));
+                showPlayerInScoreboard(JSON.parse(xhr.responseText), "Left");
             }
         }
         var xhr1 = new XMLHttpRequest();
         console.log(window.location.href);
-        xhr1.open("GET", "{{ url_for('spillerJson', id=42162)}}", true);
-        xhr1.send();
+        xhr1.open("POST", "{{ url_for('getSpillerJson')}}", true);
+        xhr1.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+        //xhr1.open("GET", "{{ url_for('spillerJson', id=42162)}}", true);
+        xhr1.send(stringified2);
         //xhr.onreadystatechange = processRequest;
         xhr1.onreadystatechange = function(){
             if(xhr1.readyState == 4 && xhr1.status == 200){
                 //console.log(xhr.responseText);
-                showPlayerInScoreboardRight(JSON.parse(xhr1.responseText));
+                //showPlayerInScoreboardRight(JSON.parse(xhr1.responseText));
+                showPlayerInScoreboard(JSON.parse(xhr1.responseText), "Right");
             }
         }
         
@@ -154,29 +218,41 @@
         // console.log(stringified);
         // window.location.reload(false);
     }
-    function showPlayerInScoreboard(playerJson){
+    function showPlayerInScoreboard(playerJson, side){
         //let scoreBoardEl = document.getElementById("scoreboard-left");  
+        console.log(side);
         console.log(playerJson);
         //let spillerBildeEl = document.createElement("img");
-        let spillerBildeEl = document.getElementById("spillerBildeLeft");
-        spillerBildeEl.src = playerJson.user.proImage.original.url;
+        let spillerBildeEl = document.getElementById("spillerBilde"+side);
+        if((playerJson.user).hasOwnProperty("proImage") && playerJson.user.proImage!=null){
+            console.log(playerJson.user);
+            spillerBildeEl.src = playerJson.user.proImage.original.url;
+        }else{
+            spillerBildeEl.src = playerJson.user.image;
+        }
+        
         spillerBildeEl.width = 200;
         spillerBildeEl.height = 200;
         console.log(spillerBildeEl);
         //let navnEl = document.createElement("h1");
-        let navnEl = document.getElementById("spillerNavnLeft");
+        let navnEl = document.getElementById("spillerNavn"+side);
         navnEl.innerHTML = playerJson.user.name;
+        if(playerJson.user.name.length > 6){
+            navnEl.style.fontSize = "1.4em";
+        }else{
+            navnEl.style.fontSize = "1.4em";
+        }
         //let killsPerGameEl = document.createElement("h2");
-        let killsPerGameEl = document.getElementById("killsPerGameLeft");
+        let killsPerGameEl = document.getElementById("killsPerGame"+side);
         killsPerGameEl.innerHTML = playerJson.killsPerMap;
         //let deathsPerGameEl = document.createElement("h2");
-        let deathsPerGameEl = document.getElementById("deathsPerGameLeft");
+        let deathsPerGameEl = document.getElementById("deathsPerGame"+side);
         deathsPerGameEl.innerHTML = playerJson.deathsPerMap;
 
-        let visionScoreEl = document.getElementById("visionScoreLeft");
+        let visionScoreEl = document.getElementById("visionScore"+side);
         visionScoreEl.innerHTML = playerJson.visionScore;
 
-        let killParticipationEl = document.getElementById("killParticipationLeft");
+        let killParticipationEl = document.getElementById("killParticipation"+side);
         killParticipationEl.innerHTML = playerJson.killParticipation;
 
         // scoreBoardEl.appendChild(spillerBildeEl);
@@ -188,25 +264,25 @@
         //let scoreBoardEl = document.getElementById("scoreboard-left");  
         console.log(playerJson);
         //let spillerBildeEl = document.createElement("img");
-        let spillerBildeEl = document.getElementById("spillerBildeRight");
+        let spillerBildeEl = document.getElementById("spillerBilde"+side);
         spillerBildeEl.src = playerJson.user.proImage.original.url;
         spillerBildeEl.width = 200;
         spillerBildeEl.height = 200;
         console.log(spillerBildeEl);
         //let navnEl = document.createElement("h1");
-        let navnEl = document.getElementById("spillerNavnRight");
+        let navnEl = document.getElementById("spillerNavn"+side);
         navnEl.innerHTML = playerJson.user.name;
         //let killsPerGameEl = document.createElement("h2");
-        let killsPerGameEl = document.getElementById("killsPerGameRight");
+        let killsPerGameEl = document.getElementById("killsPerGame"+side);
         killsPerGameEl.innerHTML = playerJson.killsPerMap;
         //let deathsPerGameEl = document.createElement("h2");
-        let deathsPerGameEl = document.getElementById("deathsPerGameRight");
+        let deathsPerGameEl = document.getElementById("deathsPerGame"+side);
         deathsPerGameEl.innerHTML = playerJson.deathsPerMap;
 
-        let visionScoreEl = document.getElementById("visionScoreRight");
+        let visionScoreEl = document.getElementById("visionScore"+side);
         visionScoreEl.innerHTML = playerJson.visionScore;
 
-        let killParticipationEl = document.getElementById("killParticipationRight");
+        let killParticipationEl = document.getElementById("killParticipation"+side);
         killParticipationEl.innerHTML = playerJson.killParticipation;
 
         // scoreBoardEl.appendChild(spillerBildeEl);
@@ -214,7 +290,24 @@
         // scoreBoardEl.appendChild(killsPerGameEl);
         // scoreBoardEl.appendChild(deathsPerGameEl);
     }
-    getPlayerJson();
+    function getUpdatedPlayerFocus(){
+        var xhr = new XMLHttpRequest();
+        console.log(window.location.href);
+        xhr.open("GET", "{{ url_for('viewChoosePlayerToFocusJson')}}", true);
+        //xhr.open("GET", "{{ url_for('spillerJson', id=2474)}}", true);
+        xhr.send();
+        //xhr.onreadystatechange = processRequest;
+        xhr.onreadystatechange = function(){
+            if(xhr.readyState == 4 && xhr.status == 200){
+                //console.log(xhr.responseText);
+                let dataRecieved= JSON.parse(xhr.responseText);
+                getPlayerJson(dataRecieved[0].id, dataRecieved[1].id);
+                console.log(dataRecieved);
+            }
+        }
+    }
+    getUpdatedPlayerFocus();
+    //getPlayerJson();
 </script>
 
 <style>

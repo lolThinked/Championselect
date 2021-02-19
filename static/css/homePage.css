@@ -19,6 +19,11 @@ h3{
 .content{
 
 }
+.content-container{
+  max-width: 1600px;
+    width: 90%;
+    margin: auto;
+}
 
 .forStreamContainer{
   display: flex;
@@ -26,13 +31,16 @@ h3{
 
 
 .content-top{
-
+  
 }
 .caster-content{
-
+  display: flex;
 }
 .producer-content{
-
+  display: flex;
+}
+.general-links{
+  display: flex;
 }
 
 
@@ -52,6 +60,7 @@ h3{
 }
 .linkGroupContainerDiv a{
   margin: 10px;
+  text-decoration: none;
 }
 
 .linkGroupContainerDiv a:hover{

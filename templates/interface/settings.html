@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
 <link rel="stylesheet" href={{ url_for('static', filename='css/interface/settings.css')}}>
+    <div class="saveSettingsContainer">
+        <button onclick="save()"><h1>Save</h1></button>
+    </div>
     <div class="settingsContainer">
         <!-- <h2>{{settings}}</h2> -->
         {% for category in settings %}
@@ -21,5 +24,24 @@
 
 
 
-
+    <script>
+        let settings = {{settings|safe}};
+        function save(){
+            settings.lol.championSelectDelay = document.getElementById("lolchampionSelectDelay").innerHTML;
+            var xhr = new XMLHttpRequest();
+            let saveLink = "{{ url_for('updateSettings')}}";
+            xhr.open("POST", saveLink, true);
+            xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+            //xhr.open("GET", "{{ url_for('spillerJson', id=2474)}}", true);
+            console.log(settings);
+            let stringified = JSON.stringify(settings);
+            xhr.send(stringified);
+            //xhr.onreadystatechange = processRequest;
+            xhr.onreadystatechange = function(){
+                if(xhr.readyState == 4 && xhr.status == 200){
+                    console.log(xhr.responseText);
+                }
+            }  
+        }
+    </script>
 {% endblock content %}

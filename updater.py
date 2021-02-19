@@ -1,5 +1,6 @@
 import requests
 import json
+import time
 
 print("Reading Settings...\n")
 infile = open("settings.txt", "r")
@@ -21,10 +22,15 @@ savefile.write("http://ddragon.leagueoflegends.com/cdn/" + currentPatch + "/data
 savefile.close()
 tlV2020= 6955 #Vår 2020
 tlH2020= 7993 #Høst 2020
-LeagueID= 8597 #Vår 2021 HELE Lol
+bigV2021= 8597 #Vår 2021 HELE Lol
 LeagueID = 8647 #Bare 1.Div
+League2DivV2021 = 8648
 TeliaID = 8500
 #LeagueID= 7979
+def hentJson(navn):
+    with open("jsonFiles/" + navn + ".json", "r") as f:
+        return json.load(f)
+spillereMedObsNinjaLink = hentJson("spillere/obsninja/oversikt")
 
 print("Henter personlig data for brukere")
 #https:\/\/www.gamer.no\/turneringer\/telialigaen-league-of-legends-hosten-2020\/7979\/tabeller\/#divisjon7993
@@ -35,6 +41,28 @@ def hentPerBrukerData(bruker = 44513):
     print(response1)
 hentPerBrukerData()
 #https://www.gamer.no/klubber/nordavind-dnb/28821/lag/37826
+
+# Print iterations progress
+def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):
+    """
+    Call in a loop to create terminal progress bar
+    @params:
+        iteration   - Required  : current iteration (Int)
+        total       - Required  : total iterations (Int)
+        prefix      - Optional  : prefix string (Str)
+        suffix      - Optional  : suffix string (Str)
+        decimals    - Optional  : positive number of decimals in percent complete (Int)
+        length      - Optional  : character length of bar (Int)
+        fill        - Optional  : bar fill character (Str)
+        printEnd    - Optional  : end character (e.g. "\r", "\r\n") (Str)
+    """
+    percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
+    filledLength = int(length * iteration // total)
+    bar = fill * filledLength + '-' * (length - filledLength)
+    print(f'\r{prefix} |{bar}| {percent}% {suffix}', end = printEnd)
+    # Print New Line on Complete
+    if iteration == total: 
+        print()
 
 print("GETTING TABLES for TeliaLigaen - Standings...")
 def lagTables():
@@ -70,6 +98,27 @@ def test2(apiLink):
         headers={"Authorization": "04d8d48c80dfc8f5a1eae4b459ba9253c4ff46caa2ef2cfc2fbea87f4d185ab5"}).json()["response"]
     print(response1)
 
+
+
+def createObsNinjaLinkWithGamernoInfo(gamernoUser):
+    finnesIkke = True
+    global spillereMedObsNinjaLink
+    for spiller in spillereMedObsNinjaLink:
+        if spiller == gamernoUser["id"]:
+            finnesIkke = False
+
+    if finnesIkke:
+        obsNinjaId = gamernoUser["country"]["code"]+str(gamernoUser["id"])+gamernoUser["name"]
+        obsNinjaInfo = {
+            "name":gamernoUser["name"],
+            "id":gamernoUser["id"],
+            "push":"https://obs.ninja/?push="+obsNinjaId,
+            "view":"https://obs.ninja/?view="+obsNinjaId,
+            "settings": "&webcam&quality=0&autostart"
+        }
+        with open("jsonFiles/spillere/obsninja/"+str(gamernoUser["id"])+".json","w") as f:
+            json.dump(obsNinjaInfo, f)
+        spillereMedObsNinjaLink.append(gamernoUser["id"])
 
 print("GETTING DataBase for Telialigaen...")
 def lagDataBase():         #Vår 2020
@@ -115,7 +164,8 @@ def lagDataBaseH():       #Høst 2020
     else:
         print("ERROR:" + response1)
         return {"error":"error"}
-def lagDataBaseFraLag():
+def lagDataBaseFraLag(big = False):
+    
     #miderltidig dataBase
     spillerListe = []
     tempDatabase =[]
@@ -129,15 +179,27 @@ def lagDataBaseFraLag():
         "playersWithProImage":[]
         }
     #Hent Lagene i 1.Divisjon
-    tabellForLeague = requests.get(
-        "https://www.gamer.no/api/v1/tournaments/"+str(LeagueID)+"/tables",
-        headers={"Authorization": "04d8d48c80dfc8f5a1eae4b459ba9253c4ff46caa2ef2cfc2fbea87f4d185ab5"}).json()["response"]
-    tabellForLeague = lagTabellmedID(LeagueID)
-    tabellForLeague+= lagTabellmedID(TeliaID)
-    tabellForLeague+= lagTabellmedID(tlH2020)
+    if big:
+        heleLigaRequest = requests.get("https://www.gamer.no/api/v1/tournaments/"+str(bigV2021)+"/",
+            headers={"Authorization": "04d8d48c80dfc8f5a1eae4b459ba9253c4ff46caa2ef2cfc2fbea87f4d185ab5"}).json()["response"]
+        tabellForLeague = lagTabellmedID(TeliaID)
+        tabellForLeague+= lagTabellmedID(tlH2020)
+        for tournamentID in heleLigaRequest["divisions"]:
+            print(tournamentID["name"] + " - Liga")
+            tabellForLeague += lagTabellmedID(tournamentID["id"])
+    else:
+        tabellForLeague = requests.get(
+            "https://www.gamer.no/api/v1/tournaments/"+str(LeagueID)+"/tables",
+            headers={"Authorization": "04d8d48c80dfc8f5a1eae4b459ba9253c4ff46caa2ef2cfc2fbea87f4d185ab5"}).json()["response"]
+        tabellForLeague = lagTabellmedID(LeagueID)
+        tabellForLeague+= lagTabellmedID(TeliaID)
+        tabellForLeague+= lagTabellmedID(tlH2020)
+        tabellForLeague+= lagTabellmedID(League2DivV2021)
     #print(tabellForLeague)
     teamIds =[]
-    for team in tabellForLeague:
+    lenFirstEnumurate = len(tabellForLeague)
+    for i, team in enumerate(tabellForLeague):
+        
         teamId = team["participant"]["teamId"]
         hasNotSeenBefore = True
         for id in teamIds:
@@ -151,7 +213,8 @@ def lagDataBaseFraLag():
                 "https://www.gamer.no/api/v1/teams/"+str(teamId)+"/players",
                 headers={"Authorization": "04d8d48c80dfc8f5a1eae4b459ba9253c4ff46caa2ef2cfc2fbea87f4d185ab5"}).json()["response"]
             #print(lolLagFraGamerno)
-            for gamernoUser in lolLagFraGamerno:
+            lenSecondEnumurate = len(lolLagFraGamerno)
+            for j, gamernoUser in enumerate(lolLagFraGamerno):
                 databaseStats["amountPlayers"] +=1
                 gamernoDatabase[gamernoUser["id"]] = gamernoUser
                 playerStats = requests.get(
@@ -159,18 +222,27 @@ def lagDataBaseFraLag():
                     headers={"Authorization": "04d8d48c80dfc8f5a1eae4b459ba9253c4ff46caa2ef2cfc2fbea87f4d185ab5"}).json()["response"]
                 #print(playerStats)
                 #print(type(playerStats))
-                print("\n"*50,"PROGRESS - ",str(databaseStats["amountTeams"]),"/10")
+                #print("\n"*50,"PROGRESS - ",str(databaseStats["amountTeams"]),"/10")
+                printProgressBar(j + 1, l, prefix = 'LAG Progress:', suffix = 'Complete', length = lenSecondEnumurate)
+                createObsNinjaLinkWithGamernoInfo(gamernoUser)
                 if(playerStats == "Not found"):
-                    print("NOT FOUND")
-                    print("Gamerno ID:", str(gamernoUser["id"]))
-                    print("Gamerno Link:", str(gamernoUser["url"]))
+                    #print("NOT FOUND")
+                    #print("Gamerno ID:", str(gamernoUser["id"]))
+                    #print("Gamerno Link:", str(gamernoUser["url"]))
                     databaseStats["failedGamernos"].append(gamernoUser["url"])
-                    print("\n\n\n")
+                    #print("\n\n\n")
                     databaseStats["noLoLStats"] +=1
                 else:
+                    
                     lolStatsOnly.append(playerStats)
                     playerStats["user"] = gamernoUser
+                    if(playerStats["user"]["name"] == "Dacreq"):
+                        #print(playerStats)
+                        #input("DACREQ")
+                        pass
                     tempDatabase.append(playerStats)
+                    with open("jsonFiles/spillere/lolstats/"+str(playerStats["user"]["id"])+".json", "w") as f:
+                        json.dump(playerStats, f)
                     spiller = {
                         "navn": playerStats["user"]["name"],
                         "lolIngame": playerStats["summonerName"],
@@ -178,12 +250,15 @@ def lagDataBaseFraLag():
                         "gamernoBilde":playerStats["user"]["image"]
                     }
                     spillerListe.append(spiller)
-            print("_"*10,"\n\n\n","Users with no LoL-Stats: ",str(databaseStats["noLoLStats"]),"/",str(databaseStats["amountPlayers"]))
+            #print("_"*10,"\n\n\n","Users with no LoL-Stats: ",str(databaseStats["noLoLStats"]),"/",str(databaseStats["amountPlayers"]))
+        printProgressBar(i + 1, l, prefix = 'Progress:', suffix = 'Complete', length = lenFirstEnumurate)
     print("Teams: ",str(databaseStats["amountTeams"]))
     print("Players: ",str(databaseStats["amountPlayers"]))
     #print(tempDatabase)
     #print(databaseStats["failedGamernos"])
-    return tempDatabase, spillerListe
+    print(len(lolStatsOnly))
+    print(len(tempDatabase))
+    return tempDatabase, spillerListe, databaseStats
 
     #lag1Div
     #Hent hver spiller på alle Lagene
@@ -206,6 +281,25 @@ def hentJson(navn):
     with open("jsonFiles/" + navn + ".json", "r") as f:
         minInfo = json.load(f)
     return minInfo
+
+
+
+
+
+# A List of Items
+items = list(range(0, 57))
+l = len(items)
+
+# Initial call to print 0% progress
+printProgressBar(0, l, prefix = 'Progress:', suffix = 'Complete', length = 13)
+for i, item in enumerate(items):
+    pass
+    # Do stuff...
+    #time.sleep(0.1)
+    # Update Progress Bar
+    #printProgressBar(i + 1, l, prefix = 'Progress:', suffix = 'Complete', length = 13)
+
+
 table = lagTables()
 teliaEsportTabell = lagTabellmedID(TeliaID)
 
@@ -213,18 +307,36 @@ writeToJSONFile("tableStanding", table)
 writeToJSONFile("TESStanding", teliaEsportTabell)
 databaseIput = input("Lag database [Y/N] Big for alle lag i hele Tl \n:")
 if(databaseIput =="Y" or databaseIput=="y" or databaseIput =="yes" or databaseIput=="Yes"):
-    dataBase = lagDataBase()
+    dataBaseVaar = lagDataBase()
     #dataBase = lagDataBaseH()
-    database, spillerListe = lagDataBaseFraLag()
+    dataBase, spillerListe, databaseStatistikk = lagDataBaseFraLag()
+    print(databaseStatistikk)
+    print("\n")
+    print("DATABASE_LENGTH: "+str(len(dataBase)))
+    print("SpillerListe_LENGTH: "+str(len(spillerListe)))
+    
+    for failed in databaseStatistikk["failedGamernos"]:
+        #print(failed["user"]["name"], "\n", failed["user"]["url"])
+        print(failed)
     writeToJSONFile("database", dataBase)
     writeToJSONFile("spillerListe", spillerListe)
 elif(databaseIput == "Big"):
-    dataBase = lagDataBase()
+    dataBaseVaar = lagDataBase()
     #dataBase = lagDataBaseH()
-    database, spillerListe = lagDataBaseFraLag()
+    dataBase, spillerListe, databaseStatistikk = lagDataBaseFraLag(True)
+    print(databaseStatistikk)
+    print("\n")
+    print("DATABASE_LENGTH: "+str(len(dataBase)))
+    print("SpillerListe_LENGTH: "+str(len(spillerListe)))
+    
+    for failed in databaseStatistikk["failedGamernos"]:
+        #print(failed["user"]["name"], "\n", failed["user"]["url"])
+        print(failed)
     writeToJSONFile("database", dataBase)
     writeToJSONFile("spillerListe", spillerListe)
 
+
+writeToJSONFile("spillere/obsninja/oversikt", spillereMedObsNinjaLink)
 print("\n\n")
 testDefings("https://www.gamer.no/api/v1/tournaments/"+str(LeagueID)+"/tables")
 testDefings("https://www.gamer.no/api/v1/tournaments/"+str(LeagueID)+"/lolstats")
@@ -232,6 +344,7 @@ testDefings("https://www.gamer.no/api/v1/tournaments/"+str(LeagueID)+"/lolstats?
 testDefings("https://www.gamer.no/api/v1/tournaments/"+str(6955)+"/lolstats?page=1")
 #testDefings("https://www.gamer.no/api/v1/tournaments/"+str(6955)+"/")
 testDefings("https://www.gamer.no/api/v1/tournaments/"+str(LeagueID)+"/")
+#test2("https://www.gamer.no/api/v1/tournaments/"+8597)
 
 #test2("https://www.gamer.no/api/v1/tournaments/"+str(LeagueID)+"/lolstats?page=1")
 '''
@@ -253,6 +366,7 @@ testDefings("https://www.gamer.no/api/v1/teams/"+str(37826)+"/players")
 testDefings("https://www.gamer.no/api/v1/teams/"+str(37826)+"/players/lolstats")
 '''
 testDefings("https://www.gamer.no/api/v1/tournaments/"+str(LeagueID)+"/teams")
+#test2("https://www.gamer.no/api/v1/tournaments/"+str(8597)+"/")
 #test2("https://www.gamer.no/api/v1/teams/"+str(37826)+"/players")
 print("\n\n")
 #test2("https://www.gamer.no/api/v1/teams/"+str(37826)+"/")
@@ -260,7 +374,10 @@ print("\n\n")
 
 #test2("https://www.gamer.no/api/v1/users/"+str(44513)+"/lolstats")
 #test2("https://www.gamer.no/api/v1/users/"+str(44513)+"/")
+test2("https://www.gamer.no/api/v1/users/"+str(53123)+"/")
 
+
+#53123 THinked
 
 ####
 #LINKER

@@ -1,0 +1,79 @@
+body{
+    background-color: black;
+    font-family: roboto thin;
+    color: white;
+}
+
+.currentMatchContainer{
+    display: flex;
+    margin-top: 300px;
+}
+.team{
+    opacity: 0;
+    left: 50px;
+    position: absolute;
+    width: 50%;
+    /* border: 1px solid; */
+    display: flex;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+}
+#lag2{
+    direction: rtl;
+    left: 907px;
+}
+.teamNavn{
+    font-size: 1.5em;
+    margin-top: 84px;
+    
+}
+.teamLogo{
+
+}
+.teamLogo img{
+    width: 200px;
+    max-width: 300px;
+    max-height: 300px;
+    padding: 50px;
+}
+.VSContainer{
+    opacity: 0;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+    font-family: roboto light;
+    font-size: 4em;
+    position: absolute;
+    left: 882px;
+    top: 274px;
+}
+
+
+
+
+@keyframes vis{
+    
+    0%   {opacity: 0; left: -500px; }
+    25%  { }
+    50% {left: 100px;  }
+    100% {opacity: 1;  left: 50px;}
+}
+@keyframes vis2{
+    
+    0%   {opacity: 0; left: -500px; }
+    25%  { }
+    50% {left: 1007px;  }
+    100% {opacity: 1;  left: 907px;}
+}
+@keyframes vis3{
+    
+    0%   {opacity: 0; left: -500px; }
+    25%  { }
+    50% {left: 982px;  }
+    100% {opacity: 1;  left: 882px;}
+}
+@keyframes skjul{
+    0%   {opacity: 1;  }
+    25%  { }
+    50% {}
+    100%{ opacity: 0; left: -1500px; }
+}

@@ -1,6 +1,6 @@
 <link rel="stylesheet" href={{ url_for('static', filename='css/stream/kampoversikt.css')}}>
 <!-- <img src="static/Overlayed.png" alt="overlayed" class="OverlayImage"> -->
-<div class="kamper" onload="startAnimasjoner" id="kampContainerID">
+<div class="kamper"  id="kampContainerID" style="opacity: 0;">
     
     
 
@@ -73,13 +73,53 @@
     {% endfor %}
     
 </div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.2/socket.io.js" crossorigin="anonymous"></script>
 <script>
+    
+    const sceneName = "kampoversikt";
+    let rosterLink = "{{url_for('livecontrolSpesificScene', sceneName='kampoversikt')}}";
+    var socket = io();    
+    let True = true;
+    let False = false;
+    let show = false;
+    socket.on('livecontrolupdate', function(data){
+        console.log("message");
+        console.log(data);
+        checkHideShow(data.pregame[sceneName]);
+    });
+    function getLivecontrolJsonData(){
+        let xml = new XMLHttpRequest();
+        xml.open("GET", rosterLink, false);  
+        xml.onreadystatechange = function(){
+            if(xml.readyState == 4 && xml.status == 200){
+                let tempDIct = JSON.parse(xml.responseText);
+                checkHideShow(tempDIct);    
+            }
+        }
+        xml.send();
+    }
+    getLivecontrolJsonData();
+    function checkHideShow(tempDIct){
+        if(tempDIct["show"]!=show){
+            if(tempDIct["show"] == true){
+                contentShow();
+                show = true;
+            }else{
+                contentHide();
+                show=false;
+            }
+        }
+    }
+
     let kamperJS = {{kamper|safe}};
-    document.getElementById("kampContainerID").onload = startAnimasjoner();
-    document.getElementById("kampContainerID").style.visibility = "visible";
-    function startAnimasjoner(){
+    //document.getElementById("kampContainerID").onload = startAnimasjoner();
+    
+    function contentShow(){
         console.log("DEMO");
-        console.log("DEMO");
+        console.log("VIS");
+        document.getElementById("kampContainerID").style.visibility = "visible";
+        //document.getElementById("kampContainerID").style.display = "block";
+        document.getElementById("kampContainerID").style.opacity = 1;
         let kamperEls = document.getElementsByClassName("kamp");
         for(let i=0; i<kamperEls.length; i++){
             setTimeout(function(){
@@ -89,8 +129,21 @@
         }
     }
 
-    function setAnimasjon(){
+    function contentHide(){
+        console.log("SKJUL");
+        let kamperEls = document.getElementsByClassName("kamp");
 
+        for(let i=0; i<kamperEls.length; i++){
+            setTimeout(function(){
+                kamperEls[i].style.animationName = "skjul";
+                //kamperEls[i].style.display = "inline-block";
+            }, i*500);
+        }
+        setTimeout(function(){
+            document.getElementById("kampContainerID").style.visibility = "hidden";
+            //document.getElementById("kampContainerID").style.display = "none";
+            document.getElementById("kampContainerID").style.opacity = 0;
+        }, kamperEls.length*500);
     }
 
     function slettKamp(kampid){

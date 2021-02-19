@@ -1,6 +1,22 @@
 from pythonFiles.functions import getRiotLock, getAuthorizationString, makeDictForChampionId, makeDictForSummonerSpell, getSslContext
 import requests
 import json
+
+import socketio
+connected = False
+sio = socketio.Client()
+sio.connect('http://localhost:5000')
+@sio.event
+def connect():
+    global connected
+    connected = True
+    print('connection established')
+@sio.event
+def disconnect():
+    global connected
+    connected = True
+    print('disconnected from server')
+
 class ChampionSelectUpdater:
 
     def __init__(self):
@@ -64,7 +80,10 @@ class ChampionSelectUpdater:
         print(self._jsonData)
     def clear(self):
         clearData = {"bans": {"myTeamBans": ["None", "None", "None", "None", "None"], "theirTeamBans": ["None", "None", "None", "None", "None"]}, "player": "None", "action": "None", "prevAction": "None", "team": {"myTeam": [], "theirTeam": []}}
-
+        if(connected):
+            #sio.emit('champSelectUpdate', clearData)
+            sio.emit("clearChampSelectWebsocket", {"data":""})
+            
         self.writeToJSONFile("minInfo", clearData)
         return
     def setOrderData(self):
@@ -189,6 +208,8 @@ class ChampionSelectUpdater:
     def setNameDictionary(self):
         self._getTeamNames("myTeam")
         self._getTeamNames("theirTeam")
+        if connected:
+            sio.emit("playerNameUpdateFromWebsocket", {"updatedNames":True})
     def _getTeamNames(self,team):
         teamData = self._jsonData[team]
         for player in teamData:
@@ -323,6 +344,18 @@ class ChampionSelectUpdater:
         filePathNameWithExt = "./jsonFiles/"+fileName + ".json"
         with open(filePathNameWithExt, "w") as fp:
             json.dump(self._minInfo, fp)
+        self.pushMinInfoToWebserver()
+    def pushMinInfoToWebserver(self, data = True):
+        #url = "http://localhost:5000/championselect/websocketUpdate"
+        print(data)
+        if data:
+            data = self._minInfo
+        if(connected):
+            sio.emit('champSelectUpdate', data)
+        print(data)
+        #print()
+        #pushMinInfoRequest = requests.post(url, json.dumps(data))
+        #print(pushMinInfoRequest)
     def savePreviousChampionSelectData(self):
         fileName = "previousInfo"
         filePathNameWithExt = "./jsonFiles/"+fileName + ".json"

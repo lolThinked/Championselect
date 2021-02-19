@@ -1,0 +1,90 @@
+<link rel="stylesheet" href={{ url_for('static', filename='css/stream/ingamePlayercams.css')}}>
+
+<div class="teamContainer" id="teamContainerDiv">
+    <div class="team" id="blueTeam">
+        <div class="player">
+            <iframe src="https://obs.ninja/?view=pvHkUuA&scene&room=Thinked&password=Thinked" frameborder="0"></iframe>
+            <div><h1>Thinked Cam</h1></div>
+        </div>
+        <div class="player">
+            <iframe src="https://obs.ninja/?view=ZpeXB5M&scene&room=Thinked&password=Thinked" frameborder="0"></iframe>
+            <div><h1>Thinked Screen</h1></div>
+        </div>
+    </div>
+    <div class="team" id="redTeam">
+        <div class="player">
+            <iframe src="https://obs.ninja/?view=5gqevyv&scene&room=Thinked&password=Thinked" frameborder="0"></iframe>
+            <div><h1>Thinked Red Cam</h1></div>
+        </div>
+        <div class="player">
+            <iframe src="https://obs.ninja/?view=2BaYcVD&scene&room=Thinked&password=Thinked" frameborder="0"></iframe>
+            <div><h1>Thinked Red Screen</h1></div>
+        </div>
+    </div>
+</div>
+<h1 style="display: none;">{{kamp.dato}}</h1>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.2/socket.io.js" crossorigin="anonymous"></script>
+<script>
+    
+    let rosterLink = "{{url_for('livecontrolSpesificScene', sceneName='playerCams')}}";
+    const sceneName = "playerCams";
+    var socket = io();
+    
+    const True = true;
+    const False = false;
+    let show = false;
+    socket.on('livecontrolupdate', function(data){
+        console.log("message");
+        console.log(data);
+        checkHideShow(data.ingame[sceneName]);
+    });
+    function getLivecontrolJsonData(){
+        let xml = new XMLHttpRequest();
+        xml.open("GET", rosterLink, false);  
+        xml.onreadystatechange = function(){
+            if(xml.readyState == 4 && xml.status == 200){
+                let tempDIct = JSON.parse(xml.responseText);
+                console.log("GET LIVE JSON");
+                console.log(tempDIct);
+                checkHideShow(tempDIct);    
+            }
+        }
+        xml.send();
+    }
+    getLivecontrolJsonData();
+    function checkHideShow(tempDIct){
+        console.log(tempDIct);
+        if(tempDIct["show"]!=show){
+            if(tempDIct["show"] == true){
+                contentShow();
+                show = true;
+                document.getElementsByTagName("iframe")[0].click();
+                //getUpdatedPlayerFocus();
+            }else{
+                contentHide();
+                show=false;
+            }
+        }
+    }
+
+    function contentShow(){
+        document.getElementById("teamContainerDiv").style.animationName="vis";
+        // document.getElementById("scoreBoardContent").style.opacity = 1;
+        // document.getElementsByClassName("scoreboard-half")[0].style.animationName = "vis";
+        // document.getElementsByClassName("scoreboard-half")[1].style.animationName = "vis";
+
+    }
+
+    function contentHide(){
+        document.getElementById("teamContainerDiv").style.animationName="skjul";
+        // document.getElementById("scoreBoardContent").style.opacity = 0;
+        // document.getElementsByClassName("scoreboard-half")[0].style.animationName = "skjul";
+        // document.getElementsByClassName("scoreboard-half")[1].style.animationName = "skjul";
+    }
+
+
+
+
+</script>

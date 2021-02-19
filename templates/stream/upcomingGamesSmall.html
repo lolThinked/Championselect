@@ -1,0 +1,155 @@
+<link rel="stylesheet" href={{ url_for('static', filename='css/stream/upcomingGamesSmall.css')}}>
+<link rel="stylesheet" href={{ url_for('static', filename='css/utility/animate.css')}}>
+<!-- <img src="static/Overlayed.png" alt="overlayed" class="OverlayImage"> -->
+<div class="kamper"  id="kampContainerID" style="opacity: 0;">
+    
+    
+
+    <!--AUTOKAMP INFYLLING-->
+    {% for kamp in kamper %}
+    {% if kamp.lag1 %}
+    <div class="kamp" style="display: none;">
+        <div class="kamp-top-container">
+            <div class="spacer">
+                
+                <h1 id="id_kl">{{kamp.tid}} </h1>
+                
+            </div>
+            <!--LAG 1-->
+            <div class="lag lag1">
+                <!--BILDE-->
+                <div class="lag-image-container">
+                    <img src="{{ url_for('static', filename='laglogoer/'+kamp.lag1.bilde +'')}}" alt="logo">
+                </div>
+                <!--NAVN-->
+                <div class="lag-navn-container" style="display: none;">
+                    <h1 id="id_lag1_navn">{{kamp.lag1.navn}}</h1>
+                </div> 
+            </div>
+            <h1 class="motClass">Mot</h1>
+            
+
+            <!--LAG 2-->
+            <div class="lag lag2">
+                <!--NAVN-->
+                <div class="lag-navn-container" style="display: none;">
+                    <h1 id="id_lag1_navn">{{kamp.lag2.navn}}</h1>
+                </div>
+                <!--BILDE-->
+                <div class="lag-image-container">
+                    <img src="{{ url_for('static', filename='laglogoer/'+kamp.lag2.bilde +'')}}" alt="logo">
+                </div>
+            </div>
+        </div>
+        <div class="kamp-bot-container" style="display: none;">
+            <div class="kamp-bot-divisjon">
+                <h2>{{kamp.divisjon}}</h2>
+            </div>
+            <div class="kamp-bot-liga">
+                <h2 class="kamp-liga">{{kamp.liga}}</h2>
+            </div>
+            <div class="kamp-bot-spill">
+                <h2 class="kamp-spill">{{kamp.spill}}</h2>
+            </div>
+        </div>
+        <div class="EDITClass" style="display: none;">
+            <div>
+                <h2 id="kampID">{{kamp.kampID}}</h2>
+            </div>
+            <div>
+                <button onclick="slettKamp('{{kamp.kampID}}')">SLETT</button>
+                <button onclick="rediger('{{kamp.kampID}}')">REDIGER</button>
+                <button onclick="byttSide('{{kamp.kampID}}')">BYTT SIDE</button>
+                
+            </div>
+            <div>
+                <h2>{{kamp.dato}}</h2>
+            </div>
+            <div>
+                <a href="{{ url_for('twitterMatchImage', id=kamp.kampID) }}">twitterMatchImage</a>
+                <button onclick="lagTwitterBilde('{{kamp.kampID}}')">Lag Twitterbilde</button>
+            </div>
+        </div>         
+    </div>
+    {% else %}
+    <div></div>
+    {% endif %}
+    
+    {% endfor %}
+    
+</div>
+<img src="{{url_for('static', filename='img/production/Capture.png') }}" alt="BackgroundImage" class="BackgroundImage">
+<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.2/socket.io.js" crossorigin="anonymous"></script>
+<script>
+    
+    const sceneName = "upcomingGamesSmall";
+    let rosterLink = "{{url_for('livecontrolSpesificScene', sceneName='upcomingGamesSmall')}}";
+    var socket = io();    
+    let True = true;
+    let False = false;
+    let show = false;
+    socket.on('livecontrolupdate', function(data){
+        console.log("message");
+        console.log(data);
+        checkHideShow(data.pregame[sceneName]);
+    });
+    function getLivecontrolJsonData(){
+        let xml = new XMLHttpRequest();
+        xml.open("GET", rosterLink, false);  
+        xml.onreadystatechange = function(){
+            if(xml.readyState == 4 && xml.status == 200){
+                let tempDIct = JSON.parse(xml.responseText);
+                checkHideShow(tempDIct);    
+            }
+        }
+        xml.send();
+    }
+    getLivecontrolJsonData();
+    function checkHideShow(tempDIct){
+        if(tempDIct["show"]!=show){
+            if(tempDIct["show"] == true){
+                contentShow();
+                show = true;
+            }else{
+                contentHide();
+                show=false;
+            }
+        }
+    }
+
+    let kamperJS = {{kamper|safe}};
+    //document.getElementById("kampContainerID").onload = startAnimasjoner();
+    
+    function contentShow(){
+        console.log("DEMO");
+        console.log("VIS");
+        document.getElementById("kampContainerID").style.visibility = "visible";
+        //document.getElementById("kampContainerID").style.display = "block";
+        document.getElementById("kampContainerID").style.opacity = 1;
+        let kamperEls = document.getElementsByClassName("kamp");
+        for(let i=0; i<kamperEls.length; i++){
+            setTimeout(function(){
+                kamperEls[i].style.animationName = "vis";
+                kamperEls[i].style.display = "flex";
+                kamperEls[i].className += " animate__animated animate__backInLeft";
+            }, i*150);
+        }
+    }
+
+    function contentHide(){
+        console.log("SKJUL");
+        let kamperEls = document.getElementsByClassName("kamp");
+
+        for(let i=0; i<kamperEls.length; i++){
+            setTimeout(function(){
+                kamperEls[i].style.animationName = "skjul";
+                //kamperEls[i].style.display = "inline-block";
+            }, i*150);
+        }
+        setTimeout(function(){
+            //document.getElementById("kampContainerID").style.visibility = "hidden";
+            //document.getElementById("kampContainerID").style.display = "none";
+            //document.getElementById("kampContainerID").style.opacity = 0;
+        }, kamperEls.length*500);
+    }
+</script>

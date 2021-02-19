@@ -1,7 +1,29 @@
 {% extends "base.html" %}
 {% block content %}
-
-
+<link rel="stylesheet" href={{ url_for('static', filename='css/interface/ingameController.css')}}>
+<!-- <script src="{{url_for('static', filename='js/scripts/socketio301.js')}}"> -->
+    
+    
+<!-- </script> -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.2/socket.io.js" crossorigin="anonymous"></script>
+<!-- <script>var socket = io();</script> -->
+<script type="text/javascript" charset="utf-8">
+    var socket = io();
+    //var socket = io.connect('http://' + document.domain + ':' + location.port);
+    socket.on('connect', function() {
+        socket.emit('my event', {data: 'I\'m connected!'});
+        socket.emit('message',{data:"MESSAGE"});
+        console.log("CONNTEXTEDS");
+    });
+    socket.on('message', function(data){
+        console.log("message");
+        console.log(data);
+    });
+    socket.on('livecontrolupdate', function(data){
+        console.log("message");
+        console.log(data);
+    });
+</script>
 
 <div class="scoreboardController">
 
@@ -9,5 +31,10 @@
 <div class="statisticsPreview">
 
 </div>
+
+{% include "modules/_playerToFocusSelectModule.html" %}
+{% include "production/_modulelivecontrol.html" %}
 <img src="{{url_for('static', filename='img/Overlays/AIM-LOL-OVER-280120v7a.svg')}}" alt="Ingame Overlay" id="IngameOverlayStandard"> 
+
+
 {% endblock content %}

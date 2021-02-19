@@ -4,6 +4,7 @@ import requests
 #processes the riot lockfile
 import os.path
 from os import path
+import time
 
 def getInstallationPath():
     if(path.exists("settings.txt")):
@@ -77,3 +78,27 @@ def getSslContext():
     print(ssl_context.verify_mode)
     print(ssl.CERT_NONE)
     return ssl_context
+
+
+def checkPassword():
+    #1559347199
+    #1år
+    #1577836801
+    #August
+    #1566703134
+    #30/12/2020
+    #1609286400
+    if(time.time()>1609286400):
+        print("Time for this trial has expired, please contact the creator for more information, email: fabianhopland@gmail.com")
+        passordSjekk = input("Type password: ")
+        if((passordSjekk != "Thinked") or passordSjekk !="Caster" or passordSjekk != "thinked" or passordSjekk != "caster"):
+            pass
+        while((passordSjekk != "Thinked") or passordSjekk !="Caster" or passordSjekk != "thinked" or passordSjekk != "caster"):
+            if(passordSjekk =="" or passordSjekk ==" " or passordSjekk =="exit" or passordSjekk =="exit()"):
+                exit() 
+            if((passordSjekk == "Thinked") or passordSjekk =="Caster" or passordSjekk == "thinked" or passordSjekk == "caster"):
+                print("Password is correct")
+                break
+            else:
+                print("Password is wrong, type '' or ' ' or 'exit' to exit the program, or type passord again")
+            passordSjekk = input("Type password: ")

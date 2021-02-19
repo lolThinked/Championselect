@@ -61,6 +61,7 @@ body{
     left: 591px;
     width: 751px;
     z-index: 7;
+    transition-duration: 1s;
     /* background-color: #ff0000d4; */
 }
 .scoreboard-full{
@@ -86,6 +87,9 @@ body{
 .scoreboard-half{
     width: 50%;
     display: flex;
+    position: relative;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
 }
 #scoreboard-right{
     direction: rtl;
@@ -198,3 +202,17 @@ body{
     border-top: 1px solid white;
 }
 
+@keyframes vis{
+    
+    0%   {opacity: 0; left: -500px; }
+    25%  { }
+    50% {left: 100px;  }
+    100% {opacity: 1;  left: 0px;}
+}
+
+@keyframes skjul{
+    0%   {opacity: 1;  }
+    25%  { }
+    50% {}
+    100%{ opacity: 0; left: -1500px; }
+}

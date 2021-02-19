@@ -2,7 +2,7 @@ body{
     font-family:'Roboto thin',sans-serif;
     font-weight:300;
     color:#FFFFFF;
-    /* background-color: black; */
+    background-color: black;
 }
 .rosters{
     display: flex;
@@ -22,6 +22,7 @@ body{
     display: flex;
     animation: vis 1s;
     animation-fill-mode: forwards;
+    height: 100px;
 }
 .roster-header img{
     height: 100px;

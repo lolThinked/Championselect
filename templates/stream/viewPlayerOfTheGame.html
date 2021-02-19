@@ -1,0 +1,11 @@
+<link rel="stylesheet" href={{ url_for('static', filename='css/stream/viewPlayerOfTheGame.css')}}>
+<div class="casterContainerDiv">
+    {% for caster in casters %}
+    <div class="caster">
+        <div><h1 id="{{caster.spiller.navn}}">{{caster.spiller.navn}}</h1></div>
+        <div><h1 id="{{caster.casterNavn}}">{{caster.casterNavn}}</h1></div>
+    </div>
+    {% endfor %}
+
+</div>
+

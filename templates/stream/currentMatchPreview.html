@@ -1,0 +1,95 @@
+<link rel="stylesheet" href={{ url_for('static', filename='css/stream/currentMatchPreview.css')}}>
+<div class="currentMatchContainer">
+    <div class="team" id="lag1">
+        <div class="teamLogo">
+            <img src="{{url_for('static', filename='laglogoer/'+kamp.lag1.bilde+'')}}" alt="{{kamp.lag1.navn}}_Bilde">
+        </div>
+        <div class="teamNavn">
+            <h1>{{kamp.lag1.navn}}</h1>
+        </div>
+        
+    </div>
+    <div class="team" id="lag2">
+        <div class="teamLogo">
+            <img src="{{url_for('static', filename='laglogoer/'+kamp.lag2.bilde+'')}}" alt="{{kamp.lag1.navn}}_Bilde">
+        </div>
+        <div class="teamNavn">
+            <h1>{{kamp.lag2.navn}}</h1>
+        </div>
+    </div>
+
+    
+</div>
+<div class="VSContainer">
+    <h1>VS</h1>
+</div>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.2/socket.io.js" crossorigin="anonymous"></script>
+<script>
+    let rosterLink = "{{url_for('livecontrolSpesificScene', sceneName='currentMatchPreviewStream')}}";
+    const sceneName = "currentMatchPreviewStream";
+    var socket = io();
+    
+    const True = true;
+    const False = false;
+    let show = false;
+    socket.on('livecontrolupdate', function(data){
+        console.log("message");
+        console.log(data);
+        checkHideShow(data.pregame[sceneName]);
+    });
+    function getLivecontrolJsonData(){
+        let xml = new XMLHttpRequest();
+        xml.open("GET", rosterLink, false);  
+        xml.onreadystatechange = function(){
+            if(xml.readyState == 4 && xml.status == 200){
+                let tempDIct = JSON.parse(xml.responseText);
+                checkHideShow(tempDIct);    
+                console.log("CHECKED");
+            }
+        }
+        xml.send();
+    }
+    
+    function checkHideShow(tempDIct){
+        if(tempDIct["show"]!=show){
+            if(tempDIct["show"] == true){
+                contentShow();
+                show = true;
+            }else{
+                contentHide();
+                show=false;
+            }
+        }
+    }
+    getLivecontrolJsonData();
+
+    function contentShow(){
+        //console.log("DEMO");
+        console.log("VIS");
+        let lagEls = document.getElementsByClassName("team");
+        document.getElementsByClassName("VSContainer")[0].style.animationName = "vis3";
+        for(let i=0; i<lagEls.length; i++){
+            setTimeout(function(){
+                lagEls[i].style.animationName = "vis";
+                if(i>0){
+                    lagEls[i].style.animationName = "vis2";
+                }
+                //lagEls[i].style.display = "block";
+            }, i*300);
+        }
+    }
+    function contentHide(){
+        //console.log("DEMO");
+        console.log("Skjul");
+        let lagEls = document.getElementsByClassName("team");
+        document.getElementsByClassName("VSContainer")[0].style.animationName = "skjul";
+        for(let i=0; i<lagEls.length; i++){
+            setTimeout(function(){
+                lagEls[i].style.animationName = "skjul";
+                //lagEls[i].style.display = "block";
+            }, i*300);
+        }
+    }
+
+</script>

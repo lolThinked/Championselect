@@ -32,39 +32,64 @@
         {% endfor %}
     </div>
 </div>
-
+<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.2/socket.io.js" crossorigin="anonymous"></script>
+<script>var socket = io();</script>
 
 <script>
     let rosterLink = "{{url_for('livecontrolSpesificScene', sceneName='teamRoster')}}";
+    const sceneName = "teamRoster";
     let True = true;
     let False = false;
     let show = false;
-    setInterval(function(){
+    socket.on('livecontrolupdate', function(data){
+        console.log("message");
+        console.log(data);
+        checkHideShow(data.pregame[sceneName]);
+    });
+    function getLivecontrolJsonData(){
         let xml = new XMLHttpRequest();
-        xml.open("GET", rosterLink, false);
-        
+        xml.open("GET", rosterLink, false);  
         xml.onreadystatechange = function(){
             if(xml.readyState == 4 && xml.status == 200){
-                //console.log("SUCCESS?")
-                //console.log(xml.responseText);
                 let tempDIct = JSON.parse(xml.responseText);
-                console.log(tempDIct);
-                if(tempDIct["show"]!=show){
-                    if(tempDIct["show"] == true){
-                        startAnimasjoner();
-                        show = true;
-                    }else{
-                        outro();
-                        show=false;
-                    }
-                }
+                checkHideShow(tempDIct);    
             }
         }
         xml.send();
+    }
+    getLivecontrolJsonData();
+    function checkHideShow(tempDIct){
+        if(tempDIct["show"]!=show){
+            if(tempDIct["show"] == true){
+                contentShow();
+                show = true;
+            }else{
+                contentHide();
+                show=false;
+            }
+        }
+    }
+    // setInterval(function(){
+    //     let xml = new XMLHttpRequest();
+    //     xml.open("GET", rosterLink, false);
         
-    }, 1000);
+    //     xml.onreadystatechange = function(){
+    //         if(xml.readyState == 4 && xml.status == 200){
+    //             //console.log("SUCCESS?")
+    //             //console.log(xml.responseText);
+    //             let tempDIct = JSON.parse(xml.responseText);
+    //             console.log(tempDIct);
+    //             checkHideShow(tempDIct);
+                
+    //         }
+    //     }
+    //     xml.send();
+        
+    // }, 1000);
+    
+
     //document.getElementById("lag1Roster").onload = startAnimasjoner();
-    function startAnimasjoner(){
+    function contentShow(){
         console.log("DEMO");
         console.log("DEMO");
         let lagEls = document.getElementsByClassName("spiller");
@@ -86,26 +111,16 @@
             }, i*100);
         }
     }
-    function outro(){
+    function contentHide(){
         let lagEls = document.getElementsByClassName("spiller");
         document.getElementById("lag1DIV").style.animationName = "outro";
         document.getElementById("lag2DIV").style.animationName = "outro";
         for(let i=0; i<lagEls.length/2; i++){
             setTimeout(function(){
-                // console.log(lagEls.length);
-                // console.log(i+lagEls.length/2);
-                // console.log(lagEls[i+lagEls.length/2]);
                 lagEls[i].style.animationName = "outro";
                 lagEls[i+lagEls.length/2].style.animationName = "outro";
-
-                
-
-                //lagEls[i].style.display = "none";
-                //lagEls[i+lagEls.length/2].style.display = "none";
             }, i*100);
             setTimeout(function(){
-                //lagEls[i].style.display = "none";
-                //lagEls[i+lagEls.length/2].style.display = "none";
             }, i*100);
         }
     }

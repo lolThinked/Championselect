@@ -29,6 +29,26 @@
         {
             "navn":"Team Rosters",
             "url":"streamRoster"
+        },
+        {
+            "navn":"Current Match Preview",
+            "url":"currentMatchPreviewStream"
+        },
+        {
+            "navn":"Player Cam Scene",
+            "url":"playerCamStreamView"
+        },
+        {
+            "navn":"Kamp Oversikt Small",
+            "url":"upcomingGamesSmall"
+        },
+        {
+            "navn":"Championselect Statistics",
+            "url":"champselectStatistics"
+        },
+        {
+            "navn":"View Player Of the Game",
+            "url":"viewPlayerOfTheGameStream"
         }
     ],
     "caster":[
@@ -43,6 +63,14 @@
         {
             "navn":"LiveControlView",
             "url":"viewLiveControl"
+        },
+        {
+            "navn": "Choose player to Focus",
+            "url":"viewChoosePlayerToFocus"
+        },
+        {
+            "navn":"Caster player of the Game",
+            "url":"playerOfTheGameControl"
         }
     ],
     "general":[
@@ -53,6 +81,20 @@
         {
             "navn":"LiveControl Module",
             "url":"livecontrolModuleObs"
+        },
+        {
+            "navn":"Test Ninja Stream",
+            "url":"viewTestNinjaStream"
+        }
+    ],
+    "producer":[
+        {
+            "navn": "Background Animation",
+            "url": "backgroundAnimation1"
+        },
+        {
+            "navn":"Moving Gradient",
+            "url":"backgroundMovingGradient"
         }
     ]
 }

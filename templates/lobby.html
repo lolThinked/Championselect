@@ -87,10 +87,76 @@
       </div>
     </div>
   </div>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.2/socket.io.js" crossorigin="anonymous"></script>
+
 <script>
 
+let rosterLink = "{{url_for('livecontrolSpesificScene', sceneName='lobby')}}";
+const sceneName = "lobby";
+var socket = io();    
+    let True = true;
+    let False = false;
+    let show = false;
+    socket.on('livecontrolupdate', function(data){
+        console.log("message");
+        console.log(data);
+        checkHideShow(data.pregame[sceneName]);
+    });
+    function getLivecontrolJsonData(){
+        let xml = new XMLHttpRequest();
+        xml.open("GET", rosterLink, false);  
+        xml.onreadystatechange = function(){
+            if(xml.readyState == 4 && xml.status == 200){
+                let tempDIct = JSON.parse(xml.responseText);
+                checkHideShow(tempDIct);    
+            }
+        }
+        xml.send();
+    }
+    getLivecontrolJsonData();
+    function checkHideShow(tempDIct){
+        if(tempDIct["show"]!=show){
+            if(tempDIct["show"] == true){
+                contentShow();
+                show = true;
+            }else{
+                contentHide();
+                show=false;
+            }
+        }
+    }
+
 let summonerNameAll = document.querySelectorAll(".player > h1")
+let playersEls = document.getElementsByClassName("player");
 let timerBoxEl = document.getElementsByClassName("timerBox");
+function contentShow(){
+  console.log("VIS ALLE");
+  document.getElementsByClassName("team")[0].style.animationName = "fadeIn";
+  document.getElementsByClassName("team")[1].style.animationName = "fadeIn";
+  for(let i=0; i<playersEls.length; i++){
+            setTimeout(function(){
+              playersEls[i].style.animationName = "fadeIn";
+              //playersEls[i+playersEls.length/2].style.animationName = "fadeIn";
+            }, i*100);
+            timerBoxEl[0].style.animationName = "fadeIn";
+          }
+}
+function contentHide(){
+  console.log("SKJUL ALLE");
+  for(let i=0; i<playersEls.length; i++){
+            setTimeout(function(){
+              playersEls[i].style.animationName = "fadeOut";
+              //playersEls[i+playersEls.length/2].style.animationName = "fadeOut";
+            }, i*100);
+            timerBoxEl[0].style.animationName = "fadeOut";
+          }
+          setTimeout(function(){
+              document.getElementsByClassName("team")[0].style.animationName = "fadeOut";
+              document.getElementsByClassName("team")[1].style.animationName = "fadeOut";
+            }, playersEls.length*100); 
+}
+
+
 console.log("INFO");
 function getInfo(){
 	console.log("HenterInfo");

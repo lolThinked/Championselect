@@ -1,10 +1,1 @@
-{
-    "production":{
-        "test":"test"
-    },
-    "lol":{
-        "championSelectDelay":180,
-        "lockfilePath":"C:\\Riot Games\\League of Legends\\lockfile",
-        "patchLink":"http://ddragon.leagueoflegends.com/cdn/11.2.1/data/en_US/champion.json"
-    }
-}
+{"production": {"test": "test"}, "lol": {"championSelectDelay": "0", "lockfilePath": "C:\\Riot Games\\League of Legends\\lockfile", "patchLink": "http://ddragon.leagueoflegends.com/cdn/11.2.1/data/en_US/champion.json", "lolchampionSelectDelay": "0"}}

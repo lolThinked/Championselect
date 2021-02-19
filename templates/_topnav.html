@@ -4,6 +4,7 @@
     <a href="{{ url_for('lagoversikt') }}">Lagoversikt</a>
     <a href="{{ url_for('casterDashboard')}}">Dashboard</a>
     <a href="{{ url_for('spillerOversikt')}}">Spillere</a>
+    <a href="{{url_for('viewSettings')}}">Instillinger</a>
     {% if current_user == undefined %}
         <a href="{{url_for('login')}}">Login</a>
     {% else %}

@@ -10,6 +10,7 @@
                     <input type="number" id="lag1Score" value={{kamp.lag1.score}}></input>
                     <h2 contenteditable="True" id="lag1Navn">{{kamp.lag1.navn}}</h2>
                     <h2 contenteditable="True" id="lag1TagId">{{kamp.lag1.tag}}</h2>
+                    <h2 contenteditable="True" id="lag1BildeId">{{kamp.lag1.bilde}}</h2>
                     <!-- <input type="text" id="lag1TagId" value="{{kamp.lag1.tag}}"> -->
                     Velg lag: 
                     <select name="" id="lag1SelectId" value="{{kamp.lag1ID}}" >
@@ -22,6 +23,7 @@
                     <input type="number" id="lag2Score" value={{kamp.lag2.score}}></input>
                     <h2 contenteditable="True" id="lag1Navn">{{kamp.lag2.navn}}</h2>
                     <h2 contenteditable="True" id="lag2TagId">{{kamp.lag2.tag}}</h2>
+                    <h2 contenteditable="True" id="lag2BildeId">{{kamp.lag2.bilde}}</h2>
                     <!-- <input type="text" id="lag2TagId" value="{{kamp.lag2.tag}}"> -->
                     Velg lag: 
                     <select name="" id="lag1SelectId" >
@@ -68,6 +70,9 @@
     function rediger(){
         kampData.lag1.score = Number(document.getElementById("lag1Score").value);
         kampData.lag2.score = Number(document.getElementById("lag2Score").value);
+        kampData.divisjon = document.getElementById("kampDivisjonId").innerHTML;
+        kampData.liga = document.getElementById("kampLigaId").innerHTML;
+        kampData.spill = document.getElementById("kampSpillId").innerHTML;
         
         let xml = new XMLHttpRequest();
         xml.open("POST", "/currentKamp/update", true);

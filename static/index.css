@@ -23,6 +23,8 @@ h1 {
     top: 0px;
     left: 0px;
     display: flex;
+    font-family: roboto thin;
+    font-family: roboto light;
 }
 
 .Background-image-container {

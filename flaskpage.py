@@ -3,6 +3,7 @@ from flask import Flask, render_template, jsonify, url_for, send_from_directory,
 from flask_login import current_user, login_user, logout_user, login_required, LoginManager
 from pythonFiles.f_functions import hentInnLagoversikt, hentInnKampoversikt, lastInnCurrentKamp, hentInnSpillerOversikt, hentJson, hentLag, hentInstillinger
 from operator import itemgetter
+from flask_socketio import SocketIO, send, emit
 import subprocess
 
 import uuid
@@ -10,12 +11,15 @@ import json
 import os
 import requests
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secret!'
+socketio = SocketIO(app)
 
 login= LoginManager(app)
 login.login_view = "login"
 
 false = False
 true = True
+
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
@@ -36,6 +40,7 @@ kampoversiktjson = [
 gamerNoDatabase = hentJson("database")
 lagoversiktjson = hentInnLagoversikt()
 kampoversiktjson = hentInnKampoversikt()
+casterPlayerOfTheGameJson = hentJson("production/casterPlayerOfTheGame")
 
 global currentKampjson
 
@@ -47,28 +52,12 @@ spillerListe = hentInnSpillerOversikt()
 homePageLinkerJson = hentJson("homepageLinker")
 settings = hentInstillinger()
 livecontrolJson = hentJson("production/livecontrol")
+playerToFocusJson = hentJson("production/playerToFocus")
 #print(currentKamp)
 def getOversikt():
     return lagoversiktjson
 def oppdaterOversikt(tempOversikt):
     lagoversiktjson = tempOversikt
-'''
-lagoversikt = {
-    "Nordavind":{
-        "tag":"NVD",
-        "bilde":"Nordavind_logo.png",
-        "LoL":{
-            "top":"",
-            "jgl":"Sharp",
-            "mid":"Erixen",
-            "adc":"Chrisberg",
-            "sup":"Touch",
-            "subs":[],
-            "coach":""
-        }
-    }
-}
-'''
 
 
 
@@ -87,7 +76,38 @@ showHideQueue = {
 
 }
 
+@socketio.on('message')
+def handle_message(data):
+    print(data)
+    #print('received message: ' + data)
+    send(data)
 
+
+@socketio.on('json')
+def handle_json(json):
+    print('received json: ' + str(json))
+
+@socketio.on('my event')
+def handle_my_custom_event(json):
+    print('received json: ' + str(json))
+
+@socketio.on("champSelectUpdate")
+def handleChampSelectUpdate(data):
+    socketio.emit("updateChampionSelecBrowser", data)
+    print(data)
+@socketio.on("playerNameUpdateFromWebsocket")
+def updatePlayerNamesInBrowser(data):
+    socketio.emit("updatePlayerNamesInBrowser", data)
+    print("UPDATED PLAYERNAMES")
+
+@socketio.on("clearChampSelectWebsocket")
+def clearChampionSelect(data):
+    print("CLEARING CHAMPIONSELECT")
+    socketio.emit("clearChampionSelect", data)
+
+@socketio.on('connect')
+def test_connect():
+    emit('my response', {'data': 'Connected'})
 
 def hentCurrentKamp():
     return currentKampjson
@@ -225,13 +245,35 @@ def spillerTilStream(id):
             print(spillerLOOP["user"]["id"])
             spiller = spillerLOOP
             break
+    if(spiller == None):
+        for spillerListeIteration in spillerListe:
+            if spillerListeIteration["id"] == int(id):
+                print(spillerListeIteration)
+                for spillerLOOP in gamerNoDatabase:
+                    if spillerLOOP["user"]["name"] == spillerListeIteration["navn"] or spillerLOOP["summonerName"] == spillerListeIteration["lolIngame"]:
+                        print(spillerLOOP["user"]["id"])
+                        spiller = spillerLOOP
+                        break
+                break
+
     return render_template("stream/spiller.html", spiller=spiller)
 
-@app.route("/spillere/<id>/json")
+@app.route("/spillere/json/<id>")
 def spillerJson(id):
     spiller = None
     for spillerLOOP in gamerNoDatabase:
         if spillerLOOP["user"]["id"] == int(id):
+            print(spillerLOOP["user"]["id"])
+            spiller = spillerLOOP
+            break
+    return jsonify(spiller)
+@app.route("/production/spiller/id", methods=["POST"])
+def getSpillerJson():
+    indata = eval(request.data)
+    spillerId = indata["id"]
+    spiller = None
+    for spillerLOOP in gamerNoDatabase:
+        if spillerLOOP["user"]["id"] == int(spillerId):
             print(spillerLOOP["user"]["id"])
             spiller = spillerLOOP
             break
@@ -248,7 +290,25 @@ def casterDashboard():
 
 @app.route("/caster/ingame")
 def casterIngame():
-    return render_template("interface/ingameController.html", kamp = currentKampjson)
+    return render_template("interface/ingameController.html", kamp = currentKampjson, spillerToFocus=playerToFocusJson, alleSpillere=spillerListe, livecontrol = livecontrolJson)
+
+@app.route("/production/playeroftheGameControl")
+def playerOfTheGameControl():
+    return render_template("interface/playerOfTheGameControl.html", alleSpillere=spillerListe, casters =casterPlayerOfTheGameJson)
+
+@app.route("/stream/view/playerOfTheGame")
+def viewPlayerOfTheGameStream():
+    return render_template("stream/viewPlayerOfTheGame.html", casters =casterPlayerOfTheGameJson)
+
+@app.route("/production/playeroftheGameControl/update", methods=["POST"])
+def updatePlayerOfTheGameControl():
+    indata = eval(request.data)
+    global casterPlayerOfTheGameJson
+    casterPlayerOfTheGameJson  =indata
+    with open("jsonFiles/production/casterPlayerOfTheGame.json","w") as f:
+        json.dump(casterPlayerOfTheGameJson, f)
+    return "200"
+
 
 @app.route("/production/livecontrol/view")
 @app.route("/production/livecontrol")
@@ -283,10 +343,18 @@ def updateLiveControl():
     global livecontrolJson
     livecontrolJson = indata
     print(livecontrolJson)
+    socketio.emit("livecontrolupdate", livecontrolJson)
     with open("jsonFiles/production/livecontrol.json", "w") as f:
         json.dump(livecontrolJson, f)
     return "200"
 
+@app.route("/test/ninjaStream")
+def viewTestNinjaStream():
+    return render_template("testNinja.html")
+
+@app.route("/stream/ingame/playerCams")
+def playerCamStreamView():
+    return render_template("stream/ingamePlayercams.html", kamp = currentKampjson)
 
 @app.route("/stream/currentkamp")
 def streamCurrentKamp():
@@ -295,8 +363,26 @@ def streamCurrentKamp():
 @app.route("/currentKamp/getKamp")
 def getCurrentKamp():
     return jsonify(currentKamp)
-    
+
+
+##### BAKGROUNDS ########
+
+@app.route("/stream/background/animation")
+def backgroundAnimation1():
+    return render_template("stream/backgroundAnimation.html")
 #print(currentKampjson)
+
+@app.route("/stream/background/movingGradient")
+def backgroundMovingGradient():
+    return render_template("stream/background/movingGradient.html")
+
+
+@app.route("/stream/upcomingGamesSmall")
+def upcomingGamesSmall():
+    print(kampoversiktjson)
+    customKampoversikt = lagCustomLagoversikt()
+    return render_template("stream/upcomingGamesSmall.html", kamper = customKampoversikt)
+
 @app.route("/currentKamp/update", methods=["POST"])
 def updateCurrentKamp():
     #print(currentKampjson)
@@ -339,6 +425,23 @@ def newCurrentMatchPost():
     #lagNyCurrentKamp()
     return "Success"
 
+@app.route("/caster/choosePlayerToFocus")
+def viewChoosePlayerToFocus():
+    return render_template("interface/choosePlayerToFocus.html", alleSpillere=spillerListe, spillerToFocus=playerToFocusJson)
+
+@app.route("/caster/choosePlayerToFocus/json")
+def viewChoosePlayerToFocusJson():
+    return jsonify(playerToFocusJson)
+
+@app.route("/caster/choosePlayerToFocus/update", methods=["POST"])
+def updateChoosePlayerToFocus():
+    indata = eval(request.data)
+    global playerToFocusJson
+    playerToFocusJson = indata
+    with open("jsonFiles/production/playerToFocus.json", "w") as f:
+        json.dump(indata, f)
+    return "200"
+
 @app.route("/production/twitterMatchImage/<id>")
 def twitterMatchImage(id):
     kamptilSide = None
@@ -352,8 +455,13 @@ def makeTwitterImage():
     indata = eval(request.data)
     stringForTwitter = "seleniumScreenshotter.exe" + indata["id"]
     #subprocess.run(['seleniumScreenshotter.exe', indata["id"]])
-    os.system("seleniumScreenshotter.exe "+indata["id"])
+    os.system("start seleniumScreenshotter.exe "+indata["id"])
+    #os.system("exit")
     return "200"
+
+@app.route("/stream/currentMatchPreview")
+def currentMatchPreviewStream():
+    return render_template("stream/currentMatchPreview.html", kamp=currentKampjson)
 
 @app.route("/stream/ingameOverlay")
 def ingameOverlay():
@@ -366,10 +474,13 @@ def streamRoster():
 def championselectOverlay():
     print(currentKampjson)
     return render_template("stream/championselectOverlay.html", kamp = currentKampjson)
+@app.route("/champselectOld")
+def champselectOld():
+    return render_template("champselectOld.html", settings=settings)
+
 @app.route("/champselect")
 def champselect():
-    return render_template("champselect.html", settings=settings)
-
+    return render_template("stream/champselect.html", settings=settings)
 @app.route("/lobby")
 def lobby():
     return render_template("lobby.html")
@@ -426,6 +537,13 @@ def statisticsStandingsJson():
 def statisticsJson():
     jsonFile = hentJson("database")
     return jsonify(jsonFile)
+
+@app.route("/championselect/websocketUpdate", methods=["POST"])
+def updateChampionselectDataFromWebsocketRequest():
+    #indata = eval(request.data)
+    indata = json.loads(request.data)
+    print(indata)
+    return "200"
 
 @app.route("/champselect/json")
 def champselectJson():
@@ -611,7 +729,9 @@ def hentPerBrukerData(bruker = 44513):
 #hentPerBrukerData()
 ##############                   For Compiling Only               ###########################
 if __name__ =='__main__':
-    app.run(host='0.0.0.0',port=5000, threaded=True)
+    
+    #app.run(host='0.0.0.0',port=5000, threaded=True)
+    socketio.run(app, host='0.0.0.0', port=5000)
     #app.run(debug=True)
     #threading.Thread(target=app.run).start()
 ##############                   For Compiling Only               ###########################

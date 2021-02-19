@@ -1,7 +1,9 @@
+from pythonFiles.functions import getRiotLock, getAuthorizationString, checkPassword
+checkPassword()
 import asyncio
 import websockets
 from pythonFiles.championselectUpdater import ChampionSelectUpdater
-from pythonFiles.functions import getRiotLock, getAuthorizationString
+
 import threading
 from minTimer import MinTimer
 import json
@@ -10,30 +12,16 @@ import time
 from pythonFiles import shared_things
 import math
 import requests
+#import socketio
 #import pythonFiles.shared_things
 urllib3.disable_warnings()
 import flaskpage
 app = getattr(flaskpage, "app")
 
-#1559347199
-#1år
-#1577836801
-#August
-#1566703134
-#30/12/2020
-#1609286400
-if(time.time()>1609286400):
-    print("Time for this trial has expired, please contact the creator for more information, email: fabianhopland@gmail.com")
-    passordSjekk = input("Type password: ")
-    if((passordSjekk != "Thinked") or passordSjekk !="Caster" or passordSjekk != "thinked" or passordSjekk != "caster"):
-        pass
-    while((passordSjekk != "Thinked") or passordSjekk !="Caster" or passordSjekk != "thinked" or passordSjekk != "caster"):
-        if(passordSjekk =="" or passordSjekk ==" " or passordSjekk =="exit" or passordSjekk =="exit()"):
-            exit()
-        print("Password is wrong, type '' or ' ' or 'exit' to exit the program, or type passord again")
-        if((passordSjekk == "Thinked") or passordSjekk =="Caster" or passordSjekk == "thinked" or passordSjekk == "caster"):
-            break
-        passordSjekk = input("Type password: ")
+
+
+
+
 '''
 ##############                   For Compiling Only               ###########################
 print("STARTING WEBSERVER")
@@ -45,6 +33,7 @@ print("\n\n\n STARTING PROGRAM")
 
 webSocketerLockList = getRiotLock()
 webSocketerAuthString = getAuthorizationString(webSocketerLockList)
+
 
 
 def writeToJSONFile(fileName, data):
@@ -63,10 +52,10 @@ headers = CSU.getHeader()
 
 #shared_things.inChampionSelect = False
 LobbyTimer = 0
-
+#sio = socketio.Client()
 print(CSU.returnChampDict())
 testDict = CSU.returnChampDict()
-f = open("test2.txt","w+")
+f = open("jsonFiles/test2.txt","w+")
 for champions in testDict:
     f.write(str(champions) + ":" + testDict[champions]+"\n")
 f.close()
@@ -185,6 +174,7 @@ async def update(data, eventType):
         shared_things.oldEpoch = 0
         CSU.savePreviousChampionSelectData()
         CSU.clear()
+        #CSU.pushMinInfoToWebserver({"bans": {"myTeamBans": ["None", "None", "None", "None", "None"], "theirTeamBans": ["None", "None", "None", "None", "None"]}, "player": "None", "action": "None", "prevAction": "None", "team": {"myTeam": [], "theirTeam": []}})
         shared_things.inChampionSelect = False
         #LobbyTimer.join()
     elif eventType == "GAME_STARTING":

@@ -55,6 +55,7 @@
     background-color: #1b1b1b;
     border: 1px solid #f840ff;
     left: 449px;
+    z-index: 3;
 }
 .playerDiv{
     border-bottom: 1px solid white;

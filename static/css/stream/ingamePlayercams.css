@@ -1,0 +1,33 @@
+.teamContainer{
+    position: absolute;
+    top: 600px;
+    display: flex;
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+}
+
+.team{
+    
+}
+.player{
+    width: 640px;
+    height: 480px;
+    border: 2px solid white;
+}
+.player div{
+
+}
+.player iframe{
+
+}
+
+@keyframes vis{
+    
+    0%   {top: 1800px; }
+    100% {top: 600px;}
+}
+
+@keyframes skjul{
+    0%   {top: 600px;  }
+    100% {top: 1800px; }
+}
