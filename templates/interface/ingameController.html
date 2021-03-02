@@ -8,6 +8,11 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.2/socket.io.js" crossorigin="anonymous"></script>
 <!-- <script>var socket = io();</script> -->
 <script type="text/javascript" charset="utf-8">
+    let True = true;
+    let False = false;
+    let livecontrol = {{livecontrol|safe}};
+    let updateLiveControlLink = "{{url_for('updateLiveControl')}}";
+    let getLivecontrolJsonLink = "{{url_for('getLivecontrolJson')}}";
     var socket = io();
     //var socket = io.connect('http://' + document.domain + ':' + location.port);
     socket.on('connect', function() {

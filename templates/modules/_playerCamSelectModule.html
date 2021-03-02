@@ -1,5 +1,7 @@
 <link rel="stylesheet" href={{ url_for('static', filename='css/modules/playerCamSelectModule.css')}}>
-
+<script>
+    
+</script>
 
 <div class="playerCamSelect">
     {% for player in kamp.lag1.spillere %}
@@ -12,11 +14,52 @@
         {% endif %}
     </div>
     {% endfor %}
+    <div class="playerCamSelectDiv" id="AUTOCAMERA" onclick="turnAutoOnOff()">
+        <h1>auto-camera</h1>
+        <h1 id="autoCameraNotifyText">Off</h1>
+    </div>
 </div>
 
 
 <script>
-
+    let autoCameraBoolean = false;
+    updateLiveControlLink = "{{url_for('updateLiveControl')}}"; 
+    let autocameraDivEl = document.getElementById("AUTOCAMERA");
+    let autoCameraNotifyTextEl = document.getElementById("autoCameraNotifyText");
+    liveControlInfo = {{livecontrol|safe}};
+    // if(!True){
+    //     let True = true;
+    // }
+    // if(!False){
+    //     let False = false;
+    // }
+    
+    function turnAutoOnOff(){
+        if(autoCameraBoolean){ //IF true Set to true
+            autoCameraNotifyTextEl.innerHTML ="Off";
+            autoCameraBoolean = false;
+            autocameraDivEl.classList.add("hide");
+            autocameraDivEl.classList.remove("show");
+        }else{
+            autoCameraNotifyTextEl.innerHTML ="On";
+            autoCameraBoolean = true;
+            autocameraDivEl.classList.add("show");
+            autocameraDivEl.classList.remove("hide");
+        }
+        liveControlInfo.ingame.playerCams.data.autocamera = autoCameraBoolean;
+        let xml = new XMLHttpRequest();
+        xml.open("POST", updateLiveControlLink, true);
+        xml.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+        xml.onreadystatechange = function(){
+            if(xml.readyState == 4 && xml.status == 200){
+                console.log("SUCCESS?")
+                console.log(xml.responseText);
+            }
+        }
+        let stringified = JSON.stringify(liveControlInfo);
+        xml.send(stringified);   
+        
+    }
 
     function selectPlayerById(playerSelectID){
         console.log(playerSelectID);
@@ -40,7 +83,6 @@
             }
         }
         let stringified = JSON.stringify(liveControlInfo);
-        xml.send(stringified);
-        
+        xml.send(stringified);    
     }
 </script>

@@ -18,11 +18,26 @@
 
 
 <script>
-    let True = true;
-    let False = false;
-    let liveControlInfo = {{livecontrol|safe}};
-    let updateLiveControlLink = "{{url_for('updateLiveControl')}}";
-    let getLivecontrolJsonLink = "{{url_for('getLivecontrolJson')}}";
+    // let True = true;
+    // let False = false;
+    // if(!True){
+    //     let True = true;
+    // }
+    // if(!False){
+    //     let False = false;
+    // }
+    // if(typeof(liveControlInfo) !== "undefined"){
+    //     let liveControlInfo = {{livecontrol|safe}};
+    // }
+    // let liveControlInfo = {{livecontrol|safe}};
+    if(typeof(updateLiveControlLink) !== "undefined"){
+        let updateLiveControlLink = "{{url_for('updateLiveControl')}}";
+    }
+    if(typeof(getLivecontrolJsonLink) !== "undefined"){
+        let getLivecontrolJsonLink = "{{url_for('getLivecontrolJson')}}";
+    }
+    //let updateLiveControlLink = "{{url_for('updateLiveControl')}}";
+    //let getLivecontrolJsonLink = "{{url_for('getLivecontrolJson')}}";
 
     setInterval(function(){
         let xml = new XMLHttpRequest();

@@ -8,4 +8,6 @@
 }
 .playerCamSelectDiv:hover{
     cursor: pointer;
+    border: 1px solid rgb(83, 158, 255);
+    background-color: rgb(17, 82, 138);
 }

@@ -427,6 +427,19 @@ def newCurrentMatchPost():
     #lagNyCurrentKamp()
     return "Success"
 
+
+@app.route("/production/inputStreams/nonedivided")
+def inputStreamsNoneDivided():
+    return render_template("modules/_fullTeamStreamCamsForSplitting.html", kamp = currentKampjson,kameraOversikt = kameraOversiktJson)
+@app.route("/production/streamslinks")
+def streamLinksHtml():
+    return render_template("modules/_streamLinks.html",kamp = currentKampjson,kameraOversikt = kameraOversiktJson)
+@app.route("/production/ingamePlayerCamsWithDelay/")
+def ingamePlayerCamsWithDelay():
+    return render_template("stream/ingamePlayercamsServerStreamed.html")
+
+
+
 @app.route("/caster/choosePlayerToFocus")
 def viewChoosePlayerToFocus():
     return render_template("interface/choosePlayerToFocus.html", alleSpillere=spillerListe, spillerToFocus=playerToFocusJson)

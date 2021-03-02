@@ -1,5 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
+<script>
+    let True = true;
+    let False = false;
+    let liveControlInfo = {{livecontrol|safe}};
+    let getLivecontrolJsonLink = "{{url_for('getLivecontrolJson')}}";
+    let updateLiveControlLink = "{{url_for('updateLiveControl')}}";
+    // if(typeof(updateLiveControlLink) !== "undefined"){
+    //     let updateLiveControlLink = "{{url_for('updateLiveControl')}}";
+    // }
+    // if(typeof(getLivecontrolJsonLink) !== "undefined"){
+    //     let getLivecontrolJsonLink = "{{url_for('getLivecontrolJson')}}";
+    // }
+</script>
 <link rel="stylesheet" href={{ url_for('static', filename='css/interface/casterDashboard.css')}}>
     <div class="currentKamp">
         <h1>Nåværende kamp</h1>
@@ -64,6 +77,8 @@
     </div>
 
 <script>
+    
+    
     let kampData = {{kamp|safe}};
     console.log(kampData);
 

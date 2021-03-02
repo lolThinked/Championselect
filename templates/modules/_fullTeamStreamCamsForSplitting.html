@@ -1,0 +1,30 @@
+<link rel="stylesheet" href={{ url_for('static', filename='css/production/multistream.css')}}>
+
+<div class="teamContainer" id="teamContainerDiv">
+    <div class="team" id="blueTeam">
+        {% for player in kameraOversikt.lag1 %}
+        <div class="player bluePlayer" id="{{player.id}}">
+            <iframe src="{{player.view}}" frameborder="0"></iframe>
+            <!-- <div><h1>{{player.name}}</h1></div> -->
+        </div>
+        {% endfor %}
+    </div>
+    <div class="team" id="redTeam">
+        {% for player in kameraOversikt.lag2 %}
+        <div class="player redPlayer" id="{{player.id}}">
+            <iframe src="{{player.view}}" frameborder="0"></iframe>
+            <!-- <div><h1>{{player.name}}</h1></div> -->
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<h1 style="display: none;">{{kamp.dato}}</h1>
+
+<script>
+    let updateLiveControlLink = "{{url_for('updateLiveControl')}}";
+    let kameraOversiktObject = {{kameraOversikt|safe}};
+    let rosterLink = "{{url_for('livecontrolSpesificScene', sceneName='playerCams')}}";
+    let bluePlayerEls = document.getElementsByClassName("bluePlayer");
+    let redPlayersEls = document.getElementsByClassName("redPlayer");
+    
+</script>

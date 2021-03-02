@@ -23,10 +23,12 @@
 <img src="{{ url_for('static', filename='img/Overlays/ING_VRLY_MP42V2.svg')}}" alt="IngameOverlay" id="backgroundImage">
 <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.2/socket.io.js" crossorigin="anonymous"></script>
 <script>
+    let updateLiveControlLink = "{{url_for('updateLiveControl')}}";
     let kameraOversiktObject = {{kameraOversikt|safe}};
     let rosterLink = "{{url_for('livecontrolSpesificScene', sceneName='playerCams')}}";
     let bluePlayerEls = document.getElementsByClassName("bluePlayer");
     let redPlayersEls = document.getElementsByClassName("redPlayer");
+    let livecontrolReference ={};
     const sceneName = "playerCams";
     var socket = io();
     
@@ -34,11 +36,19 @@
     const False = false;
     let show = true;
     let viewedPlayerIds = 0;
+    let currentPlayersInFocus =[0,0];
+    let autocamera = false;
+
+    setInterval(async ()=>{
+        await updateCamera();
+    }, 10000);
     socket.on('livecontrolupdate', function(data){
         console.log("message");
         console.log(data);
         checkHideShow(data.ingame[sceneName]);
         updateVisiblePlayer(data.ingame[sceneName].data);
+        updateAutocameraStatus(data.ingame[sceneName].data);
+        livecontrolReference = data;
     });
     
     function updateVisiblePlayer(data){
@@ -56,6 +66,8 @@
                 redPlayersEls[i].style.display = "block";
             }
         }
+        currentPlayersInFocus[0] = data.player1ToShow;
+        currentPlayersInFocus[1] = data.player2ToShow;
     }
 
     function getLivecontrolJsonData(){
@@ -71,6 +83,41 @@
             }
         }
         xml.send();
+    }
+    function updateAutocameraStatus(data){
+        autocamera = data.autocamera;
+    }
+
+    async function updateCamera(){
+
+        console.log("TEST");
+        if(autocamera){
+            if(livecontrolReference.ingame.playerCams.data.player1ToShow ==4){
+                livecontrolReference.ingame.playerCams.data.player1ToShow=0;
+            }else{
+                livecontrolReference.ingame.playerCams.data.player1ToShow++;
+            }
+            if(livecontrolReference.ingame.playerCams.data.player2ToShow ==4){
+                livecontrolReference.ingame.playerCams.data.player2ToShow=0;
+                console.log(livecontrolReference.ingame.playerCams.data.player2ToShow);
+            }else{
+                livecontrolReference.ingame.playerCams.data.player2ToShow++;
+            }
+            console.log(livecontrolReference.ingame.playerCams.data.player2ToShow);
+            let xml = new XMLHttpRequest();
+            xml.open("POST", updateLiveControlLink, true);
+            xml.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+            xml.onreadystatechange = function(){
+                if(xml.readyState == 4 && xml.status == 200){
+                    //console.log("SUCCESS?")
+                    console.log(xml.responseText);
+                }
+            }
+            let stringified = JSON.stringify(livecontrolReference);
+            xml.send(stringified);
+        }else{
+            console.log(autocamera);
+        }
     }
     getLivecontrolJsonData();
     function checkHideShow(tempDIct){

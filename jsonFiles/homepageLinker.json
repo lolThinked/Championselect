@@ -95,6 +95,18 @@
         {
             "navn":"Moving Gradient",
             "url":"backgroundMovingGradient"
+        },
+        {
+            "navn":"Kamera splitted",
+            "url":"inputStreamsNoneDivided"
+        },
+        {
+            "navn":"streamLinksHtml",
+            "url":"streamLinksHtml"
+        },
+        {
+            "navn":"IngamePlayerCamsWithDelay",
+            "url":"ingamePlayerCamsWithDelay"
         }
     ]
 }

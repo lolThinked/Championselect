@@ -1,6 +1,7 @@
 import requests
 import json
 import time
+import re
 
 print("Reading Settings...\n")
 infile = open("settings.txt", "r")
@@ -27,6 +28,8 @@ LeagueID = 8647 #Bare 1.Div
 League2DivV2021 = 8648
 TeliaID = 8500
 #LeagueID= 7979
+
+errors = []
 def hentJson(navn):
     with open("jsonFiles/" + navn + ".json", "r") as f:
         return json.load(f)
@@ -102,20 +105,33 @@ def test2(apiLink):
 
 def createObsNinjaLinkWithGamernoInfo(gamernoUser):
     finnesIkke = True
-    global spillereMedObsNinjaLink
-    for spiller in spillereMedObsNinjaLink:
-        if spiller == gamernoUser["id"]:
-            finnesIkke = False
+    # global spillereMedObsNinjaLink
+    # for spiller in spillereMedObsNinjaLink:
+    #     if spiller == gamernoUser["id"]:
+    #         finnesIkke = False
 
     if finnesIkke:
         obsNinjaId = gamernoUser["country"]["code"]+str(gamernoUser["id"])+gamernoUser["name"]
+        #re.sub('[^A-Za-z0-9]+', '', obsNinjaId)
+        ferdigNinjaId = ""
+        "".join(e for e in obsNinjaId if e.isalnum())
+        #print(ferdigNinjaId)
+
+        obsNinjaId = re.sub('[^A-Za-z0-9\s]+', '', obsNinjaId)
+        obsNinjaId = re.sub('\W+','_', obsNinjaId)
+        #print(obsNinjaId)
+        ferdigNinjaId = obsNinjaId
         obsNinjaInfo = {
             "name":gamernoUser["name"],
             "id":gamernoUser["id"],
-            "push":"https://obs.ninja/?push="+obsNinjaId,
-            "view":"https://obs.ninja/?view="+obsNinjaId,
+            "push":"https://obs.ninja/?push="+ferdigNinjaId,
+            "view":"https://obs.ninja/?view="+ferdigNinjaId,
             "settings": "&webcam&quality=0&autostart"
         }
+        if gamernoUser["id"] == 93960 and False:
+            print(obsNinjaInfo)
+            print(gamernoUser)
+            input("VENT FOR NESTE SPILLER")
         with open("jsonFiles/spillere/obsninja/"+str(gamernoUser["id"])+".json","w") as f:
             json.dump(obsNinjaInfo, f)
         spillereMedObsNinjaLink.append(gamernoUser["id"])
@@ -243,12 +259,18 @@ def lagDataBaseFraLag(big = False):
                     tempDatabase.append(playerStats)
                     with open("jsonFiles/spillere/lolstats/"+str(playerStats["user"]["id"])+".json", "w") as f:
                         json.dump(playerStats, f)
-                    spiller = {
-                        "navn": playerStats["user"]["name"],
-                        "lolIngame": playerStats["summonerName"],
-                        "id": playerStats["user"]["id"],
-                        "gamernoBilde":playerStats["user"]["image"]
-                    }
+                    #print(playerStats)
+                    try:
+                        spiller = {
+                            "navn": playerStats["user"]["name"],
+                            "lolIngame": playerStats["summonerName"],
+                            "id": playerStats["user"]["id"],
+                            "gamernoBilde":playerStats["user"]["image"]
+                        }
+                    except:
+                        print("ERROR")
+                        print(playerStats)
+                        errors.append(playerStats)
                     spillerListe.append(spiller)
             #print("_"*10,"\n\n\n","Users with no LoL-Stats: ",str(databaseStats["noLoLStats"]),"/",str(databaseStats["amountPlayers"]))
         printProgressBar(i + 1, l, prefix = 'Progress:', suffix = 'Complete', length = lenFirstEnumurate)
@@ -307,6 +329,7 @@ writeToJSONFile("tableStanding", table)
 writeToJSONFile("TESStanding", teliaEsportTabell)
 databaseIput = input("Lag database [Y/N] Big for alle lag i hele Tl \n:")
 if(databaseIput =="Y" or databaseIput=="y" or databaseIput =="yes" or databaseIput=="Yes"):
+    print("\n\n")
     dataBaseVaar = lagDataBase()
     #dataBase = lagDataBaseH()
     dataBase, spillerListe, databaseStatistikk = lagDataBaseFraLag()
@@ -321,6 +344,9 @@ if(databaseIput =="Y" or databaseIput=="y" or databaseIput =="yes" or databaseIp
     writeToJSONFile("database", dataBase)
     writeToJSONFile("spillerListe", spillerListe)
 elif(databaseIput == "Big"):
+    print("\nBig!")
+    print("\n\n")
+
     dataBaseVaar = lagDataBase()
     #dataBase = lagDataBaseH()
     dataBase, spillerListe, databaseStatistikk = lagDataBaseFraLag(True)

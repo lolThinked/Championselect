@@ -1,0 +1,162 @@
+('C:\\Users\\Fabian\\Desktop\\Hopland '
+ 'Digital\\Prosjekter\\Championselect\\dist\\updater.exe',
+ True,
+ False,
+ False,
+ 'C:\\Users\\Fabian\\Desktop\\Hopland '
+ 'Digital\\Prosjekter\\Championselect\\icon.ico',
+ None,
+ False,
+ False,
+ '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v1"><assemblyIdentity name="updater" processorArchitecture="amd64" type="win32" version="1.0.0.0"/><dependency><dependentAssembly><assemblyIdentity language="*" name="Microsoft.Windows.Common-Controls" processorArchitecture="*" publicKeyToken="6595b64144ccf1df" type="win32" version="6.0.0.0"/><compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1"/></dependentAssembly></dependency><compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1"><application><supportedOS Id="{e2011457-1546-43c5-a5fe-008deee3d3f0}"/><supportedOS Id="{35138b9a-5d96-4fbd-8e2d-a2440225f93a}"/><supportedOS Id="{4a2f28e3-53b9-4441-ba9c-d69d4a4a6e38}"/><supportedOS Id="{1f676c76-80e1-4239-95bb-83d0f6d0da78}"/><supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}"/></application></compatibility></assembly>',
+ True,
+ 'updater.pkg',
+ [('PYZ-00.pyz',
+   'C:\\Users\\Fabian\\Desktop\\Hopland '
+   'Digital\\Prosjekter\\Championselect\\build\\updater\\PYZ-00.pyz',
+   'PYZ'),
+  ('struct',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\struct.pyo',
+   'PYMODULE'),
+  ('pyimod01_os_path',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\PyInstaller\\loader\\pyimod01_os_path.pyc',
+   'PYMODULE'),
+  ('pyimod02_archive',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\PyInstaller\\loader\\pyimod02_archive.pyc',
+   'PYMODULE'),
+  ('pyimod03_importers',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\PyInstaller\\loader\\pyimod03_importers.pyc',
+   'PYMODULE'),
+  ('pyiboot01_bootstrap',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\PyInstaller\\loader\\pyiboot01_bootstrap.py',
+   'PYSOURCE'),
+  ('updater',
+   'C:\\Users\\Fabian\\Desktop\\Hopland '
+   'Digital\\Prosjekter\\Championselect\\updater.py',
+   'PYSOURCE'),
+  ('VCRUNTIME140.dll',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\VCRUNTIME140.dll',
+   'BINARY'),
+  ('python36.dll',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\python36.dll',
+   'BINARY'),
+  ('_ssl',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\DLLs\\_ssl.pyd',
+   'EXTENSION'),
+  ('pyexpat',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\DLLs\\pyexpat.pyd',
+   'EXTENSION'),
+  ('_hashlib',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\DLLs\\_hashlib.pyd',
+   'EXTENSION'),
+  ('_lzma',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\DLLs\\_lzma.pyd',
+   'EXTENSION'),
+  ('_socket',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\DLLs\\_socket.pyd',
+   'EXTENSION'),
+  ('unicodedata',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\DLLs\\unicodedata.pyd',
+   'EXTENSION'),
+  ('select',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\DLLs\\select.pyd',
+   'EXTENSION'),
+  ('_bz2',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\DLLs\\_bz2.pyd',
+   'EXTENSION'),
+  ('simplejson._speedups',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\simplejson\\_speedups.cp36-win_amd64.pyd',
+   'EXTENSION'),
+  ('_decimal',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\DLLs\\_decimal.pyd',
+   'EXTENSION'),
+  ('_cffi_backend',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\_cffi_backend.cp36-win_amd64.pyd',
+   'EXTENSION'),
+  ('cryptography.hazmat.bindings._openssl',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\cryptography\\hazmat\\bindings\\_openssl.cp36-win_amd64.pyd',
+   'EXTENSION'),
+  ('cryptography.hazmat.bindings._constant_time',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\cryptography\\hazmat\\bindings\\_constant_time.cp36-win_amd64.pyd',
+   'EXTENSION'),
+  ('base_library.zip',
+   'C:\\Users\\Fabian\\Desktop\\Hopland '
+   'Digital\\Prosjekter\\Championselect\\build\\updater\\base_library.zip',
+   'DATA'),
+  ('cryptography-2.9.2-py3.6.egg-info\\METADATA',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\cryptography-2.9.2.dist-info\\METADATA',
+   'DATA'),
+  ('cryptography-2.9.2-py3.6.egg-info\\LICENSE.BSD',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\cryptography-2.9.2.dist-info\\LICENSE.BSD',
+   'DATA'),
+  ('cryptography-2.9.2-py3.6.egg-info\\AUTHORS.rst',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\cryptography-2.9.2.dist-info\\AUTHORS.rst',
+   'DATA'),
+  ('cryptography-2.9.2-py3.6.egg-info\\WHEEL',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\cryptography-2.9.2.dist-info\\WHEEL',
+   'DATA'),
+  ('certifi\\cacert.pem',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\certifi\\cacert.pem',
+   'DATA'),
+  ('cryptography-2.9.2-py3.6.egg-info\\top_level.txt',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\cryptography-2.9.2.dist-info\\top_level.txt',
+   'DATA'),
+  ('cryptography-2.9.2-py3.6.egg-info\\INSTALLER',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\cryptography-2.9.2.dist-info\\INSTALLER',
+   'DATA'),
+  ('cryptography-2.9.2-py3.6.egg-info\\LICENSE.PSF',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\cryptography-2.9.2.dist-info\\LICENSE.PSF',
+   'DATA'),
+  ('cryptography-2.9.2-py3.6.egg-info\\RECORD',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\cryptography-2.9.2.dist-info\\RECORD',
+   'DATA'),
+  ('cryptography-2.9.2-py3.6.egg-info\\LICENSE.APACHE',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\cryptography-2.9.2.dist-info\\LICENSE.APACHE',
+   'DATA'),
+  ('cryptography-2.9.2-py3.6.egg-info\\LICENSE',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\cryptography-2.9.2.dist-info\\LICENSE',
+   'DATA'),
+  ('updater.exe.manifest',
+   'C:\\Users\\Fabian\\Desktop\\Hopland '
+   'Digital\\Prosjekter\\Championselect\\build\\updater\\updater.exe.manifest',
+   'BINARY'),
+  ('pyi-windows-manifest-filename updater.exe.manifest', '', 'OPTION')],
+ [],
+ False,
+ False,
+ 1614205762,
+ [('run.exe',
+   'e:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\lib\\site-packages\\PyInstaller\\bootloader\\Windows-64bit\\run.exe',
+   'EXECUTABLE')])
