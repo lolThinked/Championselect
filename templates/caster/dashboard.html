@@ -80,6 +80,7 @@
     
     
     let kampData = {{kamp|safe}};
+    let cameraOverviewLink = "{{url_for('playerCamOverviewJson') }}";
     console.log(kampData);
 
     function rediger(){
@@ -103,7 +104,43 @@
         window.location.reload(false);
 
     }
+
+    function updateByttSide(dataSet){
+        let xhr2 = new XMLHttpRequest();
+                xhr2.open("POST", cameraOverviewLink+"/update", true)
+                xhr2.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                xhr2.onreadystatechange = function(){
+                    if(xhr2.readyState == 4 && xhr2.status == 200){
+                        console.log(xhr2.responseText);
+                    }
+                }
+                xhr2.send(JSON.stringify(dataSet));
+    }
+
     function byttSide(){
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", cameraOverviewLink, true)
+        xhr.onreadystatechange = function(){
+            if(xhr.readyState == 4 && xhr.status == 200){
+                let jsonInputData = JSON.parse(xhr.responseText);
+                console.log("TESTATATAT");
+                console.log(jsonInputData);
+
+                let lag1OLD = jsonInputData.lag1;
+                let lag2OLD = jsonInputData.lag2; 
+
+                let dataSet = {
+                    "lag1":lag2OLD,
+                    "lag2":lag1OLD
+                }
+                updateByttSide(dataSet);
+
+            }
+        }
+        
+        xhr.send();
+
+
         let templag2ID = kampData.lag2ID.slice();
         let templag2Info = Object.assign({}, kampData.lag2);
         

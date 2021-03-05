@@ -8,6 +8,11 @@
             
         </div>
         {% endfor %}
+        <div>
+            {% for player in kameraOversikt.lag1 %}
+            <h3>{{player.push}}</h3>
+            {% endfor %}  
+        </div>
     </div>
     <br>
     <div class="team" id="redTeam">
@@ -19,6 +24,11 @@
             
         </div>
         {% endfor %}
+        <div>
+            {% for player in kameraOversikt.lag2 %}
+            <h3>{{player.push}}</h3>
+            {% endfor %}  
+        </div>
     </div>
 </div>
 <script>

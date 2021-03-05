@@ -357,6 +357,19 @@ def viewTestNinjaStream():
 def playerCamStreamView():
     return render_template("stream/ingamePlayercams.html", kamp = currentKampjson, kameraOversikt = kameraOversiktJson)
 
+@app.route("/production/playerCamOverview/json")
+def playerCamOverviewJson():
+    return jsonify(kameraOversiktJson)
+    
+@app.route("/production/playerCamOverview/json/update", methods=["POST"])
+def playerCamOverviewJsonUPDATE():
+    inputData = eval(request.data)
+    global kameraOversiktJson
+    kameraOversiktJson = inputData
+    with open("jsonFiles/production/playerCamOverview.json", "w") as f:
+        json.dump(kameraOversiktJson, f)
+    return "KampoverSIKT TRUE"
+
 @app.route("/stream/currentkamp")
 def streamCurrentKamp():
     return render_template("stream/currentKamp.html", kamp = currentKampjson)
@@ -742,12 +755,20 @@ def lagKameraOversiktJson(currentKamp):
             lag1Liste.append(hentKameraLinkerMedId(tempID))
     kameraOversiktJson["lag1"] = lag1Liste
     for player in currentKamp["lag2"]["spillere"]:
+        print(player)
         tempID = player["id"]
         if(tempID!=""):
             print(tempID)
             lag2Liste.append(hentKameraLinkerMedId(tempID))
     kameraOversiktJson["lag2"] = lag2Liste
     print(len(lag1Liste), len(lag2Liste))
+    for i, spiller in enumerate(kameraOversiktJson["lag1"]):
+        spiller["nginxLink"] = "/cam/test"+str(i)+"/index.m3u8"
+
+
+    for i,spiller in enumerate(kameraOversiktJson["lag2"]):
+        spiller["nginxLink"] = "/cam/test"+str(i+8)+"/index.m3u8"
+    print(kameraOversiktJson)
     with open("jsonFiles/production/playerCamOverview.json", "w") as f:
         json.dump(kameraOversiktJson, f)
     
