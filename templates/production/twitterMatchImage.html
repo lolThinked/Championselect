@@ -6,6 +6,8 @@
         <img src={{ url_for('static', filename='img/logoer/spill/LeagueOfLegendsWhite.png' )}} alt="spillLogo" id="spillLogo">
         {% if kamp.liga == "Telialigaen" %}
             <img src={{ url_for('static', filename='img/logoer/liga/telia/Ny_TELIALIGAEN_logo_RGB_white.png' )}} alt="ligaLogo" id="ligalogo">
+        {% elif kamp.liga == "Telia Masters" %}
+        <img src={{ url_for('static', filename='img/logoer/liga/telia/TES_Masters_white.png' )}} alt="ligaLogo" id="ligalogo">
         {% else %}
             <img src={{ url_for('static', filename='img/logoer/liga/telia/TES_logo_norway.png' )}} alt="ligaLogo" id="ligalogo" style="top:38px;">
         {% endif %}

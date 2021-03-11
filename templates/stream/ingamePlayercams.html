@@ -23,6 +23,7 @@
 <img src="{{ url_for('static', filename='img/Overlays/ING_VRLY_MP42V2.svg')}}" alt="IngameOverlay" id="backgroundImage">
 <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.2/socket.io.js" crossorigin="anonymous"></script>
 <script>
+    let kampData = {{kamp| safe}};
     let updateLiveControlLink = "{{url_for('updateLiveControl')}}";
     let kameraOversiktObject = {{kameraOversikt|safe}};
     let rosterLink = "{{url_for('livecontrolSpesificScene', sceneName='playerCams')}}";
@@ -50,7 +51,24 @@
         updateAutocameraStatus(data.ingame[sceneName].data);
         livecontrolReference = data;
     });
-    
+    function checkIfPlayerWantsCam(teamIdentifier, playerIdentifier){
+        if(kampData.allowedCameras[teamIdentifier][playerIdentifier] ==1){
+            return true;
+        }else{
+            return findNextPlayerWithEnabledCam(teamIdentifier, playerIdentifier);
+        }
+    }
+    function findNextPlayerWithEnabledCam(teamIdentifier, playerIdentifier){
+        if(kampData.allowedCameras[teamIdentifier][playerIdentifier] ==1){
+            return playerIdentifier;
+        }else{
+            if(playerIdentifier==4){
+                return findNextPlayerWithEnabledCam(teamIdentifier, 0);
+            }else{
+                return findNextPlayerWithEnabledCam(teamIdentifier, playerIdentifier+1);
+            }
+        } 
+    }
     function updateVisiblePlayer(data){
         for(let i =0; i<kameraOversiktObject.lag1.length; i++){
             if(data.player1ToShow != i){
@@ -59,12 +77,22 @@
                 bluePlayerEls[i].style.display = "block";
             }
         }
+        let checkValue = checkIfPlayerWantsCam("team1",data.player1ToShow);
+        if(checkValue != true){
+            bluePlayerEls[data.player1ToShow].style.display = "none";
+            bluePlayerEls[checkValue].style.display = "block";
+        }
         for(let i =0; i<kameraOversiktObject.lag2.length; i++){
             if(data.player2ToShow != i){
                 redPlayersEls[i].style.display = "none";
             }else{
                 redPlayersEls[i].style.display = "block";
             }
+        }
+        let checkValue2 = checkIfPlayerWantsCam("team2",data.player2ToShow);
+        if(checkValue2 != true){
+            redPlayersEls[data.player2ToShow].style.display = "none";
+            redPlayersEls[checkValue2].style.display = "block";
         }
         currentPlayersInFocus[0] = data.player1ToShow;
         currentPlayersInFocus[1] = data.player2ToShow;

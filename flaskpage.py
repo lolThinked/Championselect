@@ -116,7 +116,10 @@ def hentCurrentKamp():
 def lagNyCurrentKamp():
     currentKamps = lagCustomLagoversikt()[0]
     currentKamps["lag1"]["score"] = 0
-    currentKamps["lag2"]["score"] = 0 
+    currentKamps["lag2"]["score"] = 0
+    lag1AllowedCameras = [1,1,1,1,1]
+    lag2AllowedCameras = [1,1,1,1,1]
+    currentKamps["allowedCameras"] = {"team1":lag1AllowedCameras, "team2":lag2AllowedCameras}
     with open("jsonFiles/kamper/currentKamp.json", "w") as f:
         json.dump(currentKamps, f)
     global currentKampjson
@@ -432,6 +435,10 @@ def newCurrentMatchPost():
                     kamp["lag2"] = lag
     kamp["lag1"]["score"] = 0
     kamp["lag2"]["score"] = 0
+    lag1AllowedCameras = [1,1,1,1,1]
+    lag2AllowedCameras = [1,1,1,1,1]
+    #kamp[""]
+    kamp["allowedCameras"] = {"team1":lag1AllowedCameras, "team2":lag2AllowedCameras}
     global currentKampjson
     currentKampjson = kamp
     lagKameraOversiktJson(currentKampjson)
@@ -644,23 +651,17 @@ def lagEllerRedigerKamp(jsonObject):
     if(jsonObject["kampID"] ==""):
         kampID = str(uuid.uuid4())
         print("UUID")
+        jsonObject["kampID"] = kampID
     else:
         kampID = jsonObject["kampID"]
         print("JSON")
-    tempDict = {
-        "tid": jsonObject["tid"],
-        "dato": jsonObject["dato"],
-        "kampID": kampID,
-        "lag1ID": jsonObject["lag1ID"],
-        "lag2ID": jsonObject["lag2ID"],
-        "divisjon": jsonObject["divisjon"],
-        "liga": jsonObject["liga"],
-        "spill": jsonObject["spill"]
-    }
-    print(kampID)
-    kampoversiktjson.append(tempDict)
+    # print("\n"*3)
+    # print(jsonObject)
+    # print(kampID)
+    # print("\n"*3)
+    kampoversiktjson.append(jsonObject)
     kampoversiktjson.sort(key = lambda x: (x["dato"], x["tid"]))
-    print(kampoversiktjson)
+    #print(kampoversiktjson)
     with open("jsonFiles/kamper/oversikt.json", "w") as f:
         json.dump(kampoversiktjson, f)
     print("LAGER KAMP- FUNC")
@@ -725,7 +726,7 @@ def hentAlleLag():
 def lagCustomLagoversikt():
     alleLag = hentAlleLag()
     print("\n\nKAMPOVERSIKT")
-    print(kampoversiktjson)
+    #print(kampoversiktjson)
     customKampoversikt = kampoversiktjson.copy()
     #customKampoversikt = dict(kampoversiktjson)
     for kamp in customKampoversikt:
@@ -737,8 +738,8 @@ def lagCustomLagoversikt():
     #print("\n\n\n\n")
     #print(customKampoversikt)
     #print("\n\n\n\n\n")
-    print("\nKAMPOVERSIKT\n")
-    print(kampoversiktjson)
+    #print("\nKAMPOVERSIKT\n")
+    #print(kampoversiktjson)
     return customKampoversikt
 
 

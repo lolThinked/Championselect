@@ -36,21 +36,23 @@ body{
     top: 44px;
     z-index: 5;
     position: absolute;
-    left: 539px;
+    left: 554px;
+    right: 1325px;
     direction: rtl;
-    /* background-color: red; */
-    width: 58px;
+    /* background-color: #000000a1; */
+    /* width: 58px; */
     display: flex;
-    height: 5px;
+    /* height: 5px; */
+    border-radius: 28px;
 }
 #scoreContainerRed{
     left: 1335px;
     direction: ltr;
 }
 .score-orb-image{
-    width: 6px;
-    margin: 5px;
-    height: 6px;
+    width: 10px;
+    margin: 2px;
+    height: 10px;
 }
 
 .scoreBoardContent{

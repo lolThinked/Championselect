@@ -20,6 +20,12 @@
             </div>
             <div>
                 <input type="text" id="divisjon" value="1. Divisjon">
+                <select id="antallKamper" >
+                    <option value=1>Bo1</option>
+                    <option value=2 selected>Bo2</option>
+                    <option value=3>Bo3</option>
+                    <option value=5>Bo5</option>
+                </select>
                 <input type="text" id="liga" value="Telia Esport Series">
                 <input type="text" id="spill" value="League of Legends">
             </div>
@@ -64,6 +70,7 @@
             tmpObj["kampID"] = "";
             tmpObj["lag1ID"] = document.getElementById("lag1").value;
             tmpObj["lag2ID"] = document.getElementById("lag2").value;
+            tmpObj["antallKamper"] = parseInt(document.getElementById("antallKamper").value);
 
             tmpObj["divisjon"] = document.getElementById("divisjon").value;
             tmpObj["liga"] = document.getElementById("liga").value;

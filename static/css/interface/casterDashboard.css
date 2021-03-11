@@ -48,3 +48,21 @@
 .knapper{
     width: 100%;
 }
+
+.cameraSettings{
+
+}
+.spillerKameraContainer{
+    display: flex;
+}
+.spillerCameraToggle{
+    /* background-color: rgb(104, 255, 150); */
+    margin: 10px;
+    color: rgb(11, 10, 49);
+    border: 1px solid black;
+    min-width: 110px;
+}
+.spillerCameraToggle:hover{
+    cursor: pointer;
+    border: 1px solid white;
+}

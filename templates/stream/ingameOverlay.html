@@ -3,24 +3,40 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   </head>
 <link rel="stylesheet" href={{ url_for('static', filename='css/stream/ingameOverlay.css')}}>
-
+{% macro ceil(value, precision=1) %}
+{{ (value // precision + (value % precision != 0) | int) / (1 / precision) }}
+{% endmacro %}
 <div class="textOverlay">
     <div class="tagAndScore">
         <div class="team" id="blue">
             <h2 id="scoreBlue" class="score"></h2>
             <div class="scoreContainer" id="scoreContainerBlue">
-                <img src={{ url_for('static', filename='img/Overlays/Score-orb.svg')}} alt="score-orb" id="ScoreOrb" style="display: none;" class="score-orb-image">
-                <img src={{ url_for('static', filename='img/Overlays/Score-orb.svg')}} alt="score-orb" id="ScoreOrb" style="display: none;" class="score-orb-image">
-                <img src={{ url_for('static', filename='img/Overlays/Score-orb.svg')}} alt="score-orb" id="ScoreOrb" style="display: none;" class="score-orb-image">
+                {% if kamp.antallKamper %}
+                
+                    {% for x in range(ceil(kamp.antallKamper/2) | int) %}
+                    
+                        <img src={{ url_for('static', filename='img/Overlays/Score-orb.svg')}} alt="score-orb" id="ScoreOrb" style="opacity: 0.4;;" class="score-orb-image">
+                    {% endfor %}
+                {% else %}
+                <img src={{ url_for('static', filename='img/Overlays/Score-orb.svg')}} alt="score-orb" id="ScoreOrb" style="opacity: 0.4;;" class="score-orb-image">
+                <img src={{ url_for('static', filename='img/Overlays/Score-orb.svg')}} alt="score-orb" id="ScoreOrb" style="opacity: 0.4;;" class="score-orb-image">
+                <img src={{ url_for('static', filename='img/Overlays/Score-orb.svg')}} alt="score-orb" id="ScoreOrb" style="opacity: 0.4;;" class="score-orb-image">
+                {% endif %}
             </div>
             <h1 id="tagBlue" class="tag">{{kamp.lag1.tag}}</h1>
         </div>
         <div class="team" id="red">
             <h2 id="scoreRed" class="score"></h2>
             <div class="scoreContainer" id="scoreContainerRed">
-                <img src={{ url_for('static', filename='img/Overlays/Score-orb.svg')}} alt="score-orb" id="ScoreOrb" style="display: none;" class="score-orb-image">
-                <img src={{ url_for('static', filename='img/Overlays/Score-orb.svg')}} alt="score-orb" id="ScoreOrb" style="display: none;" class="score-orb-image">
-                <img src={{ url_for('static', filename='img/Overlays/Score-orb.svg')}} alt="score-orb" id="ScoreOrb" style="display: none;" class="score-orb-image">
+                {% if kamp.antallKamper %}
+                    {% for x in range(ceil(kamp.antallKamper/2) | int) %}
+                        <img src={{ url_for('static', filename='img/Overlays/Score-orb.svg')}} alt="score-orb" id="ScoreOrb" style="opacity: 0.4;;" class="score-orb-image">
+                    {% endfor %}
+                {% else %}
+                <img src={{ url_for('static', filename='img/Overlays/Score-orb.svg')}} alt="score-orb" id="ScoreOrb" style="opacity: 0.4;;" class="score-orb-image">
+                <img src={{ url_for('static', filename='img/Overlays/Score-orb.svg')}} alt="score-orb" id="ScoreOrb" style="opacity: 0.4;;" class="score-orb-image">
+                <img src={{ url_for('static', filename='img/Overlays/Score-orb.svg')}} alt="score-orb" id="ScoreOrb" style="opacity: 0.4;;" class="score-orb-image">
+                {% endif %}
             </div>
             <h1 id="tagRed" class="tag">{{kamp.lag2.tag}}</h1>
         </div>
@@ -152,11 +168,11 @@
         console.log("KJØRER");
         console.log(Number(kampInfo.lag1.score));
         for(let i=0; i<Number(kampInfo.lag1.score); i++){
-            blueTeamScoreEl.children[i].style.display = "block";
-            console.log(blueTeamScoreEl.children[i].style.display);
+            blueTeamScoreEl.children[i].style.opacity = 1;
+            console.log(blueTeamScoreEl.children[i].style.opacity);
         }
         for(let i=0; i<Number(kampInfo.lag2.score); i++){
-            redTeamScoreEl.children[i].style.display = "block";
+            redTeamScoreEl.children[i].style.opacity = 1;
         }
 
 

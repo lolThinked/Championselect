@@ -46,6 +46,46 @@
                     </select>
                 </div>
             </div>
+            {% if kamp.allowedCameras %}
+            <h3>KAMERA Instillinger</h3>
+            <div class="cameraSettings">
+                <div class="spillerKameraContainer" id="spillerKamerateam1">
+                    {% for players in kamp.lag1.spillere %}
+                    {% if loop.index < 6 %}
+                    {% if kamp.allowedCameras.team1[loop.index-1]==1 %}
+                    <div class="spillerCameraToggle show" onclick="toggleCam('team1',{{loop.index-1}})">
+                        <h2 contenteditable="True">{{players.navn}}</h2>
+                        <h3>ON</h3>
+                    </div>
+                    {% else%}
+                    <div class="spillerCameraToggle hide" onclick="toggleCam('team1',{{loop.index-1}})">
+                        <h2 contenteditable="True">{{players.navn}}</h2>
+                        <h3>OFF</h3>
+                    </div>
+                    {% endif %}
+                    {% endif %}
+                {% endfor %}
+                </div>
+                <div class="spillerKameraContainer" id="spillerKamerateam2">
+                    {% for players in kamp.lag2.spillere %}
+                    {% if loop.index < 6 %}
+                    {% if kamp.allowedCameras.team2[loop.index-1]==1 %}
+                    <div class="spillerCameraToggle show" onclick="toggleCam('team2',{{loop.index-1}})">
+                        <h2 contenteditable="True">{{players.navn}}</h2>
+                        <h3>ON</h3>
+                    </div>
+                    {% else%}
+                    <div class="spillerCameraToggle hide" onclick="toggleCam('team2',{{loop.index-1}})">
+                        <h2 contenteditable="True">{{players.navn}}</h2>
+                        <h3>OFF</h3>
+                    </div>
+                    {% endif %}
+                    {% endif %}
+                {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
             <h3>GENERELL INFO</h3>
             <div class="kampInfo">
                 <div class="ligaInfo">
@@ -82,6 +122,23 @@
     let kampData = {{kamp|safe}};
     let cameraOverviewLink = "{{url_for('playerCamOverviewJson') }}";
     console.log(kampData);
+    function toggleCam(teamIdentifier, playerId){
+        let teamCameras = document.getElementById("spillerKamera"+teamIdentifier);
+        let kampDataTeam = kampData.allowedCameras[teamIdentifier];
+        //console.log(kampDataTeam);
+        let selectedPlayerCam = teamCameras.children[playerId];
+        if(kampDataTeam[playerId] == 0){
+            kampDataTeam[playerId] = 1;
+            selectedPlayerCam.children[1].innerHTML = "ON";
+            selectedPlayerCam.classList.add("show");
+            selectedPlayerCam.classList.remove("hide");
+        }else{
+            kampDataTeam[playerId] = 0;
+            selectedPlayerCam.children[1].innerHTML = "OFF";
+            selectedPlayerCam.classList.add("hide");
+            selectedPlayerCam.classList.remove("show");
+        }
+    }
 
     function rediger(){
         kampData.lag1.score = Number(document.getElementById("lag1Score").value);
@@ -152,6 +209,14 @@
         kampData.lag1ID = templag2ID;
         kampData.lag1 = templag2Info;
 
+        let kameraOnOffDataTeam1 = kampData.allowedCameras.team1;
+        let kameraOnOffDataTeam2 = kampData.allowedCameras.team2;
+
+        let tempDataSet ={
+            "team1":kameraOnOffDataTeam2,
+            "team2":kameraOnOffDataTeam1,
+        };
+        kampData.allowedCameras = tempDataSet;
         console.log(kampData);
         
         let xml = new XMLHttpRequest();
