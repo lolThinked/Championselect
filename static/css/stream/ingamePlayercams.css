@@ -65,6 +65,20 @@ body{
     top: 2px;
     left: 2px;
 }
+.playerImage{
+    /* width: 293px;
+    height: 165px; */
+    /* position: absolute; */
+    
+    top: 2px;
+    left: 2px;
+    border: 0px;
+    background-color: #000000ab;
+}
+.playerImage img{
+    max-width: 295px;
+    max-height: 165px;
+}
 iframe body{
     background-color: red;
 }

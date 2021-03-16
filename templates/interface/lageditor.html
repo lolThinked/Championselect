@@ -31,8 +31,9 @@
                  
                 <div>SpillerID:<H1 contenteditable="true" class="intypingField">{{spiller.id}}</H1></div>
                 <div>Rolle:<H1 contenteditable="true" class="intypingField">{{spiller.rolle}}</H1></div>
-                <div>Bilde:<H1 contenteditable="true" class="intypingField">{{spiller.spillerBilde}}</H1></div>
+                <div>Bilde(nett):<H1 contenteditable="true" class="intypingField">{{spiller.spillerBilde}}</H1></div>
                 <div>Ingame navn:<H1 contenteditable="true" class="intypingField">{{spiller.ingameNavn}}</H1></div>
+                <div>Bilde(Server):<H1 contenteditable="true" class="intypingField">{{spiller.bilde}}</H1></div>
                 <div class="playerSelectDiv" id="Spiller{{loop.index}}PSD" style="visibility: hidden;"> 
                     {% for player in alleSpillere %}
                         <div class="playerDiv" value="{{player.id}}" onclick="addPlayerToSelect('Spiller{{outer_loop.index}}','{{player.id}}','{{player.navn}}','{{player.gamernoBilde}}', '{{player.lolIngame}}' )">
@@ -54,6 +55,7 @@
         let selectedEl;
         let selectedNameIDEl;
         let h1PreviousValue;
+        let lag = {{lag|safe}};
         document.addEventListener("click", function(event){
             if(selectedEl!= null){
                 if(selectedEl.contains(event.target) ||selectedNameIDEl.contains(event.target)){
@@ -131,6 +133,7 @@
             splEls[1].children[0].innerHTML = playerID;
             splEls[3].children[0].innerHTML = playergamernoImageLink;
             splEls[4].children[0].innerHTML = lolIngame;
+            splEls[5].children[0].innerHTML = "";
             h1PreviousValue = playerName;
             //splEls[0][0].innerHTML = playerName;
 
@@ -194,6 +197,7 @@
                 tempPlayerObject["rolle"] = sELs[2].children[0].innerHTML;
                 tempPlayerObject["spillerBilde"] = sELs[3].children[0].innerHTML;
                 tempPlayerObject["ingameNavn"] = sELs[4].children[0].innerHTML;
+                tempPlayerObject["bilde"] = sELs[5].children[0].innerHTML;
                 spillerArray.push(tempPlayerObject);
             }
             tempObject["spillere"] = spillerArray;

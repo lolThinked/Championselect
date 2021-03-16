@@ -66,3 +66,8 @@
     cursor: pointer;
     border: 1px solid white;
 }
+
+.imageClass{
+    background-color: rgb(38, 113, 253);
+    color: black;
+}

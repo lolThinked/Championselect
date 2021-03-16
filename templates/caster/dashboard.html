@@ -57,6 +57,11 @@
                         <h2 contenteditable="True">{{players.navn}}</h2>
                         <h3>ON</h3>
                     </div>
+                    {% elif kamp.allowedCameras.team1[loop.index-1]==2 %}
+                    <div class="spillerCameraToggle imageClass" onclick="toggleCam('team1',{{loop.index-1}})">
+                        <h2 contenteditable="True">{{players.navn}}</h2>
+                        <h3>IMG</h3>
+                    </div>
                     {% else%}
                     <div class="spillerCameraToggle hide" onclick="toggleCam('team1',{{loop.index-1}})">
                         <h2 contenteditable="True">{{players.navn}}</h2>
@@ -73,6 +78,11 @@
                     <div class="spillerCameraToggle show" onclick="toggleCam('team2',{{loop.index-1}})">
                         <h2 contenteditable="True">{{players.navn}}</h2>
                         <h3>ON</h3>
+                    </div>
+                    {% elif kamp.allowedCameras.team2[loop.index-1]==2 %}
+                    <div class="spillerCameraToggle imageClass" onclick="toggleCam('team2',{{loop.index-1}})">
+                        <h2 contenteditable="True">{{players.navn}}</h2>
+                        <h3>IMG</h3>
                     </div>
                     {% else%}
                     <div class="spillerCameraToggle hide" onclick="toggleCam('team2',{{loop.index-1}})">
@@ -132,11 +142,16 @@
             selectedPlayerCam.children[1].innerHTML = "ON";
             selectedPlayerCam.classList.add("show");
             selectedPlayerCam.classList.remove("hide");
+        }else if(kampDataTeam[playerId] == 1){
+            kampDataTeam[playerId] = 2;
+            selectedPlayerCam.children[1].innerHTML = "IMG";
+            selectedPlayerCam.classList.add("imageClass");
+            selectedPlayerCam.classList.remove("show");
         }else{
             kampDataTeam[playerId] = 0;
             selectedPlayerCam.children[1].innerHTML = "OFF";
             selectedPlayerCam.classList.add("hide");
-            selectedPlayerCam.classList.remove("show");
+            selectedPlayerCam.classList.remove("imageClass");
         }
     }
 

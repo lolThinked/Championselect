@@ -2,20 +2,24 @@ from sys import argv
 from selenium import webdriver
 import time
 import json
+import os
 #print(argv[1])
-
-
+cwd = os.getcwd()
+print(cwd)
+fullPathToChromedriverexe = cwd+"/chromedriver.exe"
 options = webdriver.ChromeOptions()
 options.add_argument('--ignore-certificate-errors')
 options.add_argument("--test-type")
 options.add_argument("--window-size=1200,1200")
+#options.binary_location = cwd+"/chromedriver.exe"
 #options.binary_location = "/usr/bin/chromium"
+chrome_path = r"chromedriver.exe"
 kampOversikt = None
 kampe = None
 with open("jsonFiles/kamper/oversikt.json","r") as f:
     kampOversikt = json.load(f)
 
-driver = webdriver.Chrome(chrome_options=options)
+driver = webdriver.Chrome(chrome_options=options, executable_path=fullPathToChromedriverexe)
 if(len(argv)>1):
     tid = str(time.time())
     print(tid)

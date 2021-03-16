@@ -3,16 +3,37 @@
 <div class="teamContainer" id="teamContainerDiv">
     <div class="team" id="blueTeam">
         {% for player in kameraOversikt.lag1 %}
+
         <div class="player bluePlayer" id="{{player.id}}">
-            <iframe src="{{player.view}}" frameborder="0"></iframe>
-            <div><h1>{{player.name}}</h1></div>
+            {% if kamp.allowedCameras.team1[loop.index-1]==2 %}
+                <div class="playerImage">
+                    {% if kamp.lag1.spillere[loop.index-1].bilde %}
+                        <img src="{{ url_for('static', filename='img/spillere/'+kamp.lag1.spillere[loop.index-1].bilde)}}" alt="{{player.name}}">
+                    {% else %}
+                        <img src="{{kamp.lag1.spillere[loop.index-1].spillerBilde}}" alt="{{player.name}}">
+                    {% endif %}
+                </div>
+            {% else %}
+                <iframe src="{{player.view}}" frameborder="0"></iframe>
+            {% endif %}
+                <div><h1>{{player.name}}</h1></div>
         </div>
         {% endfor %}
     </div>
     <div class="team" id="redTeam">
         {% for player in kameraOversikt.lag2 %}
         <div class="player redPlayer" id="{{player.id}}">
-            <iframe src="{{player.view}}" frameborder="0"></iframe>
+            {% if kamp.allowedCameras.team2[loop.index-1]==2 %}
+                <div class="playerImage">
+                    {% if kamp.lag1.spillere[loop.index-1].bilde %}
+                        <img src="{{ url_for('static', filename='img/spillere/'+kamp.lag2.spillere[loop.index-1].bilde)}}" alt="{{player.name}}">
+                    {% else %}
+                        <img src="{{kamp.lag2.spillere[loop.index-1].spillerBilde}}" alt="{{player.name}}">
+                    {% endif %}
+                </div>
+            {% else %}
+                <iframe src="{{player.view}}" frameborder="0"></iframe>
+            {% endif %}
             <div><h1>{{player.name}}</h1></div>
         </div>
         {% endfor %}
@@ -29,27 +50,34 @@
     let rosterLink = "{{url_for('livecontrolSpesificScene', sceneName='playerCams')}}";
     let bluePlayerEls = document.getElementsByClassName("bluePlayer");
     let redPlayersEls = document.getElementsByClassName("redPlayer");
-    let livecontrolReference ={};
+    
     const sceneName = "playerCams";
     var socket = io();
     
     const True = true;
     const False = false;
+    let livecontrolReference ={{liveControlInfo|safe}};
     let show = true;
     let viewedPlayerIds = 0;
     let currentPlayersInFocus =[0,0];
-    let autocamera = false;
+    let autocamera = true;
+    let booleanForSelectingWhatSocketInputToUse = true;
+    getLivecontrolJsonData();
 
     setInterval(async ()=>{
         await updateCamera();
-    }, 10000);
+        console.log("UPDATING");
+    }, 5000);
     socket.on('livecontrolupdate', function(data){
-        console.log("message");
-        console.log(data);
         checkHideShow(data.ingame[sceneName]);
-        updateVisiblePlayer(data.ingame[sceneName].data);
-        updateAutocameraStatus(data.ingame[sceneName].data);
         livecontrolReference = data;
+        if(booleanForSelectingWhatSocketInputToUse){
+            console.log("message");
+            console.log(data);
+            updateVisiblePlayer(data.ingame[sceneName].data);
+            updateAutocameraStatus(data.ingame[sceneName].data);        
+        booleanForSelectingWhatSocketInputToUse = false;
+        }
     });
     function checkIfPlayerWantsCam(teamIdentifier, playerIdentifier){
         if(kampData.allowedCameras[teamIdentifier][playerIdentifier] ==1){
@@ -59,15 +87,18 @@
         }
     }
     function findNextPlayerWithEnabledCam(teamIdentifier, playerIdentifier){
-        if(kampData.allowedCameras[teamIdentifier][playerIdentifier] ==1){
-            return playerIdentifier;
-        }else{
-            if(playerIdentifier==4){
-                return findNextPlayerWithEnabledCam(teamIdentifier, 0);
+        for(let i =0; i<kameraOversiktObject.lag1.length; i++){
+            let n;
+            if(i+playerIdentifier >= 5){
+                n = i+playerIdentifier-5;
             }else{
-                return findNextPlayerWithEnabledCam(teamIdentifier, playerIdentifier+1);
+                n = i+playerIdentifier;
             }
-        } 
+            console.log(n);
+            if(kampData.allowedCameras[teamIdentifier][n] ==1 || kampData.allowedCameras[teamIdentifier][n] ==2){
+                return n
+            }
+        }
     }
     function updateVisiblePlayer(data){
         for(let i =0; i<kameraOversiktObject.lag1.length; i++){
@@ -78,7 +109,10 @@
             }
         }
         let checkValue = checkIfPlayerWantsCam("team1",data.player1ToShow);
-        if(checkValue != true){
+        console.log("CHECKVALUE 1");
+            console.log(checkValue);
+        if(checkValue !== true && checkValue!==undefined){
+            
             bluePlayerEls[data.player1ToShow].style.display = "none";
             bluePlayerEls[checkValue].style.display = "block";
         }
@@ -90,10 +124,11 @@
             }
         }
         let checkValue2 = checkIfPlayerWantsCam("team2",data.player2ToShow);
-        if(checkValue2 != true){
+        if(checkValue2 !== true && checkValue!=undefined){
             redPlayersEls[data.player2ToShow].style.display = "none";
             redPlayersEls[checkValue2].style.display = "block";
         }
+        //console.log(checkValue2);
         currentPlayersInFocus[0] = data.player1ToShow;
         currentPlayersInFocus[1] = data.player2ToShow;
     }
@@ -108,6 +143,7 @@
                 console.log(tempDIct);
                 checkHideShow(tempDIct);    
                 updateVisiblePlayer(tempDIct.data);
+                livecontrolReference.ingame.playerCams = tempDIct;
             }
         }
         xml.send();
@@ -142,12 +178,14 @@
                 }
             }
             let stringified = JSON.stringify(livecontrolReference);
+            booleanForSelectingWhatSocketInputToUse = true;
             xml.send(stringified);
         }else{
             console.log(autocamera);
         }
     }
-    getLivecontrolJsonData();
+
+    
     function checkHideShow(tempDIct){
         console.log(tempDIct);
         if(tempDIct["show"]!=show){

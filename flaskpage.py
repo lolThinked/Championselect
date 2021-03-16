@@ -358,7 +358,7 @@ def viewTestNinjaStream():
 
 @app.route("/stream/ingame/playerCams")
 def playerCamStreamView():
-    return render_template("stream/ingamePlayercams.html", kamp = currentKampjson, kameraOversikt = kameraOversiktJson)
+    return render_template("stream/ingamePlayercams.html", kamp = currentKampjson, kameraOversikt = kameraOversiktJson, liveControlInfo = livecontrolJson)
 
 @app.route("/production/playerCamOverview/json")
 def playerCamOverviewJson():
