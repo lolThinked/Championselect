@@ -411,7 +411,8 @@ def updateCurrentKamp():
     currentKampjson = indata
     with open("jsonFiles/kamper/currentKamp.json","w") as f:
         json.dump(indata, f)
-    #print(currentKampjson)
+    print("\n"*10)
+    print(currentKampjson)
     return "SUCCESS"
 
 @app.route("/currentKamp/newFromID", methods=["POST"])
@@ -457,6 +458,13 @@ def streamLinksHtml():
 @app.route("/production/ingamePlayerCamsWithDelay/")
 def ingamePlayerCamsWithDelay():
     return render_template("stream/ingamePlayercamsServerStreamed.html")
+
+
+
+#CLEAN JSON DATA REQUESTS
+@app.route("/production/jsonData/currentKampJson",methods=["GET"])
+def getJsonDataCurrentKampJson():
+    return jsonify(currentKampjson)
 
 
 

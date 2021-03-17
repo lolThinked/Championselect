@@ -25,7 +25,7 @@
         <div class="player redPlayer" id="{{player.id}}">
             {% if kamp.allowedCameras.team2[loop.index-1]==2 %}
                 <div class="playerImage">
-                    {% if kamp.lag1.spillere[loop.index-1].bilde %}
+                    {% if kamp.lag2.spillere[loop.index-1].bilde %}
                         <img src="{{ url_for('static', filename='img/spillere/'+kamp.lag2.spillere[loop.index-1].bilde)}}" alt="{{player.name}}">
                     {% else %}
                         <img src="{{kamp.lag2.spillere[loop.index-1].spillerBilde}}" alt="{{player.name}}">
@@ -47,6 +47,7 @@
     let kampData = {{kamp| safe}};
     let updateLiveControlLink = "{{url_for('updateLiveControl')}}";
     let kameraOversiktObject = {{kameraOversikt|safe}};
+    
     let rosterLink = "{{url_for('livecontrolSpesificScene', sceneName='playerCams')}}";
     let bluePlayerEls = document.getElementsByClassName("bluePlayer");
     let redPlayersEls = document.getElementsByClassName("redPlayer");
@@ -68,6 +69,81 @@
         await updateCamera();
         console.log("UPDATING");
     }, 5000);
+
+    //KAMP JSON COMPARE UPDATE FUNCTION GROUP
+        //###########################
+        let currentKampJsonLink = "{{url_for('getJsonDataCurrentKampJson')}}";
+        setInterval(async ()=>{
+            if(typeof(kampData)=="object"){
+                await checkKampData();
+            }        
+        }, 5000);
+        async function checkKampData(){
+            let xml = new XMLHttpRequest();
+            console.log(currentKampJsonLink);
+            xml.open("GET", currentKampJsonLink, true);  
+            xml.onreadystatechange = function(){
+                if(xml.readyState == 4 && xml.status == 200){
+                    let tempDict = JSON.parse(xml.responseText);
+                    let objectCompareValue = object_equals(tempDict,kampData);
+                    console.log(objectCompareValue);
+                    if(objectCompareValue===false){
+                        window.location.reload(false);
+                    }
+                    /*if(tempDict!=kampData){
+                        console.log("SAMMENLIKNING");
+                        console.log(tempDict);
+                        console.log(kampData);
+                        console.log(tempDict!==kampData);
+                        console.log(object_equals(tempDict,kampData));
+                        //window.location.reload(false);
+                    }*/
+                    
+                }
+            }
+            xml.send();
+        }
+        //############################
+        //https://stackoverflow.com/a/6713782/14024655
+        function object_equals( x, y ) {
+            if ( x === y ) return true;
+                // if both x and y are null or undefined and exactly the same
+
+            if ( ! ( x instanceof Object ) || ! ( y instanceof Object ) ) return false;
+                // if they are not strictly equal, they both need to be Objects
+
+            if ( x.constructor !== y.constructor ) return false;
+                // they must have the exact same prototype chain, the closest we can do is
+                // test there constructor.
+
+            for ( var p in x ) {
+                if ( ! x.hasOwnProperty( p ) ) continue;
+                // other properties were tested using x.constructor === y.constructor
+
+                if ( ! y.hasOwnProperty( p ) ) return false;
+                // allows to compare x[ p ] and y[ p ] when set to undefined
+
+                if ( x[ p ] === y[ p ] ) continue;
+                // if they have the same strict value or identity then they are equal
+
+                if ( typeof( x[ p ] ) !== "object" ) return false;
+                // Numbers, Strings, Functions, Booleans must be strictly equal
+
+                if ( ! object_equals( x[ p ],  y[ p ] ) ) return false;
+                // Objects and Arrays must be tested recursively
+            }
+
+            for ( p in y )
+                if ( y.hasOwnProperty( p ) && ! x.hasOwnProperty( p ) )
+                return false;
+                    // allows x[ p ] to be set to undefined
+
+            return true;
+            }
+
+
+
+
     socket.on('livecontrolupdate', function(data){
         checkHideShow(data.ingame[sceneName]);
         livecontrolReference = data;
@@ -133,9 +209,9 @@
         currentPlayersInFocus[1] = data.player2ToShow;
     }
 
-    function getLivecontrolJsonData(){
+    async function getLivecontrolJsonData(){
         let xml = new XMLHttpRequest();
-        xml.open("GET", rosterLink, false);  
+        xml.open("GET", rosterLink, true);  
         xml.onreadystatechange = function(){
             if(xml.readyState == 4 && xml.status == 200){
                 let tempDIct = JSON.parse(xml.responseText);
