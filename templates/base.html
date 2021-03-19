@@ -8,7 +8,15 @@
   <script src={{ url_for('static', filename='js/copyMe.js')}} ></script>
 	<title>Home Page</title>
 	<link href="https://fonts.googleapis.com/css?family=Roboto:500&display=swap" rel="stylesheet">
-<style></style>
+<style>
+  .backgroundImage{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: -1;
+    opacity: 0.4;
+  }
+</style>
 </head>
 <body>
   {% include "_topnav.html" %}
@@ -18,5 +26,6 @@
   <script>
 
   </script>
+  <img src="{{url_for('static', filename='img/website/background.png')}}" alt="bakgrunn" class="backgroundImage">
 </body>
 </html>
