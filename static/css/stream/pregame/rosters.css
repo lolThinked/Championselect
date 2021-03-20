@@ -1,0 +1,144 @@
+body{
+    background-color: black;
+    font-family: roboto thin;
+    color: white;
+}
+.rosters{
+    display: flex;
+}
+.roster{
+    background-color: rgba(0, 156, 177, 0.349);
+    border: 1px solid rgba(28, 191, 255, 0.63);
+    border-radius: 3px;
+    padding: 20px;
+    width: 250px;
+    text-align: center;
+    display: block;
+    display: block;
+    animation-duration: 1.4s;
+    transition-duration: 0s;
+    height: 115px;
+    top: -200px;
+    contain: strict;
+    position: absolute;
+    animation-fill-mode: forwards;
+
+}
+.rosterElement{
+    margin: auto;
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+.rosterElement img{
+    max-width: 150px;
+    max-height: 150px;
+    max-width: 100px;
+    max-height: 100px;
+}
+.rosterElement img,h1{
+    margin: auto;
+}
+
+
+@keyframes blueTeamAnimation1{
+    0%{
+        top: 300px;
+        left: -2000px;
+        display: block;
+    }
+    25%{
+        left: 400px;
+    }
+    50%{
+        left: 400px;
+        height: 115px;
+    }
+    75%{
+        height: 420px;
+    }
+    100%{
+        top: 300px;
+        left: 400px;
+        height: 420px;
+    }
+
+}
+
+
+
+
+@keyframes redTeamAnimation1{
+    0%{
+        display: block;
+        top: 605px;
+        left: -2000px;
+    }
+    25%{
+        left: 400px;
+    }
+    50%{
+        left: 800px;
+        height: 115px;
+        top: 605px;
+    }
+    75%{
+        height: 420px;
+        top: 300px;
+    }
+    100%{
+        top: 300px;
+        height: 420px;
+        left: 800px;
+    }
+}
+
+
+@keyframes blueTeamAnimationOutro1{
+    0%{
+        top: 300px;
+        left: 400px;
+        height: 420px;
+    }
+    25%{
+        height: 115px;
+        top: 605px;
+        left: 400px;
+    }
+    50%{
+        left: 800px;
+    }
+    75%{
+        left: 2000px;
+        top: 605px;
+    }
+    100%{
+        left: 2000px;
+        top: 605px;
+        display: none;
+    }
+}
+@keyframes redTeamAnimationOutro1{
+    0%{
+        top: 300px;
+        height: 420px;
+        left: 800px;
+    }
+    25%{
+        height: 115px;
+    }
+    50%{
+        left: 800px;
+        top: 300px;
+    }
+    75%{
+        left: 2000px;
+        top: 300px;
+    }
+    100%{
+        left: 2000px;
+        top: 300px;
+        display: none;
+    }
+
+}

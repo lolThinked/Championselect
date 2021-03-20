@@ -27,6 +27,10 @@
             "url":"ingameOverlay"
         },
         {
+            "navn":"Rosters [2.0]",
+            "url":"viewStreamPregameRosters"
+        },
+        {
             "navn":"Team Rosters",
             "url":"streamRoster"
         },

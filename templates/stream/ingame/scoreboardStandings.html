@@ -1,0 +1,28 @@
+<div class="scoreBoardContent" id="scoreBoardContent">
+    <div class="scoreboard-full" id="scoreboard-full">
+        <div class="scoreboard-half" id="scoreboard-left">
+            <div class="spillerBildeDiv">
+                <img src="" alt="spiller-left-bilde" class="spillerBilde" id="spillerBildeLeft">
+            </div>
+            <div class="statistikkDiv">
+                {% for %}
+
+                {%  endfor %}
+            </div>
+        </div>
+        <div class="scoreboard-half" id="scoreboard-right">
+            <div class="spillerBildeDiv">
+                <img src="" alt="spiller-right-bilde" class="spillerBilde" id="spillerBildeRight">
+            </div>
+            <div class="statistikkDiv">
+                <div><h1 id="spillerNavnRight">Touch</h1></div>
+                <div><h2>K/G - </h2><h2 id="killsPerGameRight">K/G</h2></div>
+                <div><h2>D/G - </h2><h2 id="deathsPerGameRight">D/G</h2></div>
+                <div><h2>Vision - </h2><h2 id="visionScoreRight">VisionScore</h2></div>
+                <div><h2>KP - </h2><h2 id="killParticipationRight">KP</h2></div>
+            </div>
+        </div>
+    </div>
+    
+    <img src="{{ url_for( 'static', filename='img/production/SVG/scoreBoardHvitOverlay.svg')}}" alt="hvitOverlay" id="scoreBoardOverlayImage">
+</div>

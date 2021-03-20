@@ -129,6 +129,21 @@ def lagNyCurrentKamp():
 def home():
     return render_template("interface/homePage.html", user=current_user, current_user=current_user, linker=homePageLinkerJson)
 
+################################################################################################################################################
+###############       NEW               #############################################
+@app.route("/stream/pregame/rosters")
+def viewStreamPregameRosters():
+    return render_template("stream/pregame/rosters.html", kamp = currentKampjson)
+
+
+@app.route("/stream/ingame/scoreboardStandings")
+def viewStreamIngameScoreboardStandings():
+    return render_template("stream/ingame/scoreboardStandings.html", tabell = hentRiktigTabell())
+
+
+
+##############        NEW END           ########################################333
+#############################################################################################
 @app.route("/kampeditor")
 def kampeditor():
     alleLag = hentAlleLag()
@@ -555,11 +570,7 @@ def statisticsStandings():
 @app.route("/stream/tabell")
 def streamTabell():
     providedTabell = None
-    if currentKampjson["liga"] == "Telialigaen":
-        providedTabell = hentJson("tableStanding")
-    else:
-        providedTabell = hentJson("TESStanding")
-    return render_template("stream/tabell.html", tabell = providedTabell)
+    return render_template("stream/tabell.html", tabell = hentRiktigTabell())
 
 @app.route("/statistics/standings/json")
 def statisticsStandingsJson():
@@ -642,6 +653,13 @@ def user(username):
         {'author': user, 'body': 'Test post #2'}
     ]
     return render_template('user.html', user=user, posts=posts)
+
+def hentRiktigTabell():
+    if currentKampjson["liga"] == "Telialigaen":
+        return = hentJson("tableStanding")
+    else:
+        return = hentJson("TESStanding")
+
 
 def opdaterLagoversikt(navn, tempID):
     print(lagoversiktjson)
