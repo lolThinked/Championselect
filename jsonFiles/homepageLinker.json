@@ -13,6 +13,10 @@
             "url":"champselect"
         },
         {
+            "navn":"Match Score",
+            "url":"viewStreamPregameMatchScore"
+        },
+        {
             "navn":"Championselect - Overlay",
             "url":"championselectOverlay"
         },

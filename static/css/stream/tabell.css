@@ -16,17 +16,24 @@ body{
     position: relative;
     animation-fill-mode: forwards;
 }
+
+.lag h2{
+    /* flex-grow: 1; */
+}
+.lag h1{
+    flex-grow: 2;
+}
 @keyframes vis{
     
     0%   {opacity: 0; left: -500px; display: none;}
     25%  { display: block;}
     50% {opacity: 1; left: 100px; display: block;}
-    100% { display: block; left: 0px;}
+    100% { display: flex; left: 0px;}
 }
 
 @keyframes skjul{
     
-    0% { display: block; left: 0px;}
+    0% { display: flex; left: 0px;}
     25% {opacity: 1; left: 100px; display: block;}
     50%  { display: block;}
     100%   {opacity: 0; left: -500px; display: none;}

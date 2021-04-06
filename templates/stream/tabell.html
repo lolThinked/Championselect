@@ -2,7 +2,10 @@
 <div class="tabellContainer" id="tabellContainerID">
     {% for lag in tabell %}
         <div class="lag">
+            <h2>{{lag.placement}}</h2>
             <h1>{{lag.participant.name}}</h1>
+            <h2>{{lag.points}}</h2>
+            <img src="{{lag.participant.image.url}}" alt="{{lag.participant.name}}_Bilde" width="50px" height="50px" style="right: 0px; position: absolute; top: -8px; display: none;">
             <img src="{{lag.participant.image.url}}" alt="{{lag.participant.name}}_Bilde" width="50px" height="50px" style="right: 0px; position: absolute; display: none;">
         </div>
     {% endfor %}
@@ -45,43 +48,6 @@
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // setInterval(function(){
-    //     let xml = new XMLHttpRequest();
-    //     xml.open("GET", rosterLink, false);  
-    //     xml.onreadystatechange = function(){
-    //         if(xml.readyState == 4 && xml.status == 200){
-    //             let tempDIct = JSON.parse(xml.responseText);
-    //             console.log(tempDIct);
-    //             if(tempDIct["show"]!=show){
-    //                 if(tempDIct["show"] == true){
-    //                     startAnimasjoner();
-    //                     show = true;
-    //                 }else{
-    //                     skjulAlle();
-    //                     show=false;
-    //                 }
-    //             }
-    //         }
-    //     }
-    //     xml.send();     
-    // }, 1000);   
-
-    //document.getElementById("tabellContainerID").onload = startAnimasjoner();
     function contentShow(){
         //console.log("DEMO");
         console.log("VIS");
@@ -89,8 +55,8 @@
         for(let i=0; i<lagEls.length; i++){
             setTimeout(function(){
                 lagEls[i].style.animationName = "vis";
-                lagEls[i].style.display = "block";
-            }, i*300);
+                lagEls[i].style.display = "flex";
+            }, i*120);
         }
     }
     function contentHide(){
@@ -101,7 +67,7 @@
             setTimeout(function(){
                 lagEls[i].style.animationName = "skjul";
                 //lagEls[i].style.display = "block";
-            }, i*300);
+            }, i*120);
         }
     }
 </script>

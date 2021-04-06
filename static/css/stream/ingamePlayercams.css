@@ -24,6 +24,7 @@ body{
 
 .team{
     position: relative;
+    position: absolute;
     
 }
 #blueTeam{
@@ -31,6 +32,7 @@ body{
 }
 #redTeam{
     left: 1034px;
+    left: 1331px;
 }
 .player{
     width: 293px;

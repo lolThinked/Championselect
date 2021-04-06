@@ -1,0 +1,1 @@
+<img src="{{ url_for('static', filename='img/working/pregameBackground.png') }}" alt="" class="background-image" style="position: absolute; top: 0px;left: 0px;z-index: -1; width: 1920px;height: 1080px;">

@@ -2,6 +2,7 @@ body{
     font-family: 'Roboto thin';
     text-align: center;
     background-color: #1a283e;
+    margin: 0px;
 }
 
 button{
@@ -30,3 +31,18 @@ button:hover{
       margin:0.4em auto;
      }
     }
+
+
+
+
+
+
+
+
+.aim-production-textIcon{
+    font-family: roboto thin;
+    font-weight: 600;
+}
+.aim-production-textIcon b{
+    font-family: roboto black;
+}

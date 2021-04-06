@@ -1,0 +1,110 @@
+#backgroundImage{
+    width: 1920px;
+    height: 1080px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: -1;
+}
+body{
+    margin: 0px;
+    color: white;
+    font-family:'Roboto-Thin',sans-serif;
+    /* font-weight:100; */
+    font-family: roboto;
+    background-color: rgb(20, 20, 20);
+}
+.overlay-container{
+    z-index: 5;
+}
+
+.overlayTop{
+    display: flex;
+}
+.teamInfo{
+    display: flex;
+    height: 158px;
+    border-radius: 111px;
+    width: 680px;
+    background-color: #1d1d1dba;
+    border: 1px solid #ffffffb3;
+    border: 1px solid #0299fabd;
+    position: absolute;
+    padding-bottom: 15px;
+    padding-right: 15px;
+}
+#red{
+    direction: rtl;
+    right: 0px;
+    padding-right: 0px;
+    padding-left: 15px;
+    border-color: #e70051bd;
+}
+.team-scoreAndName{
+    border-left: 1px solid white;
+    border-left: 1px solid #0299fa;
+    padding-left: 31px;
+    margin-top: 23px;
+}
+#teamScoreAndNameRed{
+    padding-left: 0px;
+    padding-right: 31px;
+    border-left: 0px;
+    border-right: 1px solid white;
+    border-right: 1px solid #e70051;
+}
+
+.team-image-container{
+    height: 183px;
+    width: 183px;
+    margin-left: 61px;
+    margin-right: 61px;
+    /* background-color: #3b4b73; */
+    max-width: 133px;
+    max-height: 133px;
+    padding: 25px;
+}
+.team-image-container img{
+    width: 100%;
+    max-width: 133px;
+    max-height: 133px;
+}
+
+.team-scoreAndName{
+    /* background-color: antiquewhite;
+    padding-top: 40px; */
+}
+
+
+.team-score{
+    position: relative;
+    font-size: 5em;
+    font-weight: lighter;
+    top: -51px;
+    left: -4px;
+
+    position: relative;
+    font-size: 5em;
+    font-weight: lighter;
+    top: -71px;
+    left: -4px;
+}
+.team-name{
+    position: relative;
+    top: -77px;
+    font-size: 2.5em;
+    left: -2px;
+    font-weight: lighter;
+
+    position: relative;
+    top: -107px;
+    font-size: 2.5em;
+    left: -2px;
+}
+
+#blueScore{
+    color:#0299fa;
+}
+#redScore{
+    color: #e70051;
+}

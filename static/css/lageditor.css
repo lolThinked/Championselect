@@ -39,6 +39,9 @@
     display: flex;
     margin-bottom: 20px;
     flex-wrap: wrap;
+    border: 1px solid #00000040;
+    border-radius: 10px;
+    background-color: #00000038;
 }
 
 

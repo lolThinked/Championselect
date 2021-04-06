@@ -3,12 +3,18 @@ body{
     font-family: roboto thin;
     color: white;
 }
+h2{
+    font-family: roboto thin;
+    font-weight: normal;
+}
 .rosters{
     display: flex;
 }
 .roster{
-    background-color: rgba(0, 156, 177, 0.349);
+    background-color: rgba(0, 156, 177, 0.35);
+    background-color:   rgb(45, 45, 45, 0.35);
     border: 1px solid rgba(28, 191, 255, 0.63);
+    border: 1px solid #0299fabd;
     border-radius: 3px;
     padding: 20px;
     width: 250px;
@@ -16,6 +22,7 @@ body{
     display: block;
     display: block;
     animation-duration: 1.4s;
+    /* animation-duration: 5s; */
     transition-duration: 0s;
     height: 115px;
     top: -200px;
@@ -23,6 +30,10 @@ body{
     position: absolute;
     animation-fill-mode: forwards;
 
+}
+#lag2Roster{
+    border: 1px solid rgba(255, 28, 28, 0.63);
+    border-color: #e70051bd;
 }
 .rosterElement{
     margin: auto;
@@ -43,15 +54,19 @@ body{
 
 @keyframes blueTeamAnimation1{
     0%{
+        opacity: 0;
         top: 300px;
+        top: 220px;
         left: -2000px;
         display: block;
     }
     25%{
-        left: 400px;
+        
+        left: 610px;
     }
     50%{
-        left: 400px;
+        opacity: 1;
+        left: 610px;
         height: 115px;
     }
     75%{
@@ -59,7 +74,8 @@ body{
     }
     100%{
         top: 300px;
-        left: 400px;
+        top: 220px;
+        left: 610px;
         height: 420px;
     }
 
@@ -70,26 +86,33 @@ body{
 
 @keyframes redTeamAnimation1{
     0%{
+        opacity: 0;
         display: block;
         top: 605px;
+        top: 525px;
         left: -2000px;
     }
     25%{
-        left: 400px;
+        
+        left: 610px;
     }
     50%{
-        left: 800px;
+        opacity: 1;
+        left: 1018px;
         height: 115px;
         top: 605px;
+        top: 525px;
     }
     75%{
         height: 420px;
         top: 300px;
+        top: 220px;
     }
     100%{
         top: 300px;
+        top: 220px;
         height: 420px;
-        left: 800px;
+        left: 1018px;
     }
 }
 
@@ -97,6 +120,124 @@ body{
 @keyframes blueTeamAnimationOutro1{
     0%{
         top: 300px;
+        top: 220px;
+        left: 610px;
+        height: 420px;
+    }
+    25%{
+        height: 115px;
+        top: 605px;
+        top: 525px;
+        left: 610px;
+    }
+    50%{
+        left: 1018px;
+        opacity: 1;
+    }
+    75%{
+        left: 2200px;
+        top: 605px;
+        top: 525px;
+        
+    }
+    100%{
+        left: 2200px;
+        top: 605px;
+        top: 525px;
+        display: none;
+        opacity: 0;
+    }
+}
+@keyframes redTeamAnimationOutro1{
+    0%{
+        top: 300px;
+        top: 220px;
+        height: 420px;
+        left: 1018px;
+    }
+    25%{
+        height: 115px;
+    }
+    50%{
+        left: 1018px;
+        top: 300px;
+        top: 220px;
+        opacity: 1;
+    }
+    75%{
+        left: 2200px;
+        top: 300px;
+        top: 220px;
+        
+    }
+    100%{
+        left: 2200px;
+        top: 300px;
+        top: 220px;
+        display: none;
+        opacity: 0;
+    }
+
+}
+
+
+
+@keyframes blueTeamAnimation1OLD{
+    0%{
+        opacity: 0;
+        top: 300px;
+        left: -2000px;
+        display: block;
+    }
+    25%{
+        
+        left: 400px;
+    }
+    50%{
+        opacity: 1;
+        left: 400px;
+        height: 115px;
+    }
+    75%{
+        height: 420px;
+    }
+    100%{
+        top: 300px;
+        left: 400px;
+        height: 420px;
+    }
+}
+
+@keyframes redTeamAnimation1OLD{
+    0%{
+        opacity: 0;
+        display: block;
+        top: 605px;
+        left: -2000px;
+    }
+    25%{       
+        left: 400px;
+    }
+    50%{
+        opacity: 1;
+        left: 800px;
+        height: 115px;
+        top: 605px;
+    }
+    75%{
+        height: 420px;
+        top: 300px;
+    }
+    100%{
+        top: 300px;
+        height: 420px;
+        left: 800px;
+    }
+}
+
+@keyframes blueTeamAnimationOutro1OLD{
+    0%{
+        top: 300px;
         left: 400px;
         height: 420px;
     }
@@ -107,18 +248,21 @@ body{
     }
     50%{
         left: 800px;
+        opacity: 1;
     }
     75%{
         left: 2000px;
         top: 605px;
+        
     }
     100%{
         left: 2000px;
         top: 605px;
         display: none;
+        opacity: 0;
     }
 }
-@keyframes redTeamAnimationOutro1{
+@keyframes redTeamAnimationOutro1OLD{
     0%{
         top: 300px;
         height: 420px;
@@ -130,15 +274,17 @@ body{
     50%{
         left: 800px;
         top: 300px;
+        opacity: 1;
     }
     75%{
         left: 2000px;
         top: 300px;
+        
     }
     100%{
         left: 2000px;
         top: 300px;
         display: none;
+        opacity: 0;
     }
-
 }

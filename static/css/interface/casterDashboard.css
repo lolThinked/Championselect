@@ -71,3 +71,8 @@
     background-color: rgb(38, 113, 253);
     color: black;
 }
+
+
+.noVisualClass{
+    color: red;
+}

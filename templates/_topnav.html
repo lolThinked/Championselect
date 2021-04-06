@@ -1,18 +1,50 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script>
+    function myFunction() {
+    var x = document.getElementById("topnav-bottom-row");
+    if (x.className === "topnav-bottom-row") {
+      x.className += " responsive";
+    } else {
+      x.className = "topnav-bottom-row";
+    }
+  }
+  </script>
+
 <div class="topnav" id="topnav">
-    <a class="active" href="/" onclick="goHome()">Hjem</a>
-    <a href="{{ url_for('kampeditor') }}">Kamp-Editor</a>
-    <a href="{{ url_for('lagoversikt') }}">Lagoversikt</a>
-    <a href="{{ url_for('casterDashboard')}}">Dashboard</a>
-    <a href="{{ url_for('spillerOversikt')}}">Spillere</a>
-    <a href="{{url_for('viewSettings')}}">Instillinger</a>
-    {% if current_user == undefined %}
-        <a href="{{url_for('login')}}">Login</a>
-    {% else %}
-        {% if current_user.is_anonymous %}
-        <a href="{{url_for('login')}}" style="display: none;">Login - NB! Funker ikke</a>
-        {% else %}
-        <a href="{{ url_for('user', username=current_user.username) }}">Profile</a>
-        <a href="{{url_for('logout')}}">Logout</a>
-        {% endif %}
-    {% endif %}
+    <div class="topnav-top-row">
+        <a href="{{ url_for('home') }}" onclick="goHome()">
+            <img src="{{ url_for('static', filename='img/logoer/aim/AIM-TYPE-WHITE.png') }}" alt="header-logo" class="header-logo-button" id="header-logo-button-big">
+            <img src="{{ url_for('static', filename='img/logoer/aim/AIM-SYMBOL-WHITE.png') }}" alt="header-logo" class="header-logo-button-small" id="header-logo-button-small">
+          </a>
+          <a href="/streaming/" class="aim-production-textIcon" style="display: none;">
+            <b>AIM</b> PRODUCTION
+          </a>
+          <div class="topnav-user-container">
+            {% if user %}
+                {% if user.is_authenticated %}
+                <a href="{{ url_for('dashboard') }}">
+                    <h1 class="topnav-user-username">Thinked</h1>
+                    <img class="topnav-user-icon" src="{{ url_for('static' , filename='img/Working/user-temp/user_icon_small.jpg') }}" alt="user-icon">
+                </a>
+                {% endif %}
+            {% else %}
+              <a href="{{ url_for('home') }}"><p>Login</p></a>
+            {% endif %}
+          </div>
+    </div>
+
+    
+
+    <div class="topnav-bottom-row" id="topnav-bottom-row">
+        <a class="active" href="/" onclick="goHome()">Hjem</a>
+        <a href="{{ url_for('kampeditor') }}">Kamp-Editor</a>
+        <a href="{{ url_for('lagoversikt') }}">Lagoversikt</a>
+        <a href="{{ url_for('casterDashboard')}}">Dashboard</a>
+        <a href="{{ url_for('spillerOversikt')}}">Spillere</a>
+        <a href="{{url_for('viewSettings')}}">Instillinger</a>
+        <a href="javascript:void(0);" class="icon" onclick="myFunction()" id="topnav-bottom-row-hamburger-icon">
+            <i class="fa fa-bars"></i>
+          </a>
+    </div>
+    
   </div>

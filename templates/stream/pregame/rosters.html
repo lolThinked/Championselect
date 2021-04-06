@@ -6,13 +6,13 @@
             <img src="{{ url_for('static', filename='laglogoer/'+kamp.lag1.bilde+'')}}" alt="logo" width="150px" height="150px">    
         </div>
         <div class="rosterElement" style="display: none;">
-            <h1>{{kamp.lag1.navn}}</h1>
+            <h1>{{kamp.lag1.navn.upper()}}</h1>
         </div>
     
         {% for spiller in kamp.lag1.spillere %}
             <div class="spiller" style="display: none;">
                 <!-- <h2>{{spiller.rolle}}</h2> -->
-                <h2>{{spiller.navn}}</h2>
+                <h2>{{spiller.navn.upper()}}</h2>
             </div>
         {% endfor %}
     </div>
@@ -23,13 +23,13 @@
             <img src="{{ url_for('static', filename='laglogoer/'+kamp.lag2.bilde+'')}}" alt="logo" width="150px" height="150px">    
         </div>
         <div class="rosterElement" style="display: none;">
-            <h1>{{kamp.lag2.navn}}</h1>
+            <h1>{{kamp.lag2.navn.upper()}}</h1>
         </div>
     
         {% for spiller in kamp.lag2.spillere %}
             <div class="spiller" id="lag2DIV" style="display: none;">
                 <!-- <h2>{{spiller.rolle}}</h2> -->
-                <h2>{{spiller.navn}}</h2>
+                <h2>{{spiller.navn.upper()}}</h2>
             </div>
         {% endfor %}
     </div>

@@ -6,6 +6,7 @@ from operator import itemgetter
 from flask_socketio import SocketIO, send, emit
 import subprocess
 
+import random
 import uuid
 import json
 import os
@@ -79,6 +80,7 @@ showHideQueue = {
 
 @socketio.on('message')
 def handle_message(data):
+    print("\n")
     print(data)
     #print('received message: ' + data)
     send(data)
@@ -86,10 +88,12 @@ def handle_message(data):
 
 @socketio.on('json')
 def handle_json(json):
+    print("\n")
     print('received json: ' + str(json))
 
 @socketio.on('my event')
 def handle_my_custom_event(json):
+    print("\n")
     print('received json: ' + str(json))
 
 @socketio.on("champSelectUpdate")
@@ -134,6 +138,10 @@ def home():
 @app.route("/stream/pregame/rosters")
 def viewStreamPregameRosters():
     return render_template("stream/pregame/rosters.html", kamp = currentKampjson)
+
+@app.route("/stream/pregame/matchScore")
+def viewStreamPregameMatchScore():
+    return render_template("stream/pregame/matchScore.html",  kamp = currentKampjson)    
 
 
 @app.route("/stream/ingame/scoreboardStandings")
@@ -361,6 +369,7 @@ def updateLiveControl():
     indata = eval(request.data)
     global livecontrolJson
     livecontrolJson = indata
+    print("\n" + " [LIVE CONTROL UPDATE]")
     print(livecontrolJson)
     socketio.emit("livecontrolupdate", livecontrolJson)
     with open("jsonFiles/production/livecontrol.json", "w") as f:
@@ -656,9 +665,9 @@ def user(username):
 
 def hentRiktigTabell():
     if currentKampjson["liga"] == "Telialigaen":
-        return = hentJson("tableStanding")
+        return hentJson("tableStanding")
     else:
-        return = hentJson("TESStanding")
+        return hentJson("TESStanding")
 
 
 def opdaterLagoversikt(navn, tempID):
@@ -775,18 +784,34 @@ def lagKameraOversiktJson(currentKamp):
     global kameraOversiktJson
     lag1Liste = []
     lag2Liste = []
-    for player in currentKamp["lag1"]["spillere"]:
+    for i,player in enumerate(currentKamp["lag1"]["spillere"]):
+        if i==5:
+            print("### Break out of loop [LAG1]")
+            break
         tempID = player["id"]
         if(tempID!=""):
-            print(tempID)
+            #print(tempID)
             lag1Liste.append(hentKameraLinkerMedId(tempID))
+        else:
+            if player["navn"] != "":
+                lag1Liste.append(generateRandomCamjson(random.randint(89093,89200), player["navn"]))
+            else:
+                lag1Liste.append(hentKameraLinkerMedId(tempID))
     kameraOversiktJson["lag1"] = lag1Liste
-    for player in currentKamp["lag2"]["spillere"]:
-        print(player)
+    for i,player in enumerate(currentKamp["lag2"]["spillere"]):
+        if i==5:
+            print("### Break out of loop [LAG2]")
+            break
+        #print(player)
         tempID = player["id"]
         if(tempID!=""):
-            print(tempID)
+            #print(tempID)
             lag2Liste.append(hentKameraLinkerMedId(tempID))
+        else:
+            if player["navn"] != "":
+                lag2Liste.append(generateRandomCamjson(random.randint(89093,89200), player["navn"]))
+            else:
+                lag2Liste.append(hentKameraLinkerMedId(tempID))
     kameraOversiktJson["lag2"] = lag2Liste
     print(len(lag1Liste), len(lag2Liste))
     for i, spiller in enumerate(kameraOversiktJson["lag1"]):
@@ -795,18 +820,51 @@ def lagKameraOversiktJson(currentKamp):
 
     for i,spiller in enumerate(kameraOversiktJson["lag2"]):
         spiller["nginxLink"] = "/cam/test"+str(i+8)+"/index.m3u8"
-    print(kameraOversiktJson)
+    #print(kameraOversiktJson)
     with open("jsonFiles/production/playerCamOverview.json", "w") as f:
         json.dump(kameraOversiktJson, f)
     
 def hentKameraLinkerMedId(id):
-    if(id == ""):
-        return 
+    print("\n\n_________hentKameraLinkerMedId()__________ - " +str(id))
+    if(id == "" or id == None):
+        randomGenerated = generateRandomCamjson(random.randint(89093,89200))
+        print("###ID NONE TEST###")
+        #print(randomGenerated)
+        return randomGenerated
     #id = str(id)
     obsNinjaLink = ("spillere/obsninja/"+str(id)+"")
-    print(obsNinjaLink)
-    return hentJson(obsNinjaLink)
+    if(os.path.exists("jsonFiles/"+obsNinjaLink+".json")):
+        print("##PATH EXIXSTS##")
+        #print(obsNinjaLink)
+        jsonFileAsPythonObject = hentJson(obsNinjaLink)
+        jsonDataFromProcessed = processJsonFileAsPythonObject(jsonFileAsPythonObject)
+        return jsonDataFromProcessed
+    else:
+        print("####NO PATH BUT ID####")
+        return generateRandomCamjson(id)
 #lagNyCurrentKamp()
+
+def processJsonFileAsPythonObject(jsondata):
+    if jsondata["id"] == "":
+        jsondata = generateRandomCamjson(random.randint(89093,89200))
+    return jsondata
+
+
+
+def generateRandomCamjson(id, name=""):
+    tempLink = str(id)+"ADASSADAS"
+    obsData = {
+        "name":tempLink,
+        "id":id,
+        "push":"https://obs.ninja/?push="+tempLink,
+        "view":"https://obs.ninja/?view="+tempLink,
+        "settings":"&webcam&quality=0&autostart",
+        }
+    if name != "":
+        obsData["name"] = name
+    #print(obsData)
+    #print("\n"*10)
+    return obsData
 
 @app.route('/favicon.ico')
 def favicon():

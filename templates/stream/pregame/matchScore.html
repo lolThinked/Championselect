@@ -1,0 +1,28 @@
+<link rel="stylesheet" href={{ url_for('static', filename='css/stream/pregame/matchScore.css')}}>
+<!-- <img src={{ url_for('static', filename='img/Working/csNotext.png')}} alt="CSOverlay" id="backgroundImage"> -->
+
+<div class="overlay-container">
+    <div class="overlayTop">
+        <div class="teamInfo" id="blue">
+            <div class="team-image-container">
+                <img src="{{ url_for('static', filename='laglogoer/'+kamp.lag1.bilde+'')}}" alt="logo">
+            </div>
+            <div class="team-scoreAndName">
+                <h1 class="team-score" id="blueScore">{{kamp.lag1.score}}</h1>
+                <h1 class="team-name" id="blueName">{{kamp.lag1.navn}}</h1>
+            </div>
+        </div>
+        <div class="teamInfo" id="red">
+            <div class="team-image-container">
+                <img src="{{ url_for('static', filename='laglogoer/'+kamp.lag2.bilde+'')}}" alt="logo">
+            </div>
+            <div class="team-scoreAndName" id="teamScoreAndNameRed">
+                <h1 class="team-score" id="redScore">{{kamp.lag2.score}}</h1>
+                <h1 class="team-name" id="blueName">{{kamp.lag2.navn}}</h1>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+

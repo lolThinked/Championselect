@@ -13,11 +13,15 @@
             <div class="lag lag1">
                 <!--BILDE-->
                 <div class="lag-image-container">
-                    <img src="static/laglogoer/{{kamp.lag1.bilde}}" alt="logo">
+                    <a href="{{ url_for('editLag', id=kamp.lag1.id) }}">
+                        <img src="static/laglogoer/{{kamp.lag1.bilde}}" alt="logo">
+                    </a>
                 </div>
                 <!--NAVN-->
                 <div class="lag-navn-container">
-                    <h1 id="id_lag1_navn">{{kamp.lag1.navn}}</h1>
+                    <a href="{{ url_for('editLag', id=kamp.lag1.id) }}">
+                        <h1 id="id_lag1_navn">{{kamp.lag1.navn}}</h1>
+                    </a>
                 </div> 
             </div>
 
@@ -30,11 +34,15 @@
             <div class="lag lag2">
                 <!--NAVN-->
                 <div class="lag-navn-container">
-                    <h1 id="id_lag1_navn">{{kamp.lag2.navn}}</h1>
+                    <a href="{{ url_for('editLag', id=kamp.lag2.id) }}">
+                        <h1 id="id_lag1_navn">{{kamp.lag2.navn}}</h1>
+                    </a>
                 </div>
                 <!--BILDE-->
                 <div class="lag-image-container">
-                    <img src="static/laglogoer/{{kamp.lag2.bilde}}" alt="logo">
+                    <a href="{{ url_for('editLag', id=kamp.lag2.id) }}">
+                        <img src="static/laglogoer/{{kamp.lag2.bilde}}" alt="logo">
+                    </a>
                 </div>
             </div>
         </div>

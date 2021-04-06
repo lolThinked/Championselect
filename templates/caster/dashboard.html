@@ -56,16 +56,25 @@
                     <div class="spillerCameraToggle show" onclick="toggleCam('team1',{{loop.index-1}})">
                         <h2 contenteditable="True">{{players.navn}}</h2>
                         <h3>ON</h3>
+                        {% if not players.bilde and not players.spillerBilde %}
+                            <h3 class="noVisualClass">NOVISUAL</h3>
+                        {% endif %}
                     </div>
                     {% elif kamp.allowedCameras.team1[loop.index-1]==2 %}
                     <div class="spillerCameraToggle imageClass" onclick="toggleCam('team1',{{loop.index-1}})">
                         <h2 contenteditable="True">{{players.navn}}</h2>
                         <h3>IMG</h3>
+                        {% if not players.bilde and not players.spillerBilde %}
+                            <h3 class="noVisualClass">NOVISUAL</h3>
+                        {% endif %}
                     </div>
                     {% else%}
                     <div class="spillerCameraToggle hide" onclick="toggleCam('team1',{{loop.index-1}})">
                         <h2 contenteditable="True">{{players.navn}}</h2>
                         <h3>OFF</h3>
+                        {% if not players.bilde and not players.spillerBilde %}
+                            <h3 class="noVisualClass">NOVISUAL</h3>
+                        {% endif %}
                     </div>
                     {% endif %}
                     {% endif %}
@@ -78,16 +87,25 @@
                     <div class="spillerCameraToggle show" onclick="toggleCam('team2',{{loop.index-1}})">
                         <h2 contenteditable="True">{{players.navn}}</h2>
                         <h3>ON</h3>
+                        {% if not players.bilde and not players.spillerBilde %}
+                            <h3 class="noVisualClass">NOVISUAL</h3>
+                        {% endif %}
                     </div>
                     {% elif kamp.allowedCameras.team2[loop.index-1]==2 %}
                     <div class="spillerCameraToggle imageClass" onclick="toggleCam('team2',{{loop.index-1}})">
                         <h2 contenteditable="True">{{players.navn}}</h2>
                         <h3>IMG</h3>
+                        {% if not players.bilde and not players.spillerBilde %}
+                            <h3 class="noVisualClass">NOVISUAL</h3>
+                        {% endif %}
                     </div>
                     {% else%}
                     <div class="spillerCameraToggle hide" onclick="toggleCam('team2',{{loop.index-1}})">
                         <h2 contenteditable="True">{{players.navn}}</h2>
                         <h3>OFF</h3>
+                        {% if not players.bilde and not players.spillerBilde %}
+                            <h3 class="noVisualClass">NOVISUAL</h3>
+                        {% endif %}
                     </div>
                     {% endif %}
                     {% endif %}

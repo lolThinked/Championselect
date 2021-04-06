@@ -3,12 +3,35 @@
 /* Style the navbar */
 .topnav {
     overflow: hidden;
-    background-color: #e9e9e9;
+    background-color: #0000007d;
     /* margin-bottom: 10; */
     z-index: 21;
     /* position: absolute; */
     width: 100%;
     position: relative;
+}
+.topnav-top-row{
+  contain: content;
+}
+.header-logo-button{
+  width: 346px;
+  float: left;
+  padding: 19px;
+}
+.topnav-top-row img:hover{
+  cursor: pointer;
+  background-color: #0000008c;
+}
+.header-logo-button-small{
+  display: none;
+}
+.topnav-bottom-row{
+  display: block;
+  overflow: hidden;
+}
+
+.topnav-bottom-row a{
+  float: left;
 }
 
 /* Navbar links */
@@ -16,27 +39,43 @@
   float: left;
   display: block;
   color: black;
+  color: white;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
-  font-size: 20px;
-  font-weight: bolder; 
+  font-size: 30px;
+  /* font-weight: bolder; */
 }
 
-/* Navbar links on mouse-over */
-.topnav a:hover {
-  background-color: #ddd;
-  color: black;
+
+
+.topnav-top-row a{
+  padding: 0px;
 }
+.topnav-top-row a:hover{
+  background-color: #0000007a;
+}
+
 
 /* Active/current link */
-.topnav a.active {
-  background-color: #2196F3;
+.topnav-bottom-row a.active {
+  background-color: #001e2cc4;
+  border: 1px solid #ffff009e;
   color: white;
+  font-weight: bolder;
+  padding: 13px 15px;
+}
+/* Navbar links on mouse-over */
+.topnav-bottom-row a:hover {
+  background-color: rgb(0 0 0 / 34%);
+  color: #fffc00c7;
+  font-weight: bolder;
+  border: 1px solid #ffff0036;
+  padding: 13px 15px;
 }
 
 /* Style the input container */
-.topnav .login-container {
+.topnav-bottom-row .login-container {
   float: right;
 }
 
@@ -67,25 +106,131 @@
   border: none;
   cursor: pointer;
 }
-
+.topnav-bottom-row .icon{
+  display: none;
+}
 .topnav .login-container button:hover {
   background: #ccc;
 }
-
+@media screen and (max-width: 600px) {
+  .topnav a:not(:first-child) {display: none;}
+  .topnav a.icon {
+    float: right;
+    display: block;
+  }
+}
 /* Add responsiveness - On small screens, display the navbar vertically instead of horizontally */
 @media screen and (max-width: 600px) {
   .topnav .login-container {
     float: none;
   }
   .topnav a, .topnav input[type=text], .topnav .login-container button {
-    float: none;
+    /* float: none; */
     display: block;
     text-align: left;
-    width: 100%;
+    /* width: 100%; */
     margin: 0;
     padding: 14px;
   }
   .topnav input[type=text] {
     border: 1px solid #ccc;
   }
+}
+@media screen and (max-width: 600px) {
+  .topnav-bottom-row a:not(:first-child) {display: none;}
+  .topnav-bottom-row a.icon {
+    float: right;
+    display: block;
+  }
+}
+@media screen and (max-width: 600px) {
+  .topnav-bottom-row{
+    /* display: none; */
+  }
+  .topnav a.active{
+    color: #eaff55;
+    padding: 14px 16px;
+    border: 0px;
+    background-color: transparent;
+  }
+  .topnav-bottom-row .icon{
+    display: block;
+  }
+  .topnav-top-row{
+    display: flex;
+    height: 75px;
+  }
+  .topnav-top-row img{
+    /* display: none; */
+  }
+  #header-logo-button-small{
+    display: block;
+    max-width: 60px;
+  }
+  #header-logo-button-big{
+    display: none;
+  }
+  .topnav-bottom-row.responsive {position: relative;}
+  .topnav-bottom-row.responsive .icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .topnav-bottom-row.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+/*   
+################################################   
+                  USER            
+################################################                  
+*/
+.topnav-user-container{
+  display: flex;
+  contain: content;
+  float: right;
+  flex: 1;
+  justify-content: flex-end;
+
+}
+.topnav-user-container:hover{
+  background-color: rgb(21, 75, 97);
+  cursor: pointer;
+}
+.topnav-user-username{
+  font-family: roboto thin;
+  text-transform: uppercase;
+  font-weight: 100;
+}
+.topnav-user-icon{
+  contain: strict;
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+  /* padding: 10px; */
+  margin: 14px;
+}
+
+.topnav-user-container a{
+  padding: 0px;
+  margin: 0px;
+  font-size: medium;
+  display: flex;
+}
+.topnav-user-container a:hover{
+  padding: 0px;
+  background-color: transparent;
+  border: 0px;
 }
